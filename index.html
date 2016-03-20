@@ -28,6 +28,68 @@ James Lin - email <br>
 <!--  <dd>- blah</dd>-->
 <!--</dl>-->
 
+1. Analysis of problems / Extraction of data
+1. Motion and properties of a single object
+1. Given properties (velocity, mass, friction), locations
+2. Interactions between objects (collisions, tension)
+3. Environment (gravity, levels, grounds, ceilings)
+2. Connecting data and translating to use physics engine to solve
+3. Displaying output
+1. Moving objects
+2. Displaying calculations
+4. Getting incremental output and working out visualization
+5. Local data storage
+1. Store history of problems previously entered.
+6. Expansions optimizations
+1. myScript type of interface
+2. Equation solver
+1. Would directly use physics engine function to solve equations
+April 2
+• Creating sprites and performing basic 2-D kinematic motion (no gravity, collision, etc)
+• Develop a working link of communication between the user interface and the physics
+engine. At this point we will be working with a simplification of the physics problems we
+plan to solve to ensure all parts will work properly and to what extent they will work.
+April 9
+• Write code for all objects and environmental features for problem modeling.
+Environmental feature include gravity, levels, grounds, etc.
+• Implement the middleware such that the coordinate system would be set to be relative to
+other objects given the current environmental details. (Block A is 5 feet to the right of
+block B given that they are both on the same platform)
+• At this point given a set of objects and environmental features we would be receiving
+input data from the user interface and then we would interpret it using our own design
+paradigm (relative coordinates, etc). All the under-the-hood calculations would be
+maintained by the middleware communicating with the physics engine (this is to maintain
+modularity)--with it only giving the frontend certain calculations done by the physics
+engine to be displayed.
+April 16
+• Construct the interface such that the user is given the ability to model their problem using
+both drag and drop objects and a data input box
+• Given a model from the user the interface will then call the correct function and obtain
+the data needed to generate the output.
+￼
+• Our goal at this point is to have an interface that is as simple and complete as possible
+without necessarily implementing the simulations yet. We will also be focusing on
+making the interface intuitive and minimal.
+April 23
+• Finish interface including the simulation aspect of it. This involves using the data
+received from the physics engine to create the simulation and also includes optimizing
+how and when we update the simulation (finding the proper balance of space and time
+used when updating)
+• Add extra but necessary components to Phys Wiz like a history tab that saves the user’s
+recently entered problems.
+April 30
+• Thoroughly test and debug (having a bunch of random people playing with it would
+surely be a good method to help test).
+• Add non-essential features. These are feature that could make the app more fun and user
+friendly but that are not necessary. This includes possibly integrating a myScript type of
+interface that allows the user to draw in objects that would then be replaced by the object
+that most closely resembles what they drew. Another possible expansion may be a
+custom object option that would allow the user to draw an object that they could then
+give properties to and create simulations with.
+May 2
+• Have demo presentation done and rehearsed
+
+
 <center>
  <!--<iframe src="https://docs.google.com/a/princeton.edu/document/d/1TQJWMq1J6koK48ByTNGzCHIURH-rrltMVKnCqhMMGrU/edit?usp=sharing" style="width:80%; height:60%;"></iframe>-->
  <iframe src="chanchiem.github.io/designdoc-3.pdf" style="width:80%; height:60%;"></iframe>
