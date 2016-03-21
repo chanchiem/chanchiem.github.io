@@ -2,8 +2,8 @@
 //  AppDelegate.swift
 //  PhysWiz
 //
-//  Created by Yosvani Lopez on 3/21/16.
-//  Copyright © 2016 Yosvani Lopez. All rights reserved.
+//  Created by James Lin on 3/21/16.
+//  Copyright © 2016 Intuition. All rights reserved.
 //
 
 import UIKit
