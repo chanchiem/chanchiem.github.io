@@ -13,11 +13,14 @@ class GameViewController: UIViewController {
     // The strong reference to the game scene. This reference
     // is the link of communication between the interface
     // and the scene.
+    var currentGame: GameScene!
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        currentGame = GameScene(fileNamed: "GameScene")
 
-        if let scene = GameScene(fileNamed:"GameScene") {
+        if currentGame != nil {
             // Configure the view.
             let skView = self.view as! SKView
             skView.showsFPS = true
@@ -27,9 +30,9 @@ class GameViewController: UIViewController {
             skView.ignoresSiblingOrder = true
             
             /* Set the scale mode to scale to fit the window */
-            scene.scaleMode = .AspectFill
+            currentGame.scaleMode = .AspectFill
             
-            skView.presentScene(scene)
+            skView.presentScene(currentGame)
         }
     }
 
