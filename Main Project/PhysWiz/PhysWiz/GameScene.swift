@@ -60,12 +60,25 @@ class GameScene: SKScene {
         return ball
     }
     
+    // Checks to see if the location that is valid (i.e. if it's actually a point on the game scene plane itself)
+    func checkValidPoint(location: CGPoint) -> Bool {
+        if(nodeAtPoint(location).name == button.name) {
+            return false
+        }
+        return true
+        
+    }
+    
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for touch: AnyObject in touches {
             let location:CGPoint = touch.locationInNode(self)
             let floor:SKNode? = self.childNodeWithName("floor")
             if floor?.containsPoint(location) != nil {
-                self.addChild(self.createBall(location))
+                
+                // Make sure the point that is being touched is part of the game scene plane is part of the
+                if(checkValidPoint(location)) {
+                    self.addChild(self.createBall(location))
+                }
             }
         }
     }
