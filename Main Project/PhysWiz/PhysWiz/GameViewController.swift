@@ -10,6 +10,9 @@ import UIKit
 import SpriteKit
 
 class GameViewController: UIViewController {
+    // The strong reference to the game scene. This reference
+    // is the link of communication between the interface
+    // and the scene.
 
     override func viewDidLoad() {
         super.viewDidLoad()

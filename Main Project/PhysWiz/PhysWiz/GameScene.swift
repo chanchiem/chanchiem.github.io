@@ -10,6 +10,12 @@ import SpriteKit
 class GameScene: SKScene {
     var stopped = true
     var button: SKShapeNode! = nil
+    
+    // The game view controller will be the strong owner of the gamescene
+    // This reference holds the link of communication between the interface
+    // and the game scene itself.
+    weak var viewController: GameViewController!
+    
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         self.addChild(self.createFloor())
