@@ -33,7 +33,7 @@ class GameScene: SKScene {
     func pausePlay() -> SKShapeNode {
         button = SKShapeNode(circleOfRadius: 20.0)
         button.fillColor = SKColor(red: 0.0, green: 0.0, blue: 256.0, alpha: 1)
-        button.position = CGPoint(x: 0.75 * self.size.width, y: 0.95 * self.size.height)
+        button.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2)
         button.name = "button"
         button.physicsBody = SKPhysicsBody(circleOfRadius: 20.0)
         button.physicsBody?.dynamic = false
