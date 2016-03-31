@@ -7,9 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1AA300521CAD823900AD972D /* circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 1AA300511CAD823800AD972D /* circle.png */; };
-		1AA300541CAD82B200AD972D /* square.png in Resources */ = {isa = PBXBuildFile; fileRef = 1AA300531CAD82B200AD972D /* square.png */; };
-		1AA300561CAD82B600AD972D /* triangle.png in Resources */ = {isa = PBXBuildFile; fileRef = 1AA300551CAD82B600AD972D /* triangle.png */; };
 		1AF5AB931CA8C86A00045CF7 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF5AB921CA8C86A00045CF7 /* AppDelegate.swift */; };
 		1AF5AB951CA8C86A00045CF7 /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 1AF5AB941CA8C86A00045CF7 /* GameScene.sks */; };
 		1AF5AB971CA8C86A00045CF7 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1AF5AB961CA8C86A00045CF7 /* GameScene.swift */; };
@@ -17,12 +14,12 @@
 		1AF5AB9C1CA8C86A00045CF7 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AF5AB9A1CA8C86A00045CF7 /* Main.storyboard */; };
 		1AF5AB9E1CA8C86A00045CF7 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1AF5AB9D1CA8C86A00045CF7 /* Assets.xcassets */; };
 		1AF5ABA11CA8C86A00045CF7 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1AF5AB9F1CA8C86A00045CF7 /* LaunchScreen.storyboard */; };
+		9FC7C75C1CAD893200397163 /* square.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FC7C75B1CAD893200397163 /* square.png */; };
+		9FC7C75F1CAD896F00397163 /* triangle.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FC7C75D1CAD896F00397163 /* triangle.png */; };
+		9FC7C7601CAD896F00397163 /* circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FC7C75E1CAD896F00397163 /* circle.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1AA300511CAD823800AD972D /* circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = circle.png; path = ../../../../circle.png; sourceTree = "<group>"; };
-		1AA300531CAD82B200AD972D /* square.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = square.png; path = ../../../../square.png; sourceTree = "<group>"; };
-		1AA300551CAD82B600AD972D /* triangle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = triangle.png; path = ../../../../triangle.png; sourceTree = "<group>"; };
 		1AF5AB8F1CA8C86A00045CF7 /* SlideOut.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SlideOut.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1AF5AB921CA8C86A00045CF7 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1AF5AB941CA8C86A00045CF7 /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
@@ -32,6 +29,9 @@
 		1AF5AB9D1CA8C86A00045CF7 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1AF5ABA01CA8C86A00045CF7 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1AF5ABA21CA8C86A00045CF7 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9FC7C75B1CAD893200397163 /* square.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = square.png; sourceTree = "<group>"; };
+		9FC7C75D1CAD896F00397163 /* triangle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = triangle.png; sourceTree = "<group>"; };
+		9FC7C75E1CAD896F00397163 /* circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circle.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -48,9 +48,9 @@
 		1AA300571CAD82C400AD972D /* Shapes */ = {
 			isa = PBXGroup;
 			children = (
-				1AA300511CAD823800AD972D /* circle.png */,
-				1AA300531CAD82B200AD972D /* square.png */,
-				1AA300551CAD82B600AD972D /* triangle.png */,
+				9FC7C75D1CAD896F00397163 /* triangle.png */,
+				9FC7C75E1CAD896F00397163 /* circle.png */,
+				9FC7C75B1CAD893200397163 /* square.png */,
 			);
 			name = Shapes;
 			sourceTree = "<group>";
@@ -146,11 +146,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				1AF5AB951CA8C86A00045CF7 /* GameScene.sks in Resources */,
+				9FC7C75F1CAD896F00397163 /* triangle.png in Resources */,
 				1AF5ABA11CA8C86A00045CF7 /* LaunchScreen.storyboard in Resources */,
-				1AA300521CAD823900AD972D /* circle.png in Resources */,
 				1AF5AB9E1CA8C86A00045CF7 /* Assets.xcassets in Resources */,
-				1AA300541CAD82B200AD972D /* square.png in Resources */,
-				1AA300561CAD82B600AD972D /* triangle.png in Resources */,
+				9FC7C7601CAD896F00397163 /* circle.png in Resources */,
+				9FC7C75C1CAD893200397163 /* square.png in Resources */,
 				1AF5AB9C1CA8C86A00045CF7 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -276,9 +276,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = SlideOut/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Intuition.SlideOut;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
 		};
@@ -287,9 +289,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				INFOPLIST_FILE = SlideOut/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Intuition.SlideOut;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;
 		};

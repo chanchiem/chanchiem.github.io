@@ -10,6 +10,12 @@ import SpriteKit
 class GameScene: SKScene {
     var stopped = true
     var button: SKShapeNode! = nil
+    var flag = shapeType.BALL;
+    
+    enum shapeType{
+        case BALL
+        case RECT
+    }
     
     // The game view controller will be the strong owner of the gamescene
     // This reference holds the link of communication between the interface
@@ -46,6 +52,7 @@ class GameScene: SKScene {
         return button
     }
     
+    // Returns the ball! Make sure you add it to the skscene yourself!
     func createBall(position: CGPoint) -> SKShapeNode {
         let ball = SKShapeNode(circleOfRadius: 20.0)
         let positionMark = SKShapeNode(circleOfRadius: 6.0)
@@ -65,6 +72,23 @@ class GameScene: SKScene {
         return ball
     }
     
+    // Returns the ball! Make sure you add it to the skscene yourself!
+    func createRectangle(position: CGPoint) -> SKShapeNode {
+        let dimensions = CGSizeMake(20, 30);
+        let rect = SKShapeNode(rectOfSize: dimensions)
+        
+        rect.fillColor = SKColor(red: CGFloat(arc4random() % 256) / 256.0, green: CGFloat(arc4random() % 256) / 256.0, blue: CGFloat(arc4random() % 256) / 256.0, alpha: 1.0)
+        rect.position = position
+        rect.name = "rectangle"
+        
+        rect.physicsBody = SKPhysicsBody(rectangleOfSize: dimensions)
+        rect.physicsBody?.dynamic = !stopped
+        rect.physicsBody?.restitution = 0.7
+
+        
+        return rect
+    }
+    
     // Checks to see if the location that is valid (i.e. if it's actually a point on the game scene plane itself)
     func checkValidPoint(location: CGPoint) -> Bool {
         if(nodeAtPoint(location).name == button.name) {
@@ -74,15 +98,28 @@ class GameScene: SKScene {
         
     }
     
+    func setFlag(shape: shapeType){
+        flag = shape
+    }
+    
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for touch: AnyObject in touches {
             let location:CGPoint = touch.locationInNode(self)
             let floor:SKNode? = self.childNodeWithName("floor")
             if floor?.containsPoint(location) != nil {
                 
+            NSLog("Client requesting to create at %f, %f", location.x, location.y)
+                
                 // Make sure the point that is being touched is part of the game scene plane is part of the
                 if(checkValidPoint(location)) {
-                    self.addChild(self.createBall(location))
+//                    self.addChild(self.createBall(location))
+                    
+                    switch flag {
+                        case .BALL:
+                            self.addChild(self.createBall(location))
+                        case .RECT:
+                            self.addChild(self.createRectangle(location))
+                    }
                 }
             }
         }

@@ -2,13 +2,12 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BV1-FR-VrT">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
-        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Game View Controller-->
         <scene sceneID="tXr-a1-R10">
             <objects>
-                <viewController id="BV1-FR-VrT" customClass="GameViewController" customModule="SlideOut" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BV1-FR-VrT" customClass="GameViewController" customModule="PhysWiz" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="8aa-yV-Osq"/>
                         <viewControllerLayoutGuide type="bottom" id="qHh-Mt-9TT"/>
@@ -17,32 +16,24 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="JNr-EZ-rqN">
-                                <rect key="frame" x="525" y="0.0" width="75" height="600"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="fmC-Kz-e25">
+                                <rect key="frame" x="525" y="166" width="75" height="434"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstAttribute="width" constant="75" id="wGQ-pc-rdN"/>
+                                    <constraint firstAttribute="width" constant="75" id="HGR-Ia-PfQ"/>
                                 </constraints>
                                 <connections>
-                                    <outlet property="dataSource" destination="BV1-FR-VrT" id="uDh-yE-o1h"/>
-                                    <outlet property="delegate" destination="BV1-FR-VrT" id="GDN-LY-g2z"/>
+                                    <outlet property="dataSource" destination="BV1-FR-VrT" id="pQg-WP-Bcm"/>
+                                    <outlet property="delegate" destination="BV1-FR-VrT" id="mYV-hj-Z0b"/>
                                 </connections>
                             </tableView>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="qHh-Mt-9TT" firstAttribute="top" secondItem="JNr-EZ-rqN" secondAttribute="bottom" id="I5u-gy-afg"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="JNr-EZ-rqN" secondAttribute="trailing" constant="-20" id="hFT-dG-fda"/>
-                            <constraint firstItem="JNr-EZ-rqN" firstAttribute="top" secondItem="3se-qz-xqx" secondAttribute="topMargin" id="iQo-1h-UDj"/>
-                        </constraints>
                     </view>
-                    <connections>
-                        <outlet property="tableView" destination="JNr-EZ-rqN" id="BtM-YP-CkC"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="305" y="364"/>
+            <point key="canvasLocation" x="305" y="356"/>
         </scene>
     </scenes>
 </document>

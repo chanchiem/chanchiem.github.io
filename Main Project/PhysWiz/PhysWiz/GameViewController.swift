@@ -14,9 +14,22 @@ class GameViewController: UIViewController {
     // is the link of communication between the interface
     // and the scene.
     var currentGame: GameScene!
+    
+    enum shapeType{
+        case BALL
+        case RECT
+    }
+    
+    @IBOutlet
+    var tableView: UITableView?
+    var shapes = ["circle.png", "square.png", "triangle.png"]
+    var shapeArray = [shapeType]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        shapeArray.append(shapeType.BALL)
+        shapeArray.append(shapeType.RECT)
         
         currentGame = GameScene(fileNamed: "GameScene")
 
@@ -30,10 +43,12 @@ class GameViewController: UIViewController {
             skView.ignoresSiblingOrder = true
             
             /* Set the scale mode to scale to fit the window */
-            currentGame.scaleMode = .AspectFill
+            currentGame.scaleMode = .AspectFit
             
             skView.presentScene(currentGame)
         }
+        
+        self.tableView!.separatorStyle = UITableViewCellSeparatorStyle.None
     }
 
     override func shouldAutorotate() -> Bool {
@@ -55,5 +70,26 @@ class GameViewController: UIViewController {
 
     override func prefersStatusBarHidden() -> Bool {
         return true
+    }
+    
+    // TABLE STUFF STARTS BELOW
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return self.shapes.count
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        
+        let cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "Cell")
+        
+        //cell.textLabel?.text = shapes[indexPath.row]
+        cell.imageView!.image = UIImage(named: shapes[indexPath.row])
+        
+        return cell
+        
+    }
+    
+    func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+        currentGame.setFlag(shapeArray[indexPath.row])
+        NSLog("Test")
     }
 }
