@@ -11,6 +11,7 @@ class GameScene: SKScene {
     var stopped = true
     var button: SKShapeNode! = nil
     var flag = shapeType.BALL;
+    var shapeArray = [shapeType]()
     
     enum shapeType{
         case BALL
@@ -26,6 +27,10 @@ class GameScene: SKScene {
         self.addChild(self.createFloor())
         self.addChild(self.pausePlay())
         physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
+        
+        // INIT Shape arrays to call later in flag function
+        shapeArray.append(shapeType.BALL)
+        shapeArray.append(shapeType.RECT)
     }
     
     // Creates a floor for the physics simulation
@@ -74,7 +79,7 @@ class GameScene: SKScene {
     
     // Returns the ball! Make sure you add it to the skscene yourself!
     func createRectangle(position: CGPoint) -> SKShapeNode {
-        let dimensions = CGSizeMake(20, 30);
+        let dimensions = CGSizeMake(100, 75);
         let rect = SKShapeNode(rectOfSize: dimensions)
         
         rect.fillColor = SKColor(red: CGFloat(arc4random() % 256) / 256.0, green: CGFloat(arc4random() % 256) / 256.0, blue: CGFloat(arc4random() % 256) / 256.0, alpha: 1.0)
@@ -89,6 +94,7 @@ class GameScene: SKScene {
         return rect
     }
     
+    
     // Checks to see if the location that is valid (i.e. if it's actually a point on the game scene plane itself)
     func checkValidPoint(location: CGPoint) -> Bool {
         if(nodeAtPoint(location).name == button.name) {
@@ -98,8 +104,9 @@ class GameScene: SKScene {
         
     }
     
-    func setFlag(shape: shapeType){
-        flag = shape
+    func setFlag(index: Int){
+        
+        flag = shapeArray[index]
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -112,8 +119,6 @@ class GameScene: SKScene {
                 
                 // Make sure the point that is being touched is part of the game scene plane is part of the
                 if(checkValidPoint(location)) {
-//                    self.addChild(self.createBall(location))
-                    
                     switch flag {
                         case .BALL:
                             self.addChild(self.createBall(location))

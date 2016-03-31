@@ -22,7 +22,8 @@ class GameViewController: UIViewController {
     
     @IBOutlet
     var tableView: UITableView?
-    var shapes = ["circle.png", "square.png", "triangle.png"]
+//    var shapes = ["circle.png", "square.png", "triangle.png"]
+    var shapes = ["circle.png", "square.png"]
     var shapeArray = [shapeType]()
 
     override func viewDidLoad() {
@@ -47,7 +48,6 @@ class GameViewController: UIViewController {
             
             skView.presentScene(currentGame)
         }
-        
         self.tableView!.separatorStyle = UITableViewCellSeparatorStyle.None
     }
 
@@ -83,13 +83,14 @@ class GameViewController: UIViewController {
         
         //cell.textLabel?.text = shapes[indexPath.row]
         cell.imageView!.image = UIImage(named: shapes[indexPath.row])
+        cell.backgroundColor = UIColor.blackColor()
         
         return cell
         
     }
     
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
-        currentGame.setFlag(shapeArray[indexPath.row])
+        currentGame.setFlag(indexPath.row)
         NSLog("Test")
     }
 }
