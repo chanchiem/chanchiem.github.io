@@ -22,7 +22,7 @@ class GameViewController: UIViewController {
     
     @IBOutlet
     var tableView: UITableView?
-//    var shapes = ["circle.png", "square.png", "triangle.png"]
+    // var shapes = ["circle.png", "square.png", "triangle.png"]
     var shapes = ["circle.png", "square.png"]
     var shapeArray = [shapeType]()
 
@@ -49,6 +49,7 @@ class GameViewController: UIViewController {
             skView.presentScene(currentGame)
         }
         self.tableView!.separatorStyle = UITableViewCellSeparatorStyle.None
+        currentGame.viewController = self
     }
 
     override func shouldAutorotate() -> Bool {
