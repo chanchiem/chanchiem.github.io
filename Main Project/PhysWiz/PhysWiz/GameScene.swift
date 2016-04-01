@@ -76,6 +76,7 @@ class GameScene: SKScene {
         positionMark.fillColor = SKColor.blackColor()
         positionMark.position.y = -12
         ball.addChild(positionMark)
+        
         object = ball
         // setting parameter
         return ball

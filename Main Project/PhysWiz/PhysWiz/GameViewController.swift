@@ -105,6 +105,33 @@ class GameViewController: UIViewController {
     }
     
     // Input Box
+    @IBOutlet weak var mass: UITextField!
 
+    @IBOutlet weak var Px: UITextField!
+    
+    @IBOutlet weak var Vx: UITextField!
+    
+    @IBOutlet weak var Ax: UITextField!
+    
+    @IBOutlet weak var Fx: UITextField!
+    
+    @IBOutlet weak var Py: UITextField!
+    
+    @IBOutlet weak var Vy: UITextField!
+    
+    @IBOutlet weak var Ay: UITextField!
+    func getInputValues() -> [String] {
+    var values = [String]()
+    values.append(self.mass.text!)
+    values.append(self.Px.text!)
+    values.append(self.Vx.text!)
+    values.append(self.Ax.text!)
+    values.append(self.Fx.text!)
+    values.append(self.Py.text!)
+    values.append(self.Vy.text!)
+    values.append(self.Ay.text!)
+        return values
+    }
+    
     
 }
