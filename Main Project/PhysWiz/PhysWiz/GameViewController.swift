@@ -14,7 +14,7 @@ class GameViewController: UIViewController {
     // is the link of communication between the interface
     // and the scene.
     var currentGame: GameScene!
-    
+    var parameternames = ["mass", "Vx", "Vy", "Px", "Py", "w"]
     enum shapeType{
         case BALL
         case RECT
@@ -49,6 +49,7 @@ class GameViewController: UIViewController {
             skView.presentScene(currentGame)
         }
         self.tableView!.separatorStyle = UITableViewCellSeparatorStyle.None
+        currentGame.viewcontroller = self
     }
 
     override func shouldAutorotate() -> Bool {
@@ -88,9 +89,21 @@ class GameViewController: UIViewController {
         return cell
         
     }
-    
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
         currentGame.setFlag(indexPath.row)
         NSLog("Test")
     }
+    // parameter label output
+    @IBOutlet weak var parameters: UILabel!
+    // display parameters of selected object in label
+    func setparameter(input: [String]) {
+    self.parameters.text = ""
+        for i in 0...input.count - 1 {
+    self.parameters.text = self.parameters.text! + parameternames[i] + " = " + input[i] + "\n"
+        }
+    }
+    
+    // Input Box
+
+    
 }

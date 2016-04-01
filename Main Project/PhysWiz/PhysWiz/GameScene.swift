@@ -12,12 +12,13 @@ class GameScene: SKScene {
     var button: SKShapeNode! = nil
     var flag = shapeType.BALL;
     var shapeArray = [shapeType]()
-    
+    var viewcontroller: GameViewController!
     enum shapeType{
         case BALL
         case RECT
     }
-    
+    // The selected object for parameters
+    var object:SKShapeNode! = nil
     // The game view controller will be the strong owner of the gamescene
     // This reference holds the link of communication between the interface
     // and the game scene itself.
@@ -73,10 +74,22 @@ class GameScene: SKScene {
         positionMark.fillColor = SKColor.blackColor()
         positionMark.position.y = -12
         ball.addChild(positionMark)
-        
+        object = ball
+        // setting parameter
         return ball
     }
-    
+    // displays parameters of given object
+    func getParameters(object: SKShapeNode) {
+    var input = [String]()
+    input.append((object.physicsBody?.mass.description)!)
+    input.append((object.physicsBody?.velocity.dx.description)!)
+    input.append((object.physicsBody?.velocity.dy.description)!)
+    input.append((object.position.x.description))
+    input.append((object.position.y.description))
+    input.append((object.physicsBody?.angularVelocity.description)!)
+    viewcontroller.setparameter(input)
+        
+    }
     // Returns the ball! Make sure you add it to the skscene yourself!
     func createRectangle(position: CGPoint) -> SKShapeNode {
         let dimensions = CGSizeMake(100, 75);
@@ -89,8 +102,7 @@ class GameScene: SKScene {
         rect.physicsBody = SKPhysicsBody(rectangleOfSize: dimensions)
         rect.physicsBody?.dynamic = !stopped
         rect.physicsBody?.restitution = 0.7
-
-        
+        object = rect
         return rect
     }
     
@@ -121,7 +133,7 @@ class GameScene: SKScene {
                 if(checkValidPoint(location)) {
                     switch flag {
                         case .BALL:
-                            self.addChild(self.createBall(location))
+                        self.addChild(self.createBall(location))
                         case .RECT:
                             self.addChild(self.createRectangle(location))
                     }
@@ -156,9 +168,13 @@ class GameScene: SKScene {
     }
     
     override func update(currentTime: CFTimeInterval) {
+        // continously update values of parameters for selected object 
+        if object != nil && !stopped  {
+        getParameters(object)
+        }
         /* Called before each frame is rendered */
     }
-    
+
     override func didSimulatePhysics() {
         self.enumerateChildNodesWithName("ball", usingBlock: { (node: SKNode!, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
             if node.position.y < 0 {
@@ -166,4 +182,5 @@ class GameScene: SKScene {
             }
         })
     }
+
 }
