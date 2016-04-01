@@ -10,7 +10,17 @@ import SpriteKit
 class GameScene: SKScene {
     var stopped = true
     var button: SKShapeNode! = nil
-    
+    var flag = shapeType.BALL;
+    var shapeArray = [shapeType]()
+    var viewController: GameViewController!
+   
+
+    enum shapeType{
+        case BALL
+        case RECT
+    }
+    // The selected object for parameters
+    var object:SKShapeNode! = nil
     // The game view controller will be the strong owner of the gamescene
     // This reference holds the link of communication between the interface
     // and the game scene itself.
@@ -20,6 +30,10 @@ class GameScene: SKScene {
         self.addChild(self.createFloor())
         self.addChild(self.pausePlay())
         physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
+        
+        // INIT Shape arrays to call later in flag function
+        shapeArray.append(shapeType.BALL)
+        shapeArray.append(shapeType.RECT)
     }
     
     // Creates a floor for the physics simulation
@@ -46,6 +60,7 @@ class GameScene: SKScene {
         return button
     }
     
+    // Returns the ball! Make sure you add it to the skscene yourself!
     func createBall(position: CGPoint) -> SKShapeNode {
         let ball = SKShapeNode(circleOfRadius: 20.0)
         let positionMark = SKShapeNode(circleOfRadius: 6.0)
@@ -61,9 +76,38 @@ class GameScene: SKScene {
         positionMark.fillColor = SKColor.blackColor()
         positionMark.position.y = -12
         ball.addChild(positionMark)
-        
+        object = ball
+        // setting parameter
         return ball
     }
+    // displays parameters of given object
+    func getParameters(object: SKShapeNode) {
+    var input = [String]()
+    input.append((object.physicsBody?.mass.description)!)
+    input.append((object.physicsBody?.velocity.dx.description)!)
+    input.append((object.physicsBody?.velocity.dy.description)!)
+    input.append((object.position.x.description))
+    input.append((object.position.y.description))
+    input.append((object.physicsBody?.angularVelocity.description)!)
+    viewController.setparameter(input)
+        
+    }
+    // Returns the ball! Make sure you add it to the skscene yourself!
+    func createRectangle(position: CGPoint) -> SKShapeNode {
+        let dimensions = CGSizeMake(40, 40);
+        let rect = SKShapeNode(rectOfSize: dimensions)
+        
+        rect.fillColor = SKColor(red: CGFloat(arc4random() % 256) / 256.0, green: CGFloat(arc4random() % 256) / 256.0, blue: CGFloat(arc4random() % 256) / 256.0, alpha: 1.0)
+        rect.position = position
+        rect.name = "rectangle"
+        
+        rect.physicsBody = SKPhysicsBody(rectangleOfSize: dimensions)
+        rect.physicsBody?.dynamic = !stopped
+        rect.physicsBody?.restitution = 0.7
+        object = rect
+        return rect
+    }
+    
     
     // Checks to see if the location that is valid (i.e. if it's actually a point on the game scene plane itself)
     func checkValidPoint(location: CGPoint) -> Bool {
@@ -74,15 +118,27 @@ class GameScene: SKScene {
         
     }
     
+    func setFlag(index: Int){
+        
+        flag = shapeArray[index]
+    }
+    
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for touch: AnyObject in touches {
             let location:CGPoint = touch.locationInNode(self)
             let floor:SKNode? = self.childNodeWithName("floor")
             if floor?.containsPoint(location) != nil {
                 
+            NSLog("Client requesting to create at %f, %f", location.x, location.y)
+                
                 // Make sure the point that is being touched is part of the game scene plane is part of the
                 if(checkValidPoint(location)) {
-                    self.addChild(self.createBall(location))
+                    switch flag {
+                        case .BALL:
+                        self.addChild(self.createBall(location))
+                        case .RECT:
+                            self.addChild(self.createRectangle(location))
+                    }
                 }
             }
         }
@@ -106,17 +162,24 @@ class GameScene: SKScene {
                 // Updates the value of the variable 'stopped'
                 if (stopped) {
                     stopped = false
+                    //self.viewController.tableView!.alpha = 0
+                    UIView.animateWithDuration(1.5, animations: {self.viewController.tableView!.alpha = 0})
                 } else {
                     stopped = true
+                    UIView.animateWithDuration(1.5, animations: {self.viewController.tableView!.alpha = 1})
                 }
             }
         }
     }
     
     override func update(currentTime: CFTimeInterval) {
+        // continously update values of parameters for selected object 
+        if object != nil && !stopped  {
+        getParameters(object)
+        }
         /* Called before each frame is rendered */
     }
-    
+
     override func didSimulatePhysics() {
         self.enumerateChildNodesWithName("ball", usingBlock: { (node: SKNode!, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
             if node.position.y < 0 {
@@ -124,4 +187,5 @@ class GameScene: SKScene {
             }
         })
     }
+
 }
