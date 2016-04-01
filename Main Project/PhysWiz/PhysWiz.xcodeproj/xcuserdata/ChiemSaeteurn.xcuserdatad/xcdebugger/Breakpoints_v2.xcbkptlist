@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PhysWiz/GameScene.swift"
-            timestampString = "481055319.807948"
+            timestampString = "481139213.554162"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "72"
-            endingLineNumber = "72"
+            startingLineNumber = "103"
+            endingLineNumber = "103"
             landmarkName = "checkValidPoint(_:)"
             landmarkType = "5">
          </BreakpointContent>

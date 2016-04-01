@@ -14,6 +14,9 @@
 		1A99C2781CA098950021F14B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A99C2761CA098950021F14B /* Main.storyboard */; };
 		1A99C27A1CA098950021F14B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A99C2791CA098950021F14B /* Assets.xcassets */; };
 		1A99C27D1CA098950021F14B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A99C27B1CA098950021F14B /* LaunchScreen.storyboard */; };
+		9FC7C7641CAD8E5300397163 /* circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FC7C7611CAD8E5300397163 /* circle.png */; };
+		9FC7C7651CAD8E5300397163 /* square.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FC7C7621CAD8E5300397163 /* square.png */; };
+		9FC7C7661CAD8E5300397163 /* triangle.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FC7C7631CAD8E5300397163 /* triangle.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -26,6 +29,9 @@
 		1A99C2791CA098950021F14B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1A99C27C1CA098950021F14B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1A99C27E1CA098950021F14B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9FC7C7611CAD8E5300397163 /* circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circle.png; sourceTree = "<group>"; };
+		9FC7C7621CAD8E5300397163 /* square.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = square.png; sourceTree = "<group>"; };
+		9FC7C7631CAD8E5300397163 /* triangle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = triangle.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +64,9 @@
 		1A99C26D1CA098950021F14B /* PhysWiz */ = {
 			isa = PBXGroup;
 			children = (
+				9FC7C7611CAD8E5300397163 /* circle.png */,
+				9FC7C7621CAD8E5300397163 /* square.png */,
+				9FC7C7631CAD8E5300397163 /* triangle.png */,
 				1A99C26E1CA098950021F14B /* AppDelegate.swift */,
 				1A99C2701CA098950021F14B /* GameScene.sks */,
 				1A99C2721CA098950021F14B /* GameScene.swift */,
@@ -130,7 +139,10 @@
 			files = (
 				1A99C2711CA098950021F14B /* GameScene.sks in Resources */,
 				1A99C27D1CA098950021F14B /* LaunchScreen.storyboard in Resources */,
+				9FC7C7641CAD8E5300397163 /* circle.png in Resources */,
 				1A99C27A1CA098950021F14B /* Assets.xcassets in Resources */,
+				9FC7C7651CAD8E5300397163 /* square.png in Resources */,
+				9FC7C7661CAD8E5300397163 /* triangle.png in Resources */,
 				1A99C2781CA098950021F14B /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -260,6 +272,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Intuition.PhysWiz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
 		};
@@ -272,6 +285,7 @@
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Intuition.PhysWiz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;
 		};
