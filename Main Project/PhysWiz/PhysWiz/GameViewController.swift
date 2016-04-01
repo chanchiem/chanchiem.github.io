@@ -103,17 +103,7 @@ class GameViewController: UIViewController {
     self.parameters.text = self.parameters.text! + parameternames[i] + " = " + input[i] + "\n"
         }
     }
-    
-    // Input Box
-    
-    @IBOutlet weak var mass: UITextField!
-    
-    @IBOutlet weak var Px: UITextField!
-    
-    @IBOutlet weak var Vx: UITextField!
-    
-    @IBOutlet weak var Ax: UILabel!
-    
+
     
     
     
