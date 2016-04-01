@@ -12,8 +12,13 @@ class GameScene: SKScene {
     var button: SKShapeNode! = nil
     var flag = shapeType.BALL;
     var shapeArray = [shapeType]()
+<<<<<<< HEAD
     var viewcontroller: GameViewController!
     var viewController: GameViewController!
+=======
+    var viewController: GameViewController!
+    
+>>>>>>> origin/master
     enum shapeType{
         case BALL
         case RECT

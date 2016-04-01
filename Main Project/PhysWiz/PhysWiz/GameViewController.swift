@@ -49,9 +49,12 @@ class GameViewController: UIViewController {
             skView.presentScene(currentGame)
         }
         self.tableView!.separatorStyle = UITableViewCellSeparatorStyle.None
+<<<<<<< HEAD
 
         currentGame.viewcontroller = self
 
+=======
+>>>>>>> origin/master
         currentGame.viewController = self
     }
 
