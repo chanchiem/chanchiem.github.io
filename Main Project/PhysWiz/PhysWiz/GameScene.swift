@@ -12,13 +12,9 @@ class GameScene: SKScene {
     var button: SKShapeNode! = nil
     var flag = shapeType.BALL;
     var shapeArray = [shapeType]()
-<<<<<<< HEAD
-    var viewcontroller: GameViewController!
     var viewController: GameViewController!
-=======
-    var viewController: GameViewController!
-    
->>>>>>> origin/master
+   
+
     enum shapeType{
         case BALL
         case RECT
@@ -93,7 +89,7 @@ class GameScene: SKScene {
     input.append((object.position.x.description))
     input.append((object.position.y.description))
     input.append((object.physicsBody?.angularVelocity.description)!)
-    viewcontroller.setparameter(input)
+    viewController.setparameter(input)
         
     }
     // Returns the ball! Make sure you add it to the skscene yourself!
