@@ -103,8 +103,9 @@ class GameViewController: UIViewController {
     self.parameters.text = self.parameters.text! + parameternames[i] + " = " + input[i] + "\n"
         }
     }
-    
-    // Input Box
 
+    
+    
+    
     
 }
