@@ -13,6 +13,7 @@ class GameScene: SKScene {
     var flag = shapeType.BALL;
     var shapeArray = [shapeType]()
     var viewcontroller: GameViewController!
+    var viewController: GameViewController!
     enum shapeType{
         case BALL
         case RECT
@@ -92,7 +93,7 @@ class GameScene: SKScene {
     }
     // Returns the ball! Make sure you add it to the skscene yourself!
     func createRectangle(position: CGPoint) -> SKShapeNode {
-        let dimensions = CGSizeMake(100, 75);
+        let dimensions = CGSizeMake(40, 40);
         let rect = SKShapeNode(rectOfSize: dimensions)
         
         rect.fillColor = SKColor(red: CGFloat(arc4random() % 256) / 256.0, green: CGFloat(arc4random() % 256) / 256.0, blue: CGFloat(arc4random() % 256) / 256.0, alpha: 1.0)
@@ -160,8 +161,11 @@ class GameScene: SKScene {
                 // Updates the value of the variable 'stopped'
                 if (stopped) {
                     stopped = false
+                    //self.viewController.tableView!.alpha = 0
+                    UIView.animateWithDuration(1.5, animations: {self.viewController.tableView!.alpha = 0})
                 } else {
                     stopped = true
+                    UIView.animateWithDuration(1.5, animations: {self.viewController.tableView!.alpha = 1})
                 }
             }
         }
