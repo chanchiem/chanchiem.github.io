@@ -13,6 +13,7 @@ class GameScene: SKScene {
     var flag = shapeType.BALL;
     var shapeArray = [shapeType]()
     var viewController: GameViewController!
+    var selectedShape: SKShapeNode! = nil
    
 
     enum shapeType{
@@ -110,11 +111,23 @@ class GameScene: SKScene {
     
     
     // Checks to see if the location that is valid (i.e. if it's actually a point on the game scene plane itself)
+    // The button is not considered a valid point.
     func checkValidPoint(location: CGPoint) -> Bool {
         if(nodeAtPoint(location).name == button.name) {
             return false
         }
         return true
+        
+    }
+    
+    // Checks to see if there is a node at the location
+    // Returns the shape if it's true, otherwise return 
+    // the false.
+    func checkLocforNode(location: CGPoint) -> SKNode! {
+        if(nodeAtPoint(location) == self) {
+            return nil
+        }
+        return nodeAtPoint(location)
         
     }
     
@@ -132,14 +145,25 @@ class GameScene: SKScene {
             NSLog("Client requesting to create at %f, %f", location.x, location.y)
                 
                 // Make sure the point that is being touched is part of the game scene plane is part of the
+                // game
                 if(checkValidPoint(location)) {
+                    
+                    // If the person selected a node, set it as the selected node.
+                    let selectedNode = checkLocforNode(location)
+                    if  (selectedNode != nil) {
+                        NSLog("Found node: \(selectedNode.name)")
+                        return
+                    }
+                    
+                    // Checks if the object being selected is not a node.
                     switch flag {
                         case .BALL:
-                        self.addChild(self.createBall(location))
+                            self.addChild(self.createBall(location))
                         case .RECT:
                             self.addChild(self.createRectangle(location))
                     }
                 }
+                
             }
         }
     }
