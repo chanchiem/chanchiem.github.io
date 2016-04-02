@@ -19,6 +19,7 @@ class GameViewController: UIViewController {
         case BALL
         case RECT
     }
+
     
     @IBOutlet
     var tableView: UITableView?
@@ -71,6 +72,8 @@ class GameViewController: UIViewController {
         return true
     }
     
+    
+    
     // TABLE STUFF STARTS BELOW
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.shapes.count
@@ -91,63 +94,72 @@ class GameViewController: UIViewController {
         currentGame.setFlag(indexPath.row)
         NSLog("Test")
     }
-    // parameter label output
-
+    // Label that contains the information about the px, py, etc...
+    // This is used to let the user know information about the selected
+    // objects.
     @IBOutlet weak var staticBox: UILabel!
 
-    // display parameters of selected object in label
+    // display parameters of selected object in label by modifying
+    // labels in the static box.
     func setsStaticBox(input: [String]) {
-    self.staticBox.text = ""
+        self.staticBox.text = ""
         for i in 0...input.count - 1 {
-    self.staticBox.text = self.staticBox.text! + parameternames[i] + " = " + input[i] + "\n"
+            self.staticBox.text = self.staticBox.text! + parameternames[i] + " = " + truncateString(input[i], decLen: 4) + "\n"
         }
     }
-
-    // Input Box
-
+    
+    // The input box contains all the text fields for the user to input information.
+    // The type of information being passed is declared below the inputbox declaration.
+    // This includes mass, px, py, vx, vy, ax, ay, etc...
     @IBOutlet weak var inputBox: UIScrollView!
-    
     @IBOutlet weak var mass: UITextField!
-    
     @IBOutlet weak var Px: UITextField!
-    
+    @IBOutlet weak var Py: UITextField!
     @IBOutlet weak var Vx: UITextField!
-    
+    @IBOutlet weak var Vy: UITextField!
     @IBOutlet weak var Ax: UITextField!
-    
+    @IBOutlet weak var Ay: UITextField!
     @IBOutlet weak var Fx: UITextField!
     
-    @IBOutlet weak var Py: UITextField!
-    
-    @IBOutlet weak var Vy: UITextField!
-    
-    @IBOutlet weak var Ay: UITextField!
-    // get input from input parameter box 
+    // Gets the input from all the TextFields inside the inputBox.
     func getInput() -> [String] {
-    var values = [String]()
-    values.append(self.mass.text!)
-    values.append(self.Px.text!)
-    values.append(self.Vx.text!)
-    values.append(self.Ax.text!)
-    values.append(self.Fx.text!)
-    values.append(self.Py.text!)
-    values.append(self.Vy.text!)
-    values.append(self.Ay.text!)
+        var values = [String]()
+        values.append(self.mass.text!)
+        values.append(self.Px.text!)
+        values.append(self.Vx.text!)
+        values.append(self.Ax.text!)
+        values.append(self.Fx.text!)
+        values.append(self.Py.text!)
+        values.append(self.Vy.text!)
+        values.append(self.Ay.text!)
         return values
     }
+    
+    // Resets the input fields in the input box
     func setsInputBox(input: [String]) {
-        if (Float(input[0]) != nil) {mass.text = input[0]}
-        if (Float(input[1]) != nil) {Vx.text = input[1]}
-        if (Float(input[2]) != nil) {Vy.text = input[2]}
-        if (Float(input[3]) != nil) {Px.text = input[3]}
-        if (Float(input[4]) != nil) {Py.text = input[4]}
-        
+        if (Float(input[0]) != nil) {mass.text = truncateString(input[0], decLen: 4)}
+        if (Float(input[1]) != nil) {Vx.text = truncateString(input[1], decLen: 4)}
+        if (Float(input[2]) != nil) {Vy.text = truncateString(input[2], decLen: 4)}
+        if (Float(input[3]) != nil) {Px.text = truncateString(input[3], decLen: 4)}
+        if (Float(input[4]) != nil) {Py.text = truncateString(input[4], decLen: 4)}
     }
+    
+    // Truncates the string so that it shows only the given
+    // amount of numbers after the first decimal.
+    // For example:
+    // decLen = 3; 3.1023915 would return 3.102
+    //
+    // If there are no decimals, then it just returns the string.
+    func truncateString(inputString: String, decLen: Int) -> String
+    {
+        return String(format: "%.\(decLen)f", (inputString as NSString).floatValue)
+    }
+    
     // changes parameter box from input to static
     func changeParameterBox() {
         if inputBox.hidden == false {
-        inputBox.hidden = true
-        staticBox.hidden = false
+            inputBox.hidden = true
+            staticBox.hidden = false
         }
         else if inputBox.hidden == true {
             inputBox.hidden = false
