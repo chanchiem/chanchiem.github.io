@@ -7,6 +7,9 @@
 //
 
 import SpriteKit
+
+private let movableNodeName = "movable"
+
 class GameScene: SKScene {
     var stopped = true
     var button: SKShapeNode! = nil
@@ -15,7 +18,8 @@ class GameScene: SKScene {
     var viewController: GameViewController!
     // The selected object for parameters
     var selectedShape: SKShapeNode! = nil
-   
+
+    var selectedNode = SKShapeNode()
 
     enum shapeType{
         case BALL
@@ -66,7 +70,7 @@ class GameScene: SKScene {
         
         ball.fillColor = SKColor(red: CGFloat(arc4random() % 256) / 256.0, green: CGFloat(arc4random() % 256) / 256.0, blue: CGFloat(arc4random() % 256) / 256.0, alpha: 1.0)
         ball.position = position
-        ball.name = "ball"
+        ball.name = movableNodeName
         
         ball.physicsBody = SKPhysicsBody(circleOfRadius: 20.0)
         ball.physicsBody?.dynamic = !stopped
@@ -91,7 +95,6 @@ class GameScene: SKScene {
         input.append((object.position.y.description))
         input.append((object.physicsBody?.angularVelocity.description)!)
         return input
-        
     }
     // set parameters of given object from input box
     func setParameters(object: SKShapeNode) {
@@ -113,14 +116,14 @@ class GameScene: SKScene {
         
         rect.fillColor = SKColor(red: CGFloat(arc4random() % 256) / 256.0, green: CGFloat(arc4random() % 256) / 256.0, blue: CGFloat(arc4random() % 256) / 256.0, alpha: 1.0)
         rect.position = position
-        rect.name = "rectangle"
+        rect.name = movableNodeName
         
         rect.physicsBody = SKPhysicsBody(rectangleOfSize: dimensions)
         rect.physicsBody?.dynamic = !stopped
         rect.physicsBody?.restitution = 0.7
+        
         return rect
     }
-    
     
     // Checks to see if the location that is valid (i.e. if it's actually a point on the game scene plane itself)
     // The button is not considered a valid point.
@@ -128,8 +131,10 @@ class GameScene: SKScene {
         if(nodeAtPoint(location).name == button.name) {
             return false
         }
+        if(nodeAtPoint(location).name == movableNodeName) {
+            return false
+        }
         return true
-        
     }
     
     // Checks to see if there is a node at the location
@@ -152,24 +157,22 @@ class GameScene: SKScene {
         for touch: AnyObject in touches {
             let location:CGPoint = touch.locationInNode(self)
             let floor:SKNode? = self.childNodeWithName("floor")
+            let touchedNode = self.nodeAtPoint(location)
+            if touchedNode is SKShapeNode {
+                print("touchedNode ran")
+                selectedNode = touchedNode as! SKShapeNode
+            }
             if floor?.containsPoint(location) != nil {
                 
-            NSLog("Client requesting to create at %f, %f", location.x, location.y)
+            //NSLog("Client requesting to create at %f, %f", location.x, location.y)
                 
                 // Make sure the point that is being touched is part of the game scene plane is part of the
                 // game
-                if(checkValidPoint(location)) {
-                    
+                if(checkValidPoint(location) && stopped) {
                     // If the person selected a node, set it as the selected node.
-                    let selectedNode = checkLocforNode(location)
-                    if  (selectedNode != nil) {
-                        NSLog("Found node: \(selectedNode.name)")
-                        return
-                    }
-                    
-                    // Checks if the object being selected is not a node.
                     switch flag {
                         case .BALL:
+<<<<<<< HEAD
                             if stopped {
                             self.addChild(self.createBall(location))
                         }
@@ -177,9 +180,17 @@ class GameScene: SKScene {
                             if stopped {
                             self.addChild(self.createRectangle(location))
                         }
+=======
+                            let newBall = createBall(location)
+                            self.addChild(newBall)
+                            selectedNode = newBall
+                        case .RECT:
+                            let newRect = createRectangle(location)
+                            self.addChild(newRect)
+                            selectedNode = newRect
+>>>>>>> master
                     }
                 }
-                
             }
         }
     }
@@ -240,4 +251,24 @@ class GameScene: SKScene {
         })
     }
 
+    func panForTranslation(translation: CGPoint) {
+        let position = selectedNode.position
+        if selectedNode.name! == movableNodeName {
+            selectedNode.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
+        }
+        // Add this when we have a background image
+        /*else {
+            background.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
+        }*/
+    }
+    
+    override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        let touch = touches.first
+        let positionInScene = touch?.locationInNode(self)
+        let previousPosition = touch?.previousLocationInNode(self)
+        let translation = CGPoint(x: positionInScene!.x - previousPosition!.x, y: positionInScene!.y - previousPosition!.y)
+        if stopped {
+            panForTranslation(translation)
+        }
+    }
 }
