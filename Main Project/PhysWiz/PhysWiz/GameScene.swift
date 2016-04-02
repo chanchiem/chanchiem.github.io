@@ -168,7 +168,7 @@ class GameScene: SKScene {
                 
                 // Make sure the point that is being touched is part of the game scene plane is part of the
                 // game
-                if(checkValidPoint(location)) {
+                if(checkValidPoint(location) && stopped) {
                     // If the person selected a node, set it as the selected node.
                     switch flag {
                         case .BALL:
@@ -253,6 +253,8 @@ class GameScene: SKScene {
         let positionInScene = touch?.locationInNode(self)
         let previousPosition = touch?.previousLocationInNode(self)
         let translation = CGPoint(x: positionInScene!.x - previousPosition!.x, y: positionInScene!.y - previousPosition!.y)
-        panForTranslation(translation)
+        if stopped {
+            panForTranslation(translation)
+        }
     }
 }
