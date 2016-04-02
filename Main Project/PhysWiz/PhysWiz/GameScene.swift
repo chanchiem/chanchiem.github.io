@@ -185,13 +185,7 @@ class GameScene: SKScene {
             let location = touch.locationInNode(self)
             // Gives the pause play button the ability to pause and play a scene
             if button.containsPoint(location) {
-                //fill in current values and changes parameter box
-                if (selectedShape != nil) {
-                    viewController.setsInputBox(getParameters(selectedShape))
-                }
-                viewController.changeParameterBox()
                 for shape in self.children {
-                    
                     if (stopped) {
                         shape.physicsBody?.dynamic = true
                     }
@@ -212,18 +206,26 @@ class GameScene: SKScene {
                     stopped = true
                     UIView.animateWithDuration(1.5, animations: {self.viewController.tableView!.alpha = 1})
                 }
-          
+                //fill in current values and changes parameter box
+                if (selectedShape != nil) {
+                    viewController.setsInputBox(getParameters(selectedShape))
+                }
+                viewController.changeParameterBox()
+
             }
-            
+            // updates selected shapes values with input box values when stopped
+            if (selectedShape != nil && stopped) {
+                setParameters(selectedShape)
+            }
         }
     }
+    
+    /* Called before each frame is rendered */
     override func update(currentTime: CFTimeInterval) {
         // continously update values of parameters for selected object 
         if selectedShape != nil && !stopped  {
         viewController.setsStaticBox(getParameters(selectedShape))
         }
- 
-        /* Called before each frame is rendered */
     }
 
     override func didSimulatePhysics() {
