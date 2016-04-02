@@ -95,7 +95,6 @@ class GameScene: SKScene {
         input.append((object.position.y.description))
         input.append((object.physicsBody?.angularVelocity.description)!)
         return input
-        
     }
     // set parameters of given object from input box
     func setParameters(object: SKShapeNode) {
@@ -122,6 +121,7 @@ class GameScene: SKScene {
         rect.physicsBody = SKPhysicsBody(rectangleOfSize: dimensions)
         rect.physicsBody?.dynamic = !stopped
         rect.physicsBody?.restitution = 0.7
+        
         return rect
     }
     
@@ -172,9 +172,13 @@ class GameScene: SKScene {
                     // If the person selected a node, set it as the selected node.
                     switch flag {
                         case .BALL:
-                            self.addChild(self.createBall(location))
+                            let newBall = createBall(location)
+                            self.addChild(newBall)
+                            selectedNode = newBall
                         case .RECT:
-                            self.addChild(self.createRectangle(location))
+                            let newRect = createRectangle(location)
+                            self.addChild(newRect)
+                            selectedNode = newRect
                     }
                 }
             }
