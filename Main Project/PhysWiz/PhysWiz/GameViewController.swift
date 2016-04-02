@@ -96,17 +96,20 @@ class GameViewController: UIViewController {
         NSLog("Test")
     }
     // parameter label output
-    @IBOutlet weak var parameters: UILabel!
+
+    @IBOutlet weak var staticBox: UILabel!
+
     // display parameters of selected object in label
-    func setStaticBox(input: [String]) {
-    self.parameters.text = ""
+    func setsStaticBox(input: [String]) {
+    self.staticBox.text = ""
         for i in 0...input.count - 1 {
-    self.parameters.text = self.parameters.text! + parameternames[i] + " = " + input[i] + "\n"
+    self.staticBox.text = self.staticBox.text! + parameternames[i] + " = " + input[i] + "\n"
         }
     }
 
     // Input Box
-    @IBOutlet weak var ParameterBox: UIScrollView!
+
+    @IBOutlet weak var inputBox: UIScrollView!
     
     @IBOutlet weak var mass: UITextField!
     
@@ -136,7 +139,7 @@ class GameViewController: UIViewController {
     values.append(self.Ay.text!)
         return values
     }
-    func setInputBox(input: [String]) {
+    func setsInputBox(input: [String]) {
         if (Float(input[0]) != nil) {mass.text = input[0]}
         if (Float(input[1]) != nil) {Vx.text = input[1]}
         if (Float(input[2]) != nil) {Vy.text = input[2]}
@@ -146,13 +149,13 @@ class GameViewController: UIViewController {
     }
     // changes parameter box from input to static
     func changeParameterBox() {
-        if ParameterBox.hidden == false {
-        ParameterBox.hidden = true
-        parameters.hidden = false
+        if inputBox.hidden == false {
+        inputBox.hidden = true
+        staticBox.hidden = false
         }
-        else if ParameterBox.hidden == true {
-            ParameterBox.hidden = false
-            parameters.hidden = true
+        else if inputBox.hidden == true {
+            inputBox.hidden = false
+            staticBox.hidden = true
         }
     }
     

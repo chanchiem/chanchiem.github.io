@@ -17,7 +17,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tlb-8x-krx">
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tlb-8x-krx" userLabel="staticBox">
                                 <rect key="frame" x="0.0" y="463" width="292" height="137"/>
                                 <animations/>
                                 <attributedString key="attributedText">
@@ -45,7 +45,7 @@
                                     <outlet property="delegate" destination="BV1-FR-VrT" id="GDN-LY-g2z"/>
                                 </connections>
                             </tableView>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tsM-Om-PHg">
+                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tsM-Om-PHg" userLabel="inputBox">
                                 <rect key="frame" x="0.0" y="463" width="292" height="131"/>
                                 <subviews>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0.00" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jCc-em-oYC">
@@ -171,13 +171,13 @@
                         <outlet property="Ax" destination="01U-kV-clN" id="cbV-WE-NAG"/>
                         <outlet property="Ay" destination="eav-RN-VyD" id="RFu-5F-V1G"/>
                         <outlet property="Fx" destination="COz-3D-HDX" id="7KU-Ig-9k2"/>
-                        <outlet property="ParameterBox" destination="tsM-Om-PHg" id="jdv-RJ-mjx"/>
                         <outlet property="Px" destination="jCc-em-oYC" id="WjD-1l-cuQ"/>
                         <outlet property="Py" destination="Xi0-MD-sR7" id="HRp-UL-Est"/>
                         <outlet property="Vx" destination="dWF-hy-ptt" id="bw1-RQ-GJ2"/>
                         <outlet property="Vy" destination="t46-X5-5Ui" id="CBc-C9-lbe"/>
+                        <outlet property="inputBox" destination="tsM-Om-PHg" id="eyx-SU-EPR"/>
                         <outlet property="mass" destination="kzj-uy-VCE" id="NcU-zH-s4b"/>
-                        <outlet property="parameters" destination="Tlb-8x-krx" id="sOS-Ou-Ve5"/>
+                        <outlet property="staticBox" destination="Tlb-8x-krx" id="vZd-up-jca"/>
                         <outlet property="tableView" destination="JNr-EZ-rqN" id="BtM-YP-CkC"/>
                     </connections>
                 </viewController>

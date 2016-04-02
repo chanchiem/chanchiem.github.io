@@ -83,14 +83,14 @@ class GameScene: SKScene {
     }
     // return parameters of given object
     func getParameters(object: SKShapeNode) -> [String]{
-    var input = [String]()
-    input.append((object.physicsBody?.mass.description)!)
-    input.append((object.physicsBody?.velocity.dx.description)!)
-    input.append((object.physicsBody?.velocity.dy.description)!)
-    input.append((object.position.x.description))
-    input.append((object.position.y.description))
-    input.append((object.physicsBody?.angularVelocity.description)!)
-    return input
+        var input = [String]()
+        input.append((object.physicsBody?.mass.description)!)
+        input.append((object.physicsBody?.velocity.dx.description)!)
+        input.append((object.physicsBody?.velocity.dy.description)!)
+        input.append((object.position.x.description))
+        input.append((object.position.y.description))
+        input.append((object.physicsBody?.angularVelocity.description)!)
+        return input
         
     }
     // set parameters of given object from input box
@@ -187,18 +187,20 @@ class GameScene: SKScene {
             if button.containsPoint(location) {
                 //fill in current values and changes parameter box
                 if (selectedShape != nil) {
-                viewController.setInputBox(getParameters(selectedShape))
+                    viewController.setsInputBox(getParameters(selectedShape))
                 }
                 viewController.changeParameterBox()
-                
                 for shape in self.children {
+                    
                     if (stopped) {
                         shape.physicsBody?.dynamic = true
                     }
                     else if (!stopped) {
+                        
                         shape.physicsBody?.dynamic = false
                     }
                 }
+                
                 button.physicsBody?.dynamic = false   // Keeps pause play button in place
                 
                 // Updates the value of the variable 'stopped'
@@ -210,21 +212,17 @@ class GameScene: SKScene {
                     stopped = true
                     UIView.animateWithDuration(1.5, animations: {self.viewController.tableView!.alpha = 1})
                 }
+          
             }
             
         }
     }
-    
     override func update(currentTime: CFTimeInterval) {
         // continously update values of parameters for selected object 
         if selectedShape != nil && !stopped  {
-        viewController.setStaticBox(getParameters(selectedShape))
+        viewController.setsStaticBox(getParameters(selectedShape))
         }
-            if (selectedShape != nil) && stopped{
-                setParameters(selectedShape)
-
-            
-        }
+ 
         /* Called before each frame is rendered */
     }
 
