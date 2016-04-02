@@ -98,16 +98,14 @@ class GameViewController: UIViewController {
     // parameter label output
     @IBOutlet weak var parameters: UILabel!
     // display parameters of selected object in label
-    func setparameter(input: [String]) {
+    func setStaticBox(input: [String]) {
     self.parameters.text = ""
         for i in 0...input.count - 1 {
     self.parameters.text = self.parameters.text! + parameternames[i] + " = " + input[i] + "\n"
         }
     }
 
-    
     // Input Box
-
     @IBOutlet weak var ParameterBox: UIScrollView!
     
     @IBOutlet weak var mass: UITextField!
@@ -125,7 +123,8 @@ class GameViewController: UIViewController {
     @IBOutlet weak var Vy: UITextField!
     
     @IBOutlet weak var Ay: UITextField!
-    func getParameters() -> [String] {
+    // get input from input parameter box 
+    func getInput() -> [String] {
     var values = [String]()
     values.append(self.mass.text!)
     values.append(self.Px.text!)
@@ -136,6 +135,14 @@ class GameViewController: UIViewController {
     values.append(self.Vy.text!)
     values.append(self.Ay.text!)
         return values
+    }
+    func setInputBox(input: [String]) {
+        if (Float(input[0]) != nil) {mass.text = input[0]}
+        if (Float(input[1]) != nil) {Vx.text = input[1]}
+        if (Float(input[2]) != nil) {Vy.text = input[2]}
+        if (Float(input[3]) != nil) {Px.text = input[3]}
+        if (Float(input[4]) != nil) {Py.text = input[4]}
+        
     }
     // changes parameter box from input to static
     func changeParameterBox() {
