@@ -48,6 +48,7 @@ class GameViewController: UIViewController {
             
             skView.presentScene(currentGame)
         }
+
         self.tableView!.separatorStyle = UITableViewCellSeparatorStyle.None
 
         currentGame.viewController = self
@@ -58,11 +59,7 @@ class GameViewController: UIViewController {
     }
 
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
-        if UIDevice.currentDevice().userInterfaceIdiom == .Phone {
-            return .AllButUpsideDown
-        } else {
-            return .All
-        }
+        return .Landscape
     }
 
     override func didReceiveMemoryWarning() {
@@ -95,15 +92,68 @@ class GameViewController: UIViewController {
         NSLog("Test")
     }
     // parameter label output
-    @IBOutlet weak var parameters: UILabel!
+
+    @IBOutlet weak var staticBox: UILabel!
+
     // display parameters of selected object in label
-    func setparameter(input: [String]) {
-    self.parameters.text = ""
+    func setsStaticBox(input: [String]) {
+    self.staticBox.text = ""
         for i in 0...input.count - 1 {
-    self.parameters.text = self.parameters.text! + parameternames[i] + " = " + input[i] + "\n"
+    self.staticBox.text = self.staticBox.text! + parameternames[i] + " = " + input[i] + "\n"
         }
     }
 
+    // Input Box
+
+    @IBOutlet weak var inputBox: UIScrollView!
+    
+    @IBOutlet weak var mass: UITextField!
+    
+    @IBOutlet weak var Px: UITextField!
+    
+    @IBOutlet weak var Vx: UITextField!
+    
+    @IBOutlet weak var Ax: UITextField!
+    
+    @IBOutlet weak var Fx: UITextField!
+    
+    @IBOutlet weak var Py: UITextField!
+    
+    @IBOutlet weak var Vy: UITextField!
+    
+    @IBOutlet weak var Ay: UITextField!
+    // get input from input parameter box 
+    func getInput() -> [String] {
+    var values = [String]()
+    values.append(self.mass.text!)
+    values.append(self.Px.text!)
+    values.append(self.Vx.text!)
+    values.append(self.Ax.text!)
+    values.append(self.Fx.text!)
+    values.append(self.Py.text!)
+    values.append(self.Vy.text!)
+    values.append(self.Ay.text!)
+        return values
+    }
+    func setsInputBox(input: [String]) {
+        if (Float(input[0]) != nil) {mass.text = input[0]}
+        if (Float(input[1]) != nil) {Vx.text = input[1]}
+        if (Float(input[2]) != nil) {Vy.text = input[2]}
+        if (Float(input[3]) != nil) {Px.text = input[3]}
+        if (Float(input[4]) != nil) {Py.text = input[4]}
+        
+    }
+    // changes parameter box from input to static
+    func changeParameterBox() {
+        if inputBox.hidden == false {
+        inputBox.hidden = true
+        staticBox.hidden = false
+        }
+        else if inputBox.hidden == true {
+            inputBox.hidden = false
+            staticBox.hidden = true
+        }
+    }
     
     
     
