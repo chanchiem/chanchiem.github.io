@@ -13,6 +13,7 @@ class GameScene: SKScene {
     var flag = shapeType.BALL;
     var shapeArray = [shapeType]()
     var viewController: GameViewController!
+    // The selected object for parameters
     var selectedShape: SKShapeNode! = nil
    
 
@@ -20,8 +21,6 @@ class GameScene: SKScene {
         case BALL
         case RECT
     }
-    // The selected object for parameters
-    var object:SKShapeNode! = nil
     // The game view controller will be the strong owner of the gamescene
     // This reference holds the link of communication between the interface
     // and the game scene itself.
@@ -57,7 +56,10 @@ class GameScene: SKScene {
         button.name = "button"
         button.physicsBody = SKPhysicsBody(circleOfRadius: 20.0)
         button.physicsBody?.dynamic = false
-        
+        //take input and change parameter box to static
+        if (selectedShape != nil) {
+        setParameters(selectedShape)
+        }
         return button
     }
     
@@ -77,7 +79,7 @@ class GameScene: SKScene {
         positionMark.fillColor = SKColor.blackColor()
         positionMark.position.y = -12
         ball.addChild(positionMark)
-        object = ball
+        selectedShape = ball
         // setting parameter
         return ball
     }
@@ -93,6 +95,20 @@ class GameScene: SKScene {
     viewController.setparameter(input)
         
     }
+    // set parameters from given out
+    func setParameters(object: SKShapeNode) {
+        let values = viewController.getParameters
+        object.physicsBody?.mass = CGFloat(Int(values()[0])!)
+        object.position.x = CGFloat(Int(values()[1])!)
+        object.physicsBody?.velocity.dx = CGFloat(Int(values()[2])!)
+        // make acceleration x object.physicsBody?.mass = CGFloat(Int(values()[3])!)
+        /// apply force object.physicsBody?.applyForce(force: Int(values()[4])!, 0)
+        object.position.y = CGFloat(Int(values()[5])!)
+        object.physicsBody?.velocity.dy = CGFloat(Int(values()[6])!)
+        // make acceleration y object.physicsBody?.mass = CGFloat(Int(values()[3])!)
+        
+    }
+
     // Returns the ball! Make sure you add it to the skscene yourself!
     func createRectangle(position: CGPoint) -> SKShapeNode {
         let dimensions = CGSizeMake(40, 40);
@@ -105,7 +121,6 @@ class GameScene: SKScene {
         rect.physicsBody = SKPhysicsBody(rectangleOfSize: dimensions)
         rect.physicsBody?.dynamic = !stopped
         rect.physicsBody?.restitution = 0.7
-        object = rect
         return rect
     }
     
@@ -173,6 +188,8 @@ class GameScene: SKScene {
             let location = touch.locationInNode(self)
             // Gives the pause play button the ability to pause and play a scene
             if button.containsPoint(location) {
+                // changes parameter box
+                viewController.changeParameterBox()
                 for shape in self.children {
                     if (stopped) {
                         shape.physicsBody?.dynamic = true
@@ -193,13 +210,14 @@ class GameScene: SKScene {
                     UIView.animateWithDuration(1.5, animations: {self.viewController.tableView!.alpha = 1})
                 }
             }
+            
         }
     }
     
     override func update(currentTime: CFTimeInterval) {
         // continously update values of parameters for selected object 
-        if object != nil && !stopped  {
-        getParameters(object)
+        if selectedShape != nil && !stopped  {
+        getParameters(selectedShape)
         }
         /* Called before each frame is rendered */
     }

@@ -48,6 +48,7 @@ class GameViewController: UIViewController {
             
             skView.presentScene(currentGame)
         }
+
         self.tableView!.separatorStyle = UITableViewCellSeparatorStyle.None
 
         currentGame.viewController = self
@@ -106,6 +107,9 @@ class GameViewController: UIViewController {
 
     
     // Input Box
+
+    @IBOutlet weak var ParameterBox: UIScrollView!
+    
     @IBOutlet weak var mass: UITextField!
     
     @IBOutlet weak var Px: UITextField!
@@ -121,7 +125,7 @@ class GameViewController: UIViewController {
     @IBOutlet weak var Vy: UITextField!
     
     @IBOutlet weak var Ay: UITextField!
-    func getInputValues() -> [String] {
+    func getParameters() -> [String] {
     var values = [String]()
     values.append(self.mass.text!)
     values.append(self.Px.text!)
@@ -133,7 +137,17 @@ class GameViewController: UIViewController {
     values.append(self.Ay.text!)
         return values
     }
-    
+    // changes parameter box from input to static
+    func changeParameterBox() {
+        if ParameterBox.hidden == false {
+        ParameterBox.hidden = true
+        parameters.hidden = false
+        }
+        else if ParameterBox.hidden == true {
+            ParameterBox.hidden = false
+            parameters.hidden = true
+        }
+    }
     
     
     
