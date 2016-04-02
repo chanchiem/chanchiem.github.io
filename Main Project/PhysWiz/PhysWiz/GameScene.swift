@@ -170,9 +170,13 @@ class GameScene: SKScene {
                     // Checks if the object being selected is not a node.
                     switch flag {
                         case .BALL:
+                            if stopped {
                             self.addChild(self.createBall(location))
+                        }
                         case .RECT:
+                            if stopped {
                             self.addChild(self.createRectangle(location))
+                        }
                     }
                 }
                 
