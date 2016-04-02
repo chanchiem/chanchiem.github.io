@@ -15,7 +15,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "104"
             endingLineNumber = "104"
-            landmarkName = "createRectangle(_:)"
+            landmarkName = "setParameters(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -31,7 +31,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "128"
             endingLineNumber = "128"
-            landmarkName = "checkLocforNode(_:)"
+            landmarkName = "checkValidPoint(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
