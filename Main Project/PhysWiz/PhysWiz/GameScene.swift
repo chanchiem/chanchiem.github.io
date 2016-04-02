@@ -56,10 +56,6 @@ class GameScene: SKScene {
         button.name = "button"
         button.physicsBody = SKPhysicsBody(circleOfRadius: 20.0)
         button.physicsBody?.dynamic = false
-        //take input and change parameter box to static
-        if (selectedShape != nil) {
-        setParameters(selectedShape)
-        }
         return button
     }
     
@@ -75,16 +71,18 @@ class GameScene: SKScene {
         ball.physicsBody = SKPhysicsBody(circleOfRadius: 20.0)
         ball.physicsBody?.dynamic = !stopped
         ball.physicsBody?.restitution = 0.7
+        ball.physicsBody?.friction = 0
+        ball.physicsBody?.linearDamping = 0
         
         positionMark.fillColor = SKColor.blackColor()
         positionMark.position.y = -12
         ball.addChild(positionMark)
+          // setting parameter
         selectedShape = ball
-        // setting parameter
         return ball
     }
-    // displays parameters of given object
-    func getParameters(object: SKShapeNode) {
+    // return parameters of given object
+    func getParameters(object: SKShapeNode) -> [String]{
     var input = [String]()
     input.append((object.physicsBody?.mass.description)!)
     input.append((object.physicsBody?.velocity.dx.description)!)
@@ -92,22 +90,21 @@ class GameScene: SKScene {
     input.append((object.position.x.description))
     input.append((object.position.y.description))
     input.append((object.physicsBody?.angularVelocity.description)!)
-    viewController.setparameter(input)
+    return input
         
     }
-    // set parameters from given out
+    // set parameters of given object from input box
     func setParameters(object: SKShapeNode) {
-        let values = viewController.getParameters
-        object.physicsBody?.mass = CGFloat(Int(values()[0])!)
-        object.position.x = CGFloat(Int(values()[1])!)
-        object.physicsBody?.velocity.dx = CGFloat(Int(values()[2])!)
+        let values = viewController.getInput
+        if Float(values()[0]) != nil {object.physicsBody?.mass = CGFloat(Float(values()[0])!)}
+        if Float(values()[1]) != nil {object.position.x = CGFloat(Float(values()[1])!)}
+        if Float(values()[2]) != nil {object.physicsBody?.velocity.dx = CGFloat(Float(values()[2])!)}
         // make acceleration x object.physicsBody?.mass = CGFloat(Int(values()[3])!)
         /// apply force object.physicsBody?.applyForce(force: Int(values()[4])!, 0)
-        object.position.y = CGFloat(Int(values()[5])!)
-        object.physicsBody?.velocity.dy = CGFloat(Int(values()[6])!)
+        if Float(values()[5]) != nil {object.position.y = CGFloat(Float(values()[5])!)}
+        if Float(values()[6]) != nil {object.physicsBody?.velocity.dy = CGFloat(Float(values()[6])!)}
         // make acceleration y object.physicsBody?.mass = CGFloat(Int(values()[3])!)
-        
-    }
+        }
 
     // Returns the ball! Make sure you add it to the skscene yourself!
     func createRectangle(position: CGPoint) -> SKShapeNode {
@@ -188,8 +185,12 @@ class GameScene: SKScene {
             let location = touch.locationInNode(self)
             // Gives the pause play button the ability to pause and play a scene
             if button.containsPoint(location) {
-                // changes parameter box
+                //fill in current values and changes parameter box
+                if (selectedShape != nil) {
+                viewController.setInputBox(getParameters(selectedShape))
+                }
                 viewController.changeParameterBox()
+                
                 for shape in self.children {
                     if (stopped) {
                         shape.physicsBody?.dynamic = true
@@ -217,7 +218,12 @@ class GameScene: SKScene {
     override func update(currentTime: CFTimeInterval) {
         // continously update values of parameters for selected object 
         if selectedShape != nil && !stopped  {
-        getParameters(selectedShape)
+        viewController.setStaticBox(getParameters(selectedShape))
+        }
+            if (selectedShape != nil) && stopped{
+                setParameters(selectedShape)
+
+            
         }
         /* Called before each frame is rendered */
     }
