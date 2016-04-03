@@ -14,7 +14,7 @@ class GameViewController: UIViewController {
     // is the link of communication between the interface
     // and the scene.
     var currentGame: GameScene!
-    var parameternames = ["mass", "Vx", "Vy", "Px", "Py", "w"]
+    var parameternames = ["mass", "Px", "Py","Vx", "Vy", "w"]
     enum shapeType{
         case BALL
         case RECT
@@ -66,6 +66,7 @@ class GameViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Release any cached data, images, etc that aren't in use.
+       
     }
 
     override func prefersStatusBarHidden() -> Bool {
@@ -101,10 +102,10 @@ class GameViewController: UIViewController {
 
     // display parameters of selected object in label by modifying
     // labels in the static box.
-    func setsStaticBox(input: [String]) {
+    func setsStaticBox(input: [Float]) {
         self.staticBox.text = ""
         for i in 0...input.count - 1 {
-            self.staticBox.text = self.staticBox.text! + parameternames[i] + " = " + truncateString(input[i], decLen: 4) + "\n"
+            self.staticBox.text = self.staticBox.text! + parameternames[i] + " = " + truncateString(String(input[i]), decLen: 4) + "\n"
         }
     }
     
@@ -118,7 +119,7 @@ class GameViewController: UIViewController {
     @IBOutlet weak var Vx: UITextField!
     @IBOutlet weak var Vy: UITextField!
     @IBOutlet weak var Ax: UITextField!
-    @IBOutlet weak var Ay: UITextField!
+    @IBOutlet weak var Fy: UITextField!
     @IBOutlet weak var Fx: UITextField!
     
     // Gets the input from all the TextFields inside the inputBox.
@@ -131,17 +132,18 @@ class GameViewController: UIViewController {
         values.append(self.Fx.text!)
         values.append(self.Py.text!)
         values.append(self.Vy.text!)
-        values.append(self.Ay.text!)
+        values.append(self.Fy.text!)
         return values
     }
     
     // Resets the input fields in the input box
-    func setsInputBox(input: [String]) {
-        if (Float(input[0]) != nil) {mass.text = truncateString(input[0], decLen: 4)}
-        if (Float(input[1]) != nil) {Vx.text = truncateString(input[1], decLen: 4)}
-        if (Float(input[2]) != nil) {Vy.text = truncateString(input[2], decLen: 4)}
-        if (Float(input[3]) != nil) {Px.text = truncateString(input[3], decLen: 4)}
-        if (Float(input[4]) != nil) {Py.text = truncateString(input[4], decLen: 4)}
+    func setsInputBox(input: [Float]) {
+        mass.text = truncateString(String(input[0]), decLen: 4)
+        Px.text = truncateString(String(input[3]), decLen: 4)
+        Py.text = truncateString(String(input[4]), decLen: 4)
+        Vx.text = truncateString(String(input[1]), decLen: 4)
+        Vy.text = truncateString(String(input[2]), decLen: 4)
+
     }
     
     // Truncates the string so that it shows only the given
