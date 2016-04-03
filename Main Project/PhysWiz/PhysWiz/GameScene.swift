@@ -75,19 +75,19 @@ class GameScene: SKScene {
         positionMark.fillColor = SKColor.blackColor()
         positionMark.position.y = -12
         ball.addChild(positionMark)
-          // setting parameter
+        // setting parameter
         selectedShape = ball
         return ball
     }
     // return parameters of given object
-    func getParameters(object: SKShapeNode) -> [String]{
-        var input = [String]()
-        input.append((object.physicsBody?.mass.description)!)
-        input.append((object.physicsBody?.velocity.dx.description)!)
-        input.append((object.physicsBody?.velocity.dy.description)!)
-        input.append((object.position.x.description))
-        input.append((object.position.y.description))
-        input.append((object.physicsBody?.angularVelocity.description)!)
+    func getParameters(object: SKShapeNode) -> [Float]{
+        var input = [Float]()
+        input.append(Float((object.physicsBody?.mass)!))
+        input.append(Float((object.physicsBody?.velocity.dx)!))
+        input.append(Float((object.physicsBody?.velocity.dy)!))
+        input.append(Float(object.position.x))
+        input.append(Float(object.position.y))
+        input.append(Float((object.physicsBody?.angularVelocity)!))
         return input
     }
     // set parameters of given object from input box

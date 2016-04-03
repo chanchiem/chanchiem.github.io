@@ -102,10 +102,10 @@ class GameViewController: UIViewController {
 
     // display parameters of selected object in label by modifying
     // labels in the static box.
-    func setsStaticBox(input: [String]) {
+    func setsStaticBox(input: [Float]) {
         self.staticBox.text = ""
         for i in 0...input.count - 1 {
-            self.staticBox.text = self.staticBox.text! + parameternames[i] + " = " + truncateString(input[i], decLen: 4) + "\n"
+            self.staticBox.text = self.staticBox.text! + parameternames[i] + " = " + truncateString(String(input[i]), decLen: 4) + "\n"
         }
     }
     
@@ -137,12 +137,12 @@ class GameViewController: UIViewController {
     }
     
     // Resets the input fields in the input box
-    func setsInputBox(input: [String]) {
-        if (Float(input[0]) != nil) {mass.text = truncateString(input[0], decLen: 4)}
-        if (Float(input[1]) != nil) {Vx.text = truncateString(input[1], decLen: 4)}
-        if (Float(input[2]) != nil) {Vy.text = truncateString(input[2], decLen: 4)}
-        if (Float(input[3]) != nil) {Px.text = truncateString(input[3], decLen: 4)}
-        if (Float(input[4]) != nil) {Py.text = truncateString(input[4], decLen: 4)}
+    func setsInputBox(input: [Float]) {
+        mass.text = truncateString(String(input[0]), decLen: 4)
+        Vx.text = truncateString(String(input[1]), decLen: 4)
+        Vy.text = truncateString(String(input[2]), decLen: 4)
+        Px.text = truncateString(String(input[3]), decLen: 4)
+        Py.text = truncateString(String(input[4]), decLen: 4)
     }
     
     // Truncates the string so that it shows only the given
