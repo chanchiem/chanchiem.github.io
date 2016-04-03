@@ -21,12 +21,28 @@ class GameScene: SKScene {
     var selectedNode = SKShapeNode()
     var objectProperties: [SKShapeNode: [String]]!
     var counter = 0
+    
     enum shapeType{
         case BALL
         case RECT
     }
     
-
+    
+    // This enumeration defines the standard indices for each of the shape properties.
+    // To use, you will have to obtain the raw value of the enumeration:
+    // shapePropertyIndex(rawValue
+    enum shapePropertyIndex : Int{
+        case MASS   = 0
+        case VX     = 1
+        case VY     = 2
+        case PX     = 3
+        case PY     = 4
+        case ANG_V  = 5
+        case AX     = 6
+        case AY     = 7
+        case FX     = 8
+        case FY     = 9
+    }
     
     
     // The game view controller will be the strong owner of the gamescene
@@ -90,12 +106,12 @@ class GameScene: SKScene {
     // return parameters of given object
     func getParameters(object: SKShapeNode) -> [String]{
         var input = [String]()
-        input.append((object.physicsBody?.mass.description)!)
-        input.append((object.physicsBody?.velocity.dx.description)!)
-        input.append((object.physicsBody?.velocity.dy.description)!)
-        input.append((object.position.x.description))
-        input.append((object.position.y.description))
-        input.append((object.physicsBody?.angularVelocity.description)!)
+        input.insert((object.physicsBody?.mass.description)!, atIndex: shapePropertyIndex.MASS.rawValue)
+        input.insert((object.physicsBody?.velocity.dx.description)!, atIndex: shapePropertyIndex.VX.rawValue)
+        input.insert((object.physicsBody?.velocity.dy.description)!, atIndex: shapePropertyIndex.VY.rawValue)
+        input.insert((object.position.x.description), atIndex: shapePropertyIndex.PX.rawValue)
+        input.insert((object.position.y.description), atIndex: shapePropertyIndex.PY.rawValue)
+        input.insert((object.physicsBody?.angularVelocity.description)!, atIndex: shapePropertyIndex.ANG_V.rawValue)
         return input
     }
     
@@ -152,6 +168,7 @@ class GameScene: SKScene {
                 
                 if (properties == nil) { return }
                 
+                // Note: This format is based on the getObjectProperties function.
                 let mass = CGFloat((properties![0] as NSString).floatValue)
                 let vx = CGFloat((properties![1] as NSString).floatValue)
                 let vy = CGFloat((properties![2] as NSString).floatValue)
