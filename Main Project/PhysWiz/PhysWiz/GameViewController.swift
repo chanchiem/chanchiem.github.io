@@ -66,6 +66,7 @@ class GameViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Release any cached data, images, etc that aren't in use.
+       
     }
 
     override func prefersStatusBarHidden() -> Bool {
@@ -118,7 +119,7 @@ class GameViewController: UIViewController {
     @IBOutlet weak var Vx: UITextField!
     @IBOutlet weak var Vy: UITextField!
     @IBOutlet weak var Ax: UITextField!
-    @IBOutlet weak var Ay: UITextField!
+    @IBOutlet weak var Fy: UITextField!
     @IBOutlet weak var Fx: UITextField!
     
     // Gets the input from all the TextFields inside the inputBox.
@@ -131,7 +132,7 @@ class GameViewController: UIViewController {
         values.append(self.Fx.text!)
         values.append(self.Py.text!)
         values.append(self.Vy.text!)
-        values.append(self.Ay.text!)
+        values.append(self.Fy.text!)
         return values
     }
     
