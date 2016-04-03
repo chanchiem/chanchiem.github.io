@@ -152,6 +152,7 @@ class GameScene: SKScene {
                 let shape = object as! SKShapeNode
                 objectProperties[shape] = getParameters(shape)
             }
+<<<<<<< HEAD
         }
     }
     
@@ -184,6 +185,40 @@ class GameScene: SKScene {
             }
         }
     }
+=======
+        }
+    }
+    
+    // Restores all the object properties of each shape.
+    // DEVELOPER'S NOTE: MAKE SURE TO ADD FORCES TO THIS
+    // WITH THE CURRENT IMPLMENETATION OF getParameters,
+    // WE ARE MISSING FORCES/ACCELERATION
+    func restoreAllobjectProperties()
+    {
+        for object in self.children {
+            if (isShapeObject(object)) {
+                let shape = object as! SKShapeNode
+                let properties = objectProperties[shape]
+                if (properties == nil) { return }
+                
+                // Note: This format is based on the getObjectProperties function.
+                let mass = CGFloat(properties![0])
+                let vx = CGFloat(properties![1])
+                let vy = CGFloat(properties![2])
+                let px = CGFloat(properties![3])
+                let py = CGFloat(properties![4])
+                let w = CGFloat(properties![5])
+                
+                object.physicsBody?.mass = mass
+                object.physicsBody?.velocity.dx = vx
+                object.physicsBody?.velocity.dy = vy
+                object.position.x = px
+                object.position.y = py
+                object.physicsBody?.angularVelocity = w
+            }
+        }
+    }
+>>>>>>> master
 
     // Returns the Rectangle! Make sure you add it to the skscene yourself!
     func createRectangle(position: CGPoint) -> SKShapeNode {
