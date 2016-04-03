@@ -19,10 +19,16 @@ class GameScene: SKScene {
     // The selected object for parameters
     var selectedShape: SKShapeNode! = nil
     var selectedNode = SKShapeNode()
+    var objectProperties: [SKShapeNode: [String]]!
+    var counter = 0
     enum shapeType{
         case BALL
         case RECT
     }
+    
+
+    
+    
     // The game view controller will be the strong owner of the gamescene
     // This reference holds the link of communication between the interface
     // and the game scene itself.
@@ -30,13 +36,14 @@ class GameScene: SKScene {
         /* Setup your scene here */
         self.addChild(self.createFloor())
         self.addChild(self.pausePlay())
+        objectProperties = [SKShapeNode: [String]]()
         physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
         // INIT Shape arrays to call later in flag function
         shapeArray.append(shapeType.BALL)
         shapeArray.append(shapeType.RECT)
     }
     
-    // Creates a floor for the physics simulation
+    // Creates a floor for the physics simulation.
     func createFloor() -> SKSpriteNode {
         let floor = SKSpriteNode(color: SKColor.brownColor(), size: CGSizeMake(self.frame.size.width, 20))
         floor.anchorPoint = CGPointMake(0, 0)
@@ -46,7 +53,7 @@ class GameScene: SKScene {
         return floor
     }
     
-    // Creates a node that will act as a pause play button for the user
+    // Creates a node that will act as a pause play button for the user.
     func pausePlay() -> SKShapeNode {
         button = SKShapeNode(circleOfRadius: 20.0)
         button.fillColor = SKColor(red: 0.0, green: 0.0, blue: 256.0, alpha: 1)
@@ -79,6 +86,7 @@ class GameScene: SKScene {
         selectedShape = ball
         return ball
     }
+    
     // return parameters of given object
     func getParameters(object: SKShapeNode) -> [String]{
         var input = [String]()
@@ -90,7 +98,12 @@ class GameScene: SKScene {
         input.append((object.physicsBody?.angularVelocity.description)!)
         return input
     }
+    
     // set parameters of given object from input box
+    // DEVELOPER'S NOTE: CHANGE THE FUNCTION OF THIS SO THAT IT CHANGES
+    // THE PARAMETERS OF A GIVEN OBJECT GIVEN A PARAMETER (SUCH AS AN ARRAY).
+    // THEN TO MAKE IT INTERACT WITH THE TEXTFIELDS, GAMEVIEWCONTROLLER
+    // WILL CALL THIS TO ENACT THE CHANGES
     func setParameters(object: SKShapeNode) {
         let values = viewController.getInput
         object.physicsBody?.mass = CGFloat(Float(values()[0])!)
@@ -99,9 +112,64 @@ class GameScene: SKScene {
         // make acceleration x object.physicsBody?.mass = CGFloat(Int(values()[3])!)
         if Float(values()[4]) != nil && Float(values()[7]) != nil {object.physicsBody?.applyForce(CGVector(dx: CGFloat(Float(values()[4])!), dy: CGFloat(Float(values()[7])!)))}
         //if Float(values()[6]) != nil {object.physicsBody?.velocity.dy = CGFloat(Float(values()[6])!)}
+    }
+    
+    // Checks to see if the passed in node is a valid
+    // shape object (meaning that it's either a ball or rectangle)
+    func isShapeObject(object: SKNode) -> Bool {
+        // DEVELOPER NOTES: CHANGE THIS IN THE FUTURE SO THAT IT
+        // ITERATES THROUGH A DATA STRUCTURE THAT CONTAINS ALL
+        // THE CORRECT OBJECTS! THIS CURRENTLY IS A HACKISH ADDITION BECAUSE
+        // EVERYTHING THAT WE'VE IMPLEMENTED SO FAR HAS NOT BEEN MODULARIZED
+        // TO CONTAIN AN OBJECT SHAPE CLASS.
+        if (object.name == nil) { return false }
+        if (object.name == movableNodeName) { return true }
+        return false
+    }
+    
+    // Stores all object properties in the scene (velocity, position, and acceleration) to a data structure.
+    // This function will be called when the user presses pause.
+    func saveAllObjectProperties()
+    {
+        for object in self.children {
+            if (isShapeObject(object)) {
+                let shape = object as! SKShapeNode
+                objectProperties[shape] = getParameters(shape)
+            }
         }
+    }
+    
+    // Restores all the object properties of each shape.
+    // DEVELOPER'S NOTE: MAKE SURE TO ADD FORCES TO THIS
+    // WITH THE CURRENT IMPLMENETATION OF getParameters,
+    // WE ARE MISSING FORCES/ACCELERATION
+    func restoreAllobjectProperties()
+    {
+        for object in self.children {
+            if (isShapeObject(object)) {
+                let shape = object as! SKShapeNode
+                let properties = objectProperties[shape]
+                
+                if (properties == nil) { return }
+                
+                let mass = CGFloat((properties![0] as NSString).floatValue)
+                let vx = CGFloat((properties![1] as NSString).floatValue)
+                let vy = CGFloat((properties![2] as NSString).floatValue)
+                let px = CGFloat((properties![3] as NSString).floatValue)
+                let py = CGFloat((properties![4] as NSString).floatValue)
+                let w = CGFloat((properties![5] as NSString).floatValue)
+                
+                object.physicsBody?.mass = mass
+                object.physicsBody?.velocity.dx = vx
+                object.physicsBody?.velocity.dy = vy
+                object.position.x = px
+                object.position.y = py
+                object.physicsBody?.angularVelocity = w
+            }
+        }
+    }
 
-    // Returns the ball! Make sure you add it to the skscene yourself!
+    // Returns the Rectangle! Make sure you add it to the skscene yourself!
     func createRectangle(position: CGPoint) -> SKShapeNode {
         let dimensions = CGSizeMake(40, 40);
         let rect = SKShapeNode(rectOfSize: dimensions)
@@ -139,9 +207,9 @@ class GameScene: SKScene {
         return nodeAtPoint(location)
         
     }
-    
-    func setFlag(index: Int){
-        
+
+
+    func setFlag(index: Int) {
         flag = shapeArray[index]
     }
     
@@ -150,6 +218,8 @@ class GameScene: SKScene {
             let location:CGPoint = touch.locationInNode(self)
             let floor:SKNode? = self.childNodeWithName("floor")
             let touchedNode = self.nodeAtPoint(location)
+            
+            // If the person selected a node, set it as the selected node.
             if touchedNode is SKShapeNode {
                 print("touchedNode ran")
                 selectedNode = touchedNode as! SKShapeNode
@@ -161,7 +231,9 @@ class GameScene: SKScene {
                 // Make sure the point that is being touched is part of the game scene plane is part of the
                 // game
                 if(checkValidPoint(location) && stopped) {
-                    // If the person selected a node, set it as the selected node.
+                    
+                    // Creates an object based on what was toggled. All new objects created
+                    // become the newly selected node.
                     switch flag {
                         case .BALL:
                             let newBall = createBall(location)
@@ -185,11 +257,14 @@ class GameScene: SKScene {
                 viewController.changeParameterBox()
                 for shape in self.children {
                     if (stopped) {
+                        // Playing
                         shape.physicsBody?.dynamic = true
+                        restoreAllobjectProperties()
                     }
                     else if (!stopped) {
-                        
+                        // Paused
                         shape.physicsBody?.dynamic = false
+                        saveAllObjectProperties()
                     }
                 }
                 // apply forces and  velocities to object as it can not be done before
@@ -218,12 +293,15 @@ class GameScene: SKScene {
     /* Called before each frame is rendered */
     override func update(currentTime: CFTimeInterval) {
         // continously update values of parameters for selected object
-        if selectedShape != nil && !stopped  {
-        viewController.setsStaticBox(getParameters(selectedShape))
-        }
-        // updates selected shapes values with input box values when stopped
-        if (selectedShape != nil && stopped) {
-            setParameters(selectedShape)
+        counter += 1
+        if (counter % 20 == 0) {
+            if selectedShape != nil && !stopped  {
+                viewController.setsStaticBox(getParameters(selectedShape))
+            }
+            // updates selected shapes values with input box values when stopped
+            if (selectedShape != nil && stopped) {
+                setParameters(selectedShape)
+            }
         }
     }
 
