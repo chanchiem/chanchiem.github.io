@@ -14,7 +14,7 @@ class GameViewController: UIViewController {
     // is the link of communication between the interface
     // and the scene.
     var currentGame: GameScene!
-    var parameternames = ["mass", "Vx", "Vy", "Px", "Py", "w"]
+    var parameternames = ["mass", "Px", "Py","Vx", "Vy", "w"]
     enum shapeType{
         case BALL
         case RECT
@@ -139,10 +139,11 @@ class GameViewController: UIViewController {
     // Resets the input fields in the input box
     func setsInputBox(input: [Float]) {
         mass.text = truncateString(String(input[0]), decLen: 4)
-        Vx.text = truncateString(String(input[1]), decLen: 4)
-        Vy.text = truncateString(String(input[2]), decLen: 4)
         Px.text = truncateString(String(input[3]), decLen: 4)
         Py.text = truncateString(String(input[4]), decLen: 4)
+        Vx.text = truncateString(String(input[1]), decLen: 4)
+        Vy.text = truncateString(String(input[2]), decLen: 4)
+
     }
     
     // Truncates the string so that it shows only the given
