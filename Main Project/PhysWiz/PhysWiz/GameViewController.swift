@@ -19,13 +19,13 @@ class GameViewController: UIViewController {
         case BALL
         case RECT
     }
-
     
-    @IBOutlet
-    var tableView: UITableView?
+    @IBOutlet var shapesTableView: UITableView?
+    @IBOutlet var gadgetsTableView: UITableView?
     // var shapes = ["circle.png", "square.png", "triangle.png"]
     var shapes = ["circle.png", "square.png"]
     var shapeArray = [shapeType]()
+    var gadgets = []
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -50,7 +50,8 @@ class GameViewController: UIViewController {
             skView.presentScene(currentGame)
         }
 
-        self.tableView!.separatorStyle = UITableViewCellSeparatorStyle.None
+        self.shapesTableView!.separatorStyle = UITableViewCellSeparatorStyle.None
+        self.gadgetsTableView!.separatorStyle = UITableViewCellSeparatorStyle.None
 
         currentGame.viewController = self
     }
@@ -76,22 +77,49 @@ class GameViewController: UIViewController {
     
     
     // TABLE STUFF STARTS BELOW
+    // Sets the size of the two table views
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.shapes.count
+        var count: Int?
+        
+        // Size of the shapes table
+        if tableView == self.shapesTableView {
+            count = self.shapes.count
+        }
+        
+        // Size of the gadgets table
+        if tableView == self.gadgetsTableView {
+            count = self.gadgets.count
+        }
+        
+        return count!
     }
     
+    // Sets the contents of the two table views
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        var cell:UITableViewCell?
         
-        let cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "Cell")
+        // Contents of the shapes table
+        if tableView == self.shapesTableView {
+            cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "Cell")
+            //cell.textLabel?.text = shapes[indexPath.row]
+            cell!.imageView!.image = UIImage(named: shapes[indexPath.row])
+            cell!.backgroundColor = UIColor.blackColor()
+        }
         
-        //cell.textLabel?.text = shapes[indexPath.row]
-        cell.imageView!.image = UIImage(named: shapes[indexPath.row])
-        cell.backgroundColor = UIColor.blackColor()
+        // Contents of the gadgets Table
+        if tableView == self.gadgetsTableView {
+            cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "Cell")
+            //cell.textLabel?.text = shapes[indexPath.row]
+            cell!.imageView!.image = UIImage(named: gadgets[indexPath.row] as! String)
+            cell!.backgroundColor = UIColor.blackColor()
+        }
         
-        return cell
-        
+        return cell!
     }
+    
+    // Finds the index on the table that the user selected
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+        // NOTICE: MUST IMPLEMENT FOR BOTH THE SHAPES AND THE GADGETS VIEW. CURRENTLY DOES THE SAME THING FOR BOTH.
         currentGame.setFlag(indexPath.row)
         NSLog("Test")
     }
