@@ -157,10 +157,10 @@ class GameViewController: UIViewController {
         values.append(self.Px.text!)
         values.append(self.Py.text!)
         values.append(self.Vx.text!)
-        values.append(self.Ax.text!)
-        values.append(self.Fx.text!)
         values.append(self.Vy.text!)
+        values.append(self.Fx.text!)
         values.append(self.Fy.text!)
+        values.append(self.Ax.text!)
         return values
     }
     

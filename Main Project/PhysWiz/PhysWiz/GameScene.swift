@@ -21,6 +21,10 @@ class GameScene: SKScene {
     var selectedNode = SKShapeNode()
     var objectProperties: [SKShapeNode: [Float]]!
     var counter = 0
+    // temporary variable to signify start or simulation
+    var start = 0
+    // saves the color of the currently selected node
+    var savedColor = SKColor.whiteColor()
     
     enum shapeType{
         case BALL
@@ -98,8 +102,6 @@ class GameScene: SKScene {
         positionMark.fillColor = SKColor.blackColor()
         positionMark.position.y = -12
         ball.addChild(positionMark)
-        // setting parameter
-        selectedShape = ball
         return ball
     }
     
@@ -124,11 +126,12 @@ class GameScene: SKScene {
         let values = viewController.getInput
         if Float(values()[0]) != nil {object.physicsBody?.mass = CGFloat(Float(values()[0])!)}
         if Float(values()[1]) != nil {object.position.x = CGFloat(Float(values()[1])!)}
-          if Float(values()[2]) != nil {object.position.y = CGFloat(Float(values()[2])!)}
+        if Float(values()[2]) != nil {object.position.y = CGFloat(Float(values()[2])!)}
         if Float(values()[3]) != nil {object.physicsBody?.velocity.dx = CGFloat(Float(values()[3])!)}
+        if Float(values()[4]) != nil {object.physicsBody?.velocity.dy = CGFloat(Float(values()[4])!)}
         // make acceleration x object.physicsBody?.mass = CGFloat(Int(values()[3])!)
-        if Float(values()[4]) != nil && Float(values()[7]) != nil {object.physicsBody?.applyForce(CGVector(dx: CGFloat(Float(values()[4])!), dy: CGFloat(Float(values()[7])!)))}
-        //if Float(values()[6]) != nil {object.physicsBody?.velocity.dy = CGFloat(Float(values()[6])!)}
+        if Float(values()[5]) != nil && Float(values()[6]) != nil {object.physicsBody?.applyForce(CGVector(dx: CGFloat(Float(values()[5])!), dy: CGFloat(Float(values()[6])!)))}
+ 
     }
     
     // Checks to see if the passed in node is a valid
@@ -229,11 +232,18 @@ class GameScene: SKScene {
             let location:CGPoint = touch.locationInNode(self)
             let floor:SKNode? = self.childNodeWithName("floor")
             let touchedNode = self.nodeAtPoint(location)
-            
             // If the person selected a node, set it as the selected node.
-            if touchedNode is SKShapeNode {
+            if touchedNode is SKShapeNode && touchedNode.name == movableNodeName {
                 print("touchedNode ran")
+                // reset color of old selected node
+                if selectedShape != nil {
+                    selectedShape.fillColor = savedColor
+                }
+                viewController.setsInputBox(getParameters(touchedNode as! SKShapeNode))
                 selectedShape = touchedNode as! SKShapeNode
+                // set selected node to black color
+                savedColor = selectedShape.fillColor
+                selectedShape.fillColor = SKColor.blackColor()
             }
             if floor?.containsPoint(location) != nil {
                 
@@ -265,8 +275,12 @@ class GameScene: SKScene {
             let location = touch.locationInNode(self)
             // Gives the pause play button the ability to pause and play a scene
             if button.containsPoint(location) {
+                // temp variable to signify start of program
+                if start == 0 {
                 viewController.changeParameterBox()
-                if (stopped) {
+                start = 1;
+                }
+                if (!stopped) {
                     saveAllObjectProperties()
                 }
                 for shape in self.children {
@@ -311,7 +325,7 @@ class GameScene: SKScene {
                 viewController.setsStaticBox(getParameters(selectedShape))
             }
             // updates selected shapes values with input box values when stopped
-            if (selectedShape != nil && stopped) {
+            if (selectedShape != nil && stopped && start == 0) {
                 setParameters(selectedShape)
             }
         }
@@ -329,11 +343,11 @@ class GameScene: SKScene {
         let position = selectedShape.position
         if selectedShape != nil && selectedShape.name! == movableNodeName {
             selectedShape.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
-        }
         //changes values in the input box to the position it is dragged to
-        if (selectedShape != nil) {
-            viewController.setsInputBox(getParameters(selectedShape))
+        viewController.setsInputBox(getParameters(selectedShape))
         }
+        
+    
         // Add this when we have a background image
         /*else {
             background.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
