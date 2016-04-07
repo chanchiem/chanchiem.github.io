@@ -155,10 +155,10 @@ class GameViewController: UIViewController {
         var values = [String]()
         values.append(self.mass.text!)
         values.append(self.Px.text!)
+        values.append(self.Py.text!)
         values.append(self.Vx.text!)
         values.append(self.Ax.text!)
         values.append(self.Fx.text!)
-        values.append(self.Py.text!)
         values.append(self.Vy.text!)
         values.append(self.Fy.text!)
         return values
@@ -167,10 +167,10 @@ class GameViewController: UIViewController {
     // Resets the input fields in the input box
     func setsInputBox(input: [Float]) {
         mass.text = truncateString(String(input[0]), decLen: 4)
-        Px.text = truncateString(String(input[3]), decLen: 4)
-        Py.text = truncateString(String(input[4]), decLen: 4)
-        Vx.text = truncateString(String(input[1]), decLen: 4)
-        Vy.text = truncateString(String(input[2]), decLen: 4)
+        Px.text = truncateString(String(input[1]), decLen: 4)
+        Py.text = truncateString(String(input[2]), decLen: 4)
+        Vx.text = truncateString(String(input[3]), decLen: 4)
+        Vy.text = truncateString(String(input[4]), decLen: 4)
 
     }
     
