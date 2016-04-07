@@ -313,9 +313,12 @@ class GameScene: SKScene {
                     stopped = false
                     //self.viewController.tableView!.alpha = 0
                     UIView.animateWithDuration(1.5, animations: {self.viewController.shapesTableView!.alpha = 0})
+                    UIView.animateWithDuration(1.5, animations: {self.viewController.gadgetsTableView!.alpha = 0})
                 } else {
                     stopped = true
                     UIView.animateWithDuration(1.5, animations: {self.viewController.shapesTableView!.alpha = 1})
+                    UIView.animateWithDuration(1.5, animations: {self.viewController.gadgetsTableView!.alpha = 1})
+
                 }
 
             }
