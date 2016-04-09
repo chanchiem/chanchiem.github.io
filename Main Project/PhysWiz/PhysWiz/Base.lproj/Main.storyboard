@@ -17,19 +17,6 @@
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tlb-8x-krx" userLabel="staticBox">
-                                <rect key="frame" x="0.0" y="463" width="292" height="137"/>
-                                <attributedString key="attributedText">
-                                    <fragment content="Parameter Box">
-                                        <attributes>
-                                            <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                                            <font key="NSFont" size="12" name="HelveticaNeue"/>
-                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
-                                        </attributes>
-                                    </fragment>
-                                </attributedString>
-                                <nil key="highlightedColor"/>
-                            </label>
                             <tableView clipsSubviews="YES" contentMode="scaleAspectFit" alwaysBounceVertical="YES" indicatorStyle="black" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="JNr-EZ-rqN">
                                 <rect key="frame" x="525" y="0.0" width="75" height="600"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -43,8 +30,19 @@
                                     <outlet property="delegate" destination="BV1-FR-VrT" id="GDN-LY-g2z"/>
                                 </connections>
                             </tableView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="VrW-0Y-NKY">
+                                <rect key="frame" x="0.0" y="0.0" width="76" height="605"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="76" id="obZ-9m-8LL"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="dataSource" destination="BV1-FR-VrT" id="QJV-4A-L88"/>
+                                    <outlet property="delegate" destination="BV1-FR-VrT" id="pFk-lp-tHQ"/>
+                                </connections>
+                            </tableView>
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="tsM-Om-PHg" userLabel="inputBox">
-                                <rect key="frame" x="0.0" y="463" width="292" height="131"/>
+                                <rect key="frame" x="154" y="469" width="292" height="131"/>
                                 <subviews>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="jCc-em-oYC">
                                         <rect key="frame" x="65" y="39" width="59" height="30"/>
@@ -139,11 +137,27 @@
                                     <outlet property="delegate" destination="BV1-FR-VrT" id="S8V-gQ-8Qf"/>
                                 </connections>
                             </scrollView>
+                            <label hidden="YES" opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" usesAttributedText="YES" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tlb-8x-krx" userLabel="staticBox">
+                                <rect key="frame" x="154" y="463" width="292" height="137"/>
+                                <attributedString key="attributedText">
+                                    <fragment content="Parameter Box">
+                                        <attributes>
+                                            <color key="NSColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
+                                            <font key="NSFont" size="12" name="HelveticaNeue"/>
+                                            <paragraphStyle key="NSParagraphStyle" alignment="natural" lineBreakMode="wordWrapping" baseWritingDirection="natural" tighteningFactorForTruncation="0.0"/>
+                                        </attributes>
+                                    </fragment>
+                                </attributedString>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                         <constraints>
+                            <constraint firstAttribute="bottomMargin" secondItem="VrW-0Y-NKY" secondAttribute="bottom" constant="-5" id="67M-hp-jmx"/>
+                            <constraint firstItem="VrW-0Y-NKY" firstAttribute="leading" secondItem="3se-qz-xqx" secondAttribute="leadingMargin" constant="-20" id="Jx6-Sq-XbA"/>
                             <constraint firstAttribute="trailingMargin" secondItem="JNr-EZ-rqN" secondAttribute="trailing" constant="-20" id="hFT-dG-fda"/>
                             <constraint firstItem="JNr-EZ-rqN" firstAttribute="top" secondItem="3se-qz-xqx" secondAttribute="topMargin" id="iQo-1h-UDj"/>
+                            <constraint firstItem="VrW-0Y-NKY" firstAttribute="top" secondItem="3se-qz-xqx" secondAttribute="topMargin" id="kkN-NJ-CKS"/>
                             <constraint firstItem="qHh-Mt-9TT" firstAttribute="top" secondItem="JNr-EZ-rqN" secondAttribute="bottom" id="mj2-8y-QOl"/>
                         </constraints>
                     </view>
@@ -155,10 +169,11 @@
                         <outlet property="Py" destination="Xi0-MD-sR7" id="HRp-UL-Est"/>
                         <outlet property="Vx" destination="dWF-hy-ptt" id="bw1-RQ-GJ2"/>
                         <outlet property="Vy" destination="t46-X5-5Ui" id="CBc-C9-lbe"/>
+                        <outlet property="gadgetsTableView" destination="VrW-0Y-NKY" id="goe-AB-Szf"/>
                         <outlet property="inputBox" destination="tsM-Om-PHg" id="eyx-SU-EPR"/>
                         <outlet property="mass" destination="kzj-uy-VCE" id="NcU-zH-s4b"/>
+                        <outlet property="shapesTableView" destination="JNr-EZ-rqN" id="suN-pi-8CJ"/>
                         <outlet property="staticBox" destination="Tlb-8x-krx" id="vZd-up-jca"/>
-                        <outlet property="tableView" destination="JNr-EZ-rqN" id="BtM-YP-CkC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="SZV-WD-TEh" sceneMemberID="firstResponder"/>
