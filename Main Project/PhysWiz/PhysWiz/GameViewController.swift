@@ -14,7 +14,7 @@ class GameViewController: UIViewController {
     // is the link of communication between the interface
     // and the scene.
     var currentGame: GameScene!
-    var parameternames = ["mass", "Px", "Py","Vx", "Vy", "w"]
+    var parameternames = ["mass", "Px", "Py","Vx", "Vy", "Av", "Ax", "Ay", "Fx", "Fy"]
     enum shapeType{
         case BALL
         case RECT
@@ -130,10 +130,15 @@ class GameViewController: UIViewController {
 
     // display parameters of selected object in label by modifying
     // labels in the static box.
-    func setsStaticBox(input: [Float]) {
+    // metric parameter is added to scale according to users desired metric ( meter/feet etc
+    func setsStaticBox(input: [Float], metric: Float) {
         self.staticBox.text = ""
+        var scale = Float(1.0)
         for i in 0...input.count - 1 {
-            self.staticBox.text = self.staticBox.text! + parameternames[i] + " = " + truncateString(String(input[i]), decLen: 4) + "\n"
+            if (i != 0) {
+            scale = metric
+            }
+            self.staticBox.text = self.staticBox.text! + parameternames[i] + " = " + truncateString(String(input[i]/scale), decLen: 4) + "\n"
         }
     }
     
@@ -147,8 +152,15 @@ class GameViewController: UIViewController {
     @IBOutlet weak var Vx: UITextField!
     @IBOutlet weak var Vy: UITextField!
     @IBOutlet weak var Ax: UITextField!
+    @IBOutlet weak var Ay: UITextField!
     @IBOutlet weak var Fy: UITextField!
     @IBOutlet weak var Fx: UITextField!
+    @IBOutlet weak var Av: UITextField!
+    
+    
+    
+    
+    
     
     // Gets the input from all the TextFields inside the inputBox.
     func getInput() -> [String] {
@@ -158,9 +170,11 @@ class GameViewController: UIViewController {
         values.append(self.Py.text!)
         values.append(self.Vx.text!)
         values.append(self.Vy.text!)
+        values.append(self.Av.text!)
+        values.append(self.Ax.text!)
+        values.append(self.Ay.text!)
         values.append(self.Fx.text!)
         values.append(self.Fy.text!)
-        values.append(self.Ax.text!)
         return values
     }
     
@@ -171,7 +185,11 @@ class GameViewController: UIViewController {
         Py.text = truncateString(String(input[2]), decLen: 4)
         Vx.text = truncateString(String(input[3]), decLen: 4)
         Vy.text = truncateString(String(input[4]), decLen: 4)
-
+        Av.text = truncateString(String(input[5]), decLen: 4)
+        Ax.text = truncateString(String(input[6]), decLen: 4)
+        Ay.text = truncateString(String(input[7]), decLen: 4)
+        Fx.text = truncateString(String(input[8]), decLen: 4)
+        Fy.text = truncateString(String(input[9]), decLen: 4)
     }
     
     // Truncates the string so that it shows only the given
