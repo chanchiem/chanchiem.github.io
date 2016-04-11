@@ -7,28 +7,36 @@
 //
 
 import SpriteKit
+import Foundation
 
 private let movableNodeName = "movable"
 
 class GameScene: SKScene {
     var stopped = true
     var button: SKShapeNode! = nil
-    var flag = shapeType.BALL;
+    var flag = shapeType.CIRCLE;
     var shapeArray = [shapeType]()
     var viewController: GameViewController!
     // The selected object for parameters
-    var selectedShape: SKShapeNode! = nil
-    var selectedNode = SKShapeNode()
-    var objectProperties: [SKShapeNode: [Float]]!
+    var selectedShape: SKSpriteNode! = nil
+    var objectProperties: [SKSpriteNode: [Float]]!
     var counter = 0
     // temporary variable to signify start or simulation
     var start = 0
     // saves the color of the currently selected node
     var savedColor = SKColor.whiteColor()
+    let background = SKSpriteNode(imageNamed: "bg.png")
     
-    enum shapeType{
-        case BALL
-        case RECT
+    enum shapeType: String {
+        case CIRCLE = "circle.png"
+        case SQUARE = "square.png"
+        case TRIANGLE = "triangle.png"
+        case CRATE = "crate.png"
+        case BASEBALL = "baseball.png"
+        case BRICKWALL = "brickwall.png"
+        case AIRPLANE = "airplane.png"
+        case BIKE = "bike.png"
+        case CAR = "car.png"
     }
     
     
@@ -53,14 +61,28 @@ class GameScene: SKScene {
     // This reference holds the link of communication between the interface
     // and the game scene itself.
     override func didMoveToView(view: SKView) {
+        // Adds a background to the scene
+        /*background.position = CGPoint(x: self.size.width/2, y: self.size.height/2)
+        background.size.height = self.size.height
+        background.size.width = self.size.width
+        background.zPosition = -1
+        self.addChild(background)*/
+        
         /* Setup your scene here */
         self.addChild(self.createFloor())
         self.addChild(self.pausePlay())
-        objectProperties = [SKShapeNode: [Float]]()
+        objectProperties = [SKSpriteNode: [Float]]()
         physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
         // INIT Shape arrays to call later in flag function
-        shapeArray.append(shapeType.BALL)
-        shapeArray.append(shapeType.RECT)
+        shapeArray.append(shapeType.CIRCLE)
+        shapeArray.append(shapeType.SQUARE)
+        shapeArray.append(shapeType.TRIANGLE)
+        shapeArray.append(shapeType.CRATE)
+        shapeArray.append(shapeType.BASEBALL)
+        shapeArray.append(shapeType.BRICKWALL)
+        shapeArray.append(shapeType.AIRPLANE)
+        shapeArray.append(shapeType.BIKE)
+        shapeArray.append(shapeType.CAR)
     }
     
     // Creates a floor for the physics simulation.
@@ -84,29 +106,8 @@ class GameScene: SKScene {
         return button
     }
     
-    // Returns the ball! Make sure you add it to the skscene yourself!
-    func createBall(position: CGPoint) -> SKShapeNode {
-        let ball = SKShapeNode(circleOfRadius: 20.0)
-        let positionMark = SKShapeNode(circleOfRadius: 6.0)
-        
-        ball.fillColor = SKColor(red: CGFloat(arc4random() % 256) / 256.0, green: CGFloat(arc4random() % 256) / 256.0, blue: CGFloat(arc4random() % 256) / 256.0, alpha: 1.0)
-        ball.position = position
-        ball.name = movableNodeName
-        
-        ball.physicsBody = SKPhysicsBody(circleOfRadius: 20.0)
-        ball.physicsBody?.dynamic = !stopped
-        ball.physicsBody?.restitution = 0.7
-        ball.physicsBody?.friction = 0
-        ball.physicsBody?.linearDamping = 0
-        
-        positionMark.fillColor = SKColor.blackColor()
-        positionMark.position.y = -12
-        ball.addChild(positionMark)
-        return ball
-    }
-    
     // return parameters of given object
-    func getParameters(object: SKShapeNode) -> [Float]{
+    func getParameters(object: SKSpriteNode) -> [Float]{
         var input = [Float]()
         input.insert(Float((object.physicsBody?.mass)!), atIndex: shapePropertyIndex.MASS.rawValue)
         input.insert(Float((object.position.x)), atIndex: shapePropertyIndex.PX.rawValue)
@@ -122,7 +123,7 @@ class GameScene: SKScene {
     // THE PARAMETERS OF A GIVEN OBJECT GIVEN A PARAMETER (SUCH AS AN ARRAY).
     // THEN TO MAKE IT INTERACT WITH THE TEXTFIELDS, GAMEVIEWCONTROLLER
     // WILL CALL THIS TO ENACT THE CHANGES
-    func setParameters(object: SKShapeNode) {
+    func setParameters(object: SKSpriteNode) {
         let values = viewController.getInput
         if Float(values()[0]) != nil {object.physicsBody?.mass = CGFloat(Float(values()[0])!)}
         if Float(values()[1]) != nil {object.position.x = CGFloat(Float(values()[1])!)}
@@ -152,12 +153,12 @@ class GameScene: SKScene {
     // Returns a dictionary with keys as each shape in the scene and
     // the values as a float array with the shape properties as defined
     // in the shapePropertyIndex enumeration.
-    func saveAllObjectProperties() -> [SKShapeNode: [Float]]
+    func saveAllObjectProperties() -> [SKSpriteNode: [Float]]
     {
-        var propertyDict = [SKShapeNode: [Float]]()
+        var propertyDict = [SKSpriteNode: [Float]]()
         for object in self.children {
             if (isShapeObject(object)) {
-                let shape = object as! SKShapeNode
+                let shape = object as! SKSpriteNode
                 propertyDict[shape] = getParameters(shape)
             }
         }
@@ -171,7 +172,7 @@ class GameScene: SKScene {
     // DEVELOPER'S NOTE: MAKE SURE TO ADD FORCES TO THIS
     // WITH THE CURRENT IMPLMENETATION OF getParameters,
     // WE ARE MISSING FORCES/ACCELERATION
-    func restoreAllobjectProperties(inputDictionary: [SKShapeNode: [Float]])
+    func restoreAllobjectProperties(inputDictionary: [SKSpriteNode: [Float]])
     {
         if (inputDictionary.count == 0) { return } // input contains nothing
         
@@ -189,21 +190,20 @@ class GameScene: SKScene {
         }
     }
 
-
-    // Returns the Rectangle! Make sure you add it to the skscene yourself!
-    func createRectangle(position: CGPoint) -> SKShapeNode {
-        let dimensions = CGSizeMake(40, 40);
-        let rect = SKShapeNode(rectOfSize: dimensions)
+    // Creates an SKSpriteNode object at the location marked by position using the image passed in.
+    func createObject(position: CGPoint, image: String) -> SKSpriteNode {
+        let size = CGSize(width: 100, height: 100)
+        var object = SKSpriteNode()
+        let objectTexture = SKTexture(imageNamed: image)
+        object = SKSpriteNode(texture: objectTexture)
+        object.size = size
+        object.position = position
+        object.name = movableNodeName
+        object.physicsBody = SKPhysicsBody(texture: objectTexture, size: size)
+        object.physicsBody?.dynamic = !stopped
+        object.physicsBody?.restitution = 0.7
         
-        rect.fillColor = SKColor(red: CGFloat(arc4random() % 256) / 256.0, green: CGFloat(arc4random() % 256) / 256.0, blue: CGFloat(arc4random() % 256) / 256.0, alpha: 1.0)
-        rect.position = position
-        rect.name = movableNodeName
-        
-        rect.physicsBody = SKPhysicsBody(rectangleOfSize: dimensions)
-        rect.physicsBody?.dynamic = !stopped
-        rect.physicsBody?.restitution = 0.7
-        
-        return rect
+        return object
     }
     
     // Checks to see if the location that is valid (i.e. if it's actually a point on the game scene plane itself)
@@ -229,7 +229,6 @@ class GameScene: SKScene {
         
     }
 
-
     func setFlag(index: Int) {
         flag = shapeArray[index]
     }
@@ -240,17 +239,12 @@ class GameScene: SKScene {
             let floor:SKNode? = self.childNodeWithName("floor")
             let touchedNode = self.nodeAtPoint(location)
             // If the person selected a node, set it as the selected node.
-            if touchedNode is SKShapeNode && touchedNode.name == movableNodeName {
+            if touchedNode is SKSpriteNode && touchedNode.name == movableNodeName {
                 print("touchedNode ran")
+                
                 // reset color of old selected node
-                if selectedShape != nil {
-                    selectedShape.fillColor = savedColor
-                }
-                viewController.setsInputBox(getParameters(touchedNode as! SKShapeNode))
-                selectedShape = touchedNode as! SKShapeNode
-                // set selected node to black color
-                savedColor = selectedShape.fillColor
-                selectedShape.fillColor = SKColor.blackColor()
+                viewController.setsInputBox(getParameters(touchedNode as! SKSpriteNode))
+                selectedShape = touchedNode as! SKSpriteNode
             }
             if floor?.containsPoint(location) != nil {
                 
@@ -259,19 +253,8 @@ class GameScene: SKScene {
                 // Make sure the point that is being touched is part of the game scene plane is part of the
                 // game
                 if(checkValidPoint(location) && stopped) {
-                    
-                    // Creates an object based on what was toggled. All new objects created
-                    // become the newly selected node.
-                    switch flag {
-                        case .BALL:
-                            if stopped {
-                            self.addChild(self.createBall(location))
-                        }
-                        case .RECT:
-                            if stopped {
-                            self.addChild(self.createRectangle(location))
-                        }
-                    }
+                    let img = String(flag).lowercaseString + ".png"
+                    self.addChild(self.createObject(location, image: img))
                 }
             }
         }

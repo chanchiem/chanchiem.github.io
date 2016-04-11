@@ -23,9 +23,9 @@ class GameViewController: UIViewController {
     @IBOutlet var shapesTableView: UITableView?
     @IBOutlet var gadgetsTableView: UITableView?
     // var shapes = ["circle.png", "square.png", "triangle.png"]
-    var shapes = ["circle.png", "square.png"]
+    var shapes = ["circle.png", "square.png", "triangle.png", "crate.png", "baseball.png", "brickwall.png", "airplane.png", "bike.png", "car.png"]
     var shapeArray = [shapeType]()
-    var gadgets = []
+    var gadgets = ["rope.png"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
