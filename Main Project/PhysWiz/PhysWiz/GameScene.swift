@@ -18,7 +18,6 @@ class GameScene: SKScene {
     var viewController: GameViewController!
     // The selected object for parameters
     var selectedShape: SKShapeNode! = nil
-    var selectedNode = SKShapeNode()
     var objectProperties: [SKShapeNode: [Float]]!
     var counter = 0
     // temporary variable to signify start or simulation
@@ -46,6 +45,7 @@ class GameScene: SKScene {
         case AY     = 7
         case FX     = 8
         case FY     = 9
+
     }
     
     
@@ -102,37 +102,41 @@ class GameScene: SKScene {
         positionMark.fillColor = SKColor.blackColor()
         positionMark.position.y = -12
         ball.addChild(positionMark)
+        objectProperties[ball] = getParameters(ball)
         return ball
     }
     
-    // return parameters of given object
+    // return parameters of given object from either the object itself or dictionary
     func getParameters(object: SKShapeNode) -> [Float]{
         var input = [Float]()
+        // handle properties that remain the same when static and when dynamic
         input.insert(Float((object.physicsBody?.mass)!), atIndex: shapePropertyIndex.MASS.rawValue)
         input.insert(Float((object.position.x)), atIndex: shapePropertyIndex.PX.rawValue)
         input.insert(Float((object.position.y)), atIndex: shapePropertyIndex.PY.rawValue)
-        input.insert(Float((object.physicsBody?.velocity.dx)!), atIndex: shapePropertyIndex.VX.rawValue)
-        input.insert(Float((object.physicsBody?.velocity.dy)!), atIndex: shapePropertyIndex.VY.rawValue)
-        input.insert(Float((object.physicsBody?.angularVelocity)!), atIndex: shapePropertyIndex.ANG_V.rawValue)
+        // handle properties that lose values when static 
+        if stopped {
+            if objectProperties[object] != nil {
+                for i in Range(start: 3, end: 10) {
+                    input.insert(Float(objectProperties[object]![i]), atIndex: i)
+                }
+            }
+            else {
+                for i in Range(start: 3, end: 10) {
+                input.insert(0, atIndex: i)
+                }
+            }
+        }
+        else {
+            input.insert(Float((object.physicsBody?.velocity.dx)!), atIndex: shapePropertyIndex.VX.rawValue)
+            input.insert(Float((object.physicsBody?.velocity.dy)!), atIndex: shapePropertyIndex.VY.rawValue)
+            input.insert(Float((object.physicsBody?.angularVelocity)!), atIndex: shapePropertyIndex.ANG_V.rawValue)
+            for i in Range(start: 6, end: 10) {
+                input.insert(Float(objectProperties[object]![i]), atIndex: i)
+            }
+        }
         return input
     }
     
-    // set parameters of given object from input box
-    // DEVELOPER'S NOTE: CHANGE THE FUNCTION OF THIS SO THAT IT CHANGES
-    // THE PARAMETERS OF A GIVEN OBJECT GIVEN A PARAMETER (SUCH AS AN ARRAY).
-    // THEN TO MAKE IT INTERACT WITH THE TEXTFIELDS, GAMEVIEWCONTROLLER
-    // WILL CALL THIS TO ENACT THE CHANGES
-    func setParameters(object: SKShapeNode) {
-        let values = viewController.getInput
-        if Float(values()[0]) != nil {object.physicsBody?.mass = CGFloat(Float(values()[0])!)}
-        if Float(values()[1]) != nil {object.position.x = CGFloat(Float(values()[1])!)}
-        if Float(values()[2]) != nil {object.position.y = CGFloat(Float(values()[2])!)}
-        if Float(values()[3]) != nil {object.physicsBody?.velocity.dx = CGFloat(Float(values()[3])!)}
-        if Float(values()[4]) != nil {object.physicsBody?.velocity.dy = CGFloat(Float(values()[4])!)}
-        // make acceleration x object.physicsBody?.mass = CGFloat(Int(values()[3])!)
-        if Float(values()[5]) != nil && Float(values()[6]) != nil {object.physicsBody?.applyForce(CGVector(dx: CGFloat(Float(values()[5])!), dy: CGFloat(Float(values()[6])!)))}
- 
-    }
     
     // Checks to see if the passed in node is a valid
     // shape object (meaning that it's either a ball or rectangle)
@@ -177,7 +181,7 @@ class GameScene: SKScene {
         
         for (object, properties) in inputDictionary {
             if (isShapeObject(object)) {
-                
+    
                 // Note: This format is based on the getObjectProperties function.
                 object.physicsBody?.mass = CGFloat(properties[0])
                 object.position.x = CGFloat(properties[1])
@@ -185,6 +189,7 @@ class GameScene: SKScene {
                 object.physicsBody?.velocity.dx = CGFloat(properties[3])
                 object.physicsBody?.velocity.dy = CGFloat(properties[4])
                 object.physicsBody?.angularVelocity = CGFloat(properties[5])
+
             }
         }
     }
@@ -302,9 +307,7 @@ class GameScene: SKScene {
                 }
                 // apply forces and  velocities to object as it can not be done before
                 // dynamic is set to true or the force and velocity value are set to 0
-                if (stopped) {
-                    restoreAllobjectProperties(objectProperties)
-                }
+                restoreAllobjectProperties(objectProperties)
                 
                 button.physicsBody?.dynamic = false   // Keeps pause play button in place
                 
@@ -332,13 +335,25 @@ class GameScene: SKScene {
         counter += 1
         if (counter % 20 == 0) {
             if selectedShape != nil && !stopped  {
-                viewController.setsStaticBox(getParameters(selectedShape))
-            }
-            // updates selected shapes values with input box values when stopped
-            if (selectedShape != nil && stopped && start == 0) {
-                setParameters(selectedShape)
+                viewController.setsStaticBox(getParameters(selectedShape), metric: 10)
             }
         }
+            // updates selected shapes values with input box values when stopped
+            if (selectedShape != nil && stopped && start == 0) {
+                var values = objectProperties[selectedShape]!
+                let input = viewController.getInput()
+                for i in Range(start: 1, end: 6) {
+                    if Float(input[i]) != nil {
+                     values[i] = Float(input[i])!
+                    }
+                }
+                objectProperties[selectedShape] = values
+            }
+        
+            if (selectedShape != nil && start == 1) {
+            selectedShape.physicsBody?.applyForce(CGVector(dx: 0.5 , dy: 0));
+            }
+        
     }
 
     override func didSimulatePhysics() {
