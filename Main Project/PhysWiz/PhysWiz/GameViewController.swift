@@ -34,7 +34,6 @@ class GameViewController: UIViewController {
         shapeArray.append(shapeType.RECT)
         
         currentGame = GameScene(fileNamed: "GameScene")
-
         if currentGame != nil {
             // Configure the view.
             let skView = self.view as! SKView
@@ -110,7 +109,7 @@ class GameViewController: UIViewController {
         if tableView == self.gadgetsTableView {
             cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "Cell")
             //cell.textLabel?.text = shapes[indexPath.row]
-            cell!.imageView!.image = UIImage(named: gadgets[indexPath.row] as! String)
+            cell!.imageView!.image = UIImage(named: gadgets[indexPath.row] )
             cell!.backgroundColor = UIColor.blackColor()
         }
         
@@ -131,14 +130,10 @@ class GameViewController: UIViewController {
     // display parameters of selected object in label by modifying
     // labels in the static box.
     // metric parameter is added to scale according to users desired metric ( meter/feet etc
-    func setsStaticBox(input: [Float], metric: Float) {
+    func setsStaticBox(input: [Float]) {
         self.staticBox.text = ""
-        var scale = Float(1.0)
         for i in 0...input.count - 1 {
-            if (i != 0) {
-            scale = metric
-            }
-            self.staticBox.text = self.staticBox.text! + parameternames[i] + " = " + truncateString(String(input[i]/scale), decLen: 4) + "\n"
+            self.staticBox.text = self.staticBox.text! + parameternames[i] + " = " + truncateString(String(input[i]), decLen: 2) + "\n"
         }
     }
     
@@ -180,16 +175,16 @@ class GameViewController: UIViewController {
     
     // Resets the input fields in the input box
     func setsInputBox(input: [Float]) {
-        mass.text = truncateString(String(input[0]), decLen: 4)
-        Px.text = truncateString(String(input[1]), decLen: 4)
-        Py.text = truncateString(String(input[2]), decLen: 4)
-        Vx.text = truncateString(String(input[3]), decLen: 4)
-        Vy.text = truncateString(String(input[4]), decLen: 4)
-        Av.text = truncateString(String(input[5]), decLen: 4)
-        Ax.text = truncateString(String(input[6]), decLen: 4)
-        Ay.text = truncateString(String(input[7]), decLen: 4)
-        Fx.text = truncateString(String(input[8]), decLen: 4)
-        Fy.text = truncateString(String(input[9]), decLen: 4)
+        mass.text = truncateString(String(input[0]), decLen: 2)
+        Px.text = truncateString(String(input[1]), decLen: 2)
+        Py.text = truncateString(String(input[2]), decLen: 2)
+        Vx.text = truncateString(String(input[3]), decLen: 2)
+        Vy.text = truncateString(String(input[4]), decLen: 2)
+        Av.text = truncateString(String(input[5]), decLen: 2)
+        Ax.text = truncateString(String(input[6]), decLen: 2)
+        Ay.text = truncateString(String(input[7]), decLen: 2)
+        Fx.text = truncateString(String(input[8]), decLen: 2)
+        Fy.text = truncateString(String(input[9]), decLen: 2)
     }
     
     // Truncates the string so that it shows only the given
