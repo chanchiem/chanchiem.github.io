@@ -18,13 +18,8 @@ class GameScene: SKScene {
     var shapeArray = [shapeType]()
     var viewController: GameViewController!
     // The selected object for parameters
-<<<<<<< HEAD
     var selectedShape: SKSpriteNode! = nil
     var objectProperties: [SKSpriteNode: [Float]]!
-=======
-    var selectedShape: SKShapeNode! = nil
-    var objectProperties: [SKShapeNode: [Float]]!
->>>>>>> origin/master
     var counter = 0
     // temporary variable to signify start or simulation
     var start = 0
@@ -112,35 +107,9 @@ class GameScene: SKScene {
         return button
     }
     
-<<<<<<< HEAD
-    // return parameters of given object
-    func getParameters(object: SKSpriteNode) -> [Float]{
-=======
-    // Returns the ball! Make sure you add it to the skscene yourself!
-    func createBall(position: CGPoint) -> SKShapeNode {
-        let ball = SKShapeNode(circleOfRadius: 20.0)
-        let positionMark = SKShapeNode(circleOfRadius: 6.0)
-        
-        ball.fillColor = SKColor(red: CGFloat(arc4random() % 256) / 256.0, green: CGFloat(arc4random() % 256) / 256.0, blue: CGFloat(arc4random() % 256) / 256.0, alpha: 1.0)
-        ball.position = position
-        ball.name = movableNodeName
-        
-        ball.physicsBody = SKPhysicsBody(circleOfRadius: 20.0)
-        ball.physicsBody?.dynamic = !stopped
-        ball.physicsBody?.restitution = 0.7
-        ball.physicsBody?.friction = 0
-        ball.physicsBody?.linearDamping = 0
-        
-        positionMark.fillColor = SKColor.blackColor()
-        positionMark.position.y = -12
-        ball.addChild(positionMark)
-        objectProperties[ball] = getParameters(ball)
-        return ball
-    }
     
     // return parameters of given object from either the object itself or dictionary
-    func getParameters(object: SKShapeNode) -> [Float]{
->>>>>>> origin/master
+   func getParameters(object: SKSpriteNode) -> [Float]{
         var input = [Float]()
         // handle properties that remain the same when static and when dynamic
         input.insert(Float((object.physicsBody?.mass)!), atIndex: shapePropertyIndex.MASS.rawValue)
@@ -169,26 +138,6 @@ class GameScene: SKScene {
         }
         return input
     }
-    
-<<<<<<< HEAD
-    // set parameters of given object from input box
-    // DEVELOPER'S NOTE: CHANGE THE FUNCTION OF THIS SO THAT IT CHANGES
-    // THE PARAMETERS OF A GIVEN OBJECT GIVEN A PARAMETER (SUCH AS AN ARRAY).
-    // THEN TO MAKE IT INTERACT WITH THE TEXTFIELDS, GAMEVIEWCONTROLLER
-    // WILL CALL THIS TO ENACT THE CHANGES
-    func setParameters(object: SKSpriteNode) {
-        let values = viewController.getInput
-        if Float(values()[0]) != nil {object.physicsBody?.mass = CGFloat(Float(values()[0])!)}
-        if Float(values()[1]) != nil {object.position.x = CGFloat(Float(values()[1])!)}
-        if Float(values()[2]) != nil {object.position.y = CGFloat(Float(values()[2])!)}
-        if Float(values()[3]) != nil {object.physicsBody?.velocity.dx = CGFloat(Float(values()[3])!)}
-        if Float(values()[4]) != nil {object.physicsBody?.velocity.dy = CGFloat(Float(values()[4])!)}
-        // make acceleration x object.physicsBody?.mass = CGFloat(Int(values()[3])!)
-        if Float(values()[5]) != nil && Float(values()[6]) != nil {object.physicsBody?.applyForce(CGVector(dx: CGFloat(Float(values()[5])!), dy: CGFloat(Float(values()[6])!)))}
- 
-    }
-=======
->>>>>>> origin/master
     
     // Checks to see if the passed in node is a valid
     // shape object (meaning that it's either a ball or rectangle)
@@ -258,16 +207,13 @@ class GameScene: SKScene {
         object.physicsBody = SKPhysicsBody(texture: objectTexture, size: size)
         object.physicsBody?.dynamic = !stopped
         object.physicsBody?.restitution = 0.7
-        
+        objectProperties[object] = getParameters(object)
         return object
     }
     
     // Checks to see if the location that is valid (i.e. if it's actually a point on the game scene plane itself)
     // The button is not considered a valid point.
     func checkValidPoint(location: CGPoint) -> Bool {
-        if(nodeAtPoint(location).name == button.name) {
-            return false
-        }
         if(nodeAtPoint(location).name == movableNodeName) {
             return false
         }
@@ -288,7 +234,7 @@ class GameScene: SKScene {
     func setFlag(index: Int) {
         flag = shapeArray[index]
     }
-    
+
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for touch: AnyObject in touches {
             let location:CGPoint = touch.locationInNode(self)
