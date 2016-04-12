@@ -15,7 +15,6 @@
 		1A99C2781CA098950021F14B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A99C2761CA098950021F14B /* Main.storyboard */; };
 		1A99C27A1CA098950021F14B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A99C2791CA098950021F14B /* Assets.xcassets */; };
 		1A99C27D1CA098950021F14B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A99C27B1CA098950021F14B /* LaunchScreen.storyboard */; };
-		9F9ACFB71CBC829700474D1A /* PWObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F9ACFB61CBC829700474D1A /* PWObject.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -29,7 +28,6 @@
 		1A99C2791CA098950021F14B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1A99C27C1CA098950021F14B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1A99C27E1CA098950021F14B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9F9ACFB61CBC829700474D1A /* PWObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PWObject.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -62,7 +60,6 @@
 		1A99C26D1CA098950021F14B /* PhysWiz */ = {
 			isa = PBXGroup;
 			children = (
-				9F9ACFB61CBC829700474D1A /* PWObject.swift */,
 				1A99C26E1CA098950021F14B /* AppDelegate.swift */,
 				1A938E7B1CBC9D7B00690BA3 /* PWObject.swift */,
 				1A99C2701CA098950021F14B /* GameScene.sks */,
@@ -151,11 +148,7 @@
 				1A99C2731CA098950021F14B /* GameScene.swift in Sources */,
 				1A99C2751CA098950021F14B /* GameViewController.swift in Sources */,
 				1A99C26F1CA098950021F14B /* AppDelegate.swift in Sources */,
-<<<<<<< HEAD
 				1A938E7C1CBC9D7B00690BA3 /* PWObject.swift in Sources */,
-=======
-				9F9ACFB71CBC829700474D1A /* PWObject.swift in Sources */,
->>>>>>> origin/master
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

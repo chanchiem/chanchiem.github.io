@@ -31,10 +31,8 @@ class PWObject: SKSpriteNode
     
     // Flag that will determine if this object can be moved by the
     // game scene.
-    private var movable: Bool       = true
-    private var selectable: Bool    = true
-    private var metricScale         = 100   // Factor to convert pixel units to metric units
-    private var isDegrees           = true  // Checks to see if calculations should be made in rads or degs.
+    private var movable: Bool = true;
+    private var selectable: Bool = true;
     
     // String to its object type representation
     // This is what will be passed in when we want to create
@@ -49,7 +47,6 @@ class PWObject: SKSpriteNode
         case AIRPLANE   = "airplane"
         case BIKE       = "bike"
         case CAR        = "car"
-        case BUTTON     = "button"
     }
     
     
@@ -70,7 +67,6 @@ class PWObject: SKSpriteNode
         objectTextureMap["airplane"]    = "airplane.jpg"
         objectTextureMap["bike"]        = "bike.jpg"
         objectTextureMap["car"]         = "car.jpg"
-        objectTextureMap["button"]      = "button.jpg"
     }
     
     // Returns the string name of the image texture that represents
@@ -133,21 +129,14 @@ class PWObject: SKSpriteNode
     // ##############################################################
     //
     //  Parameter functions belong here! Implement all the functions
-    //  that call for or modify specific parameters that are not native to
+    //  that call for specific parameters that are not native to 
     //  spritekit (Acceleration, Moment of Inertia, Rotational Accel.
     //
     // ##############################################################
     
-    // Object numerical properties
-    func setMass(mass: CGFloat) { self.physicsBody?.mass = mass }
-    func getMass() -> CGFloat { return (self.physicsBody?.mass)! }
-    func setFriction(friction: CGFloat) { self.physicsBody?.friction = friction }
-    func getFriction() -> CGFloat { return (self.physicsBody?.friction)! }
-    
     
     // Returns the current acceleration of the object.
     func getAcceleration() -> CGFloat {
-        // Implement later using change of velocity
         return 1.0
     }
     
@@ -155,56 +144,6 @@ class PWObject: SKSpriteNode
     func getAngularAcceleration() -> CGFloat
     {
         return 1.0
-    }
-    
-    // Returns the kinetic energy of the object.
-    func getKineticEnergy() -> CGFloat
-    {
-        let vel = (self.physicsBody?.velocity)!
-        let v_squared = (vel.dx * vel.dx) + (vel.dy * vel.dy)
-        return (1/2) * (self.physicsBody?.mass)! * (v_squared)
-    }
-    
-    // Returns the momentum of the object.
-    func getMomentum() -> CGVector
-    {
-        let vel = (self.physicsBody?.velocity)!
-        let mass = (self.physicsBody?.mass)!
-        let momentum = CGVector.init(dx: vel.dx * mass, dy: vel.dy * mass)
-        
-        return momentum
-    }
-    
-    // Applies instantaneous acceleration to the object.
-    // To make it continuous, have it call this function
-    // every time step in the update function of GameScene.
-    func applyAcceleration(x: CGFloat, y: CGFloat)
-    {
-        let mass = (self.physicsBody?.mass)!
-        let accelerationVector = CGVector.init(dx: x * mass, dy: y * mass)
-        self.physicsBody?.applyForce(accelerationVector);
-    }
-    func applyAcceleration(magnitude: CGFloat, direction: CGFloat) // Polar form
-    {
-        let mass = (self.physicsBody?.mass)!
-        let x = magnitude * cos(direction) * mass
-        let y = magnitude * sin(direction) * mass
-        let accelerationVector = CGVector.init(dx: x * mass, dy: y * mass)
-        self.physicsBody?.applyForce(accelerationVector)
-        
-    }
-    
-    // Applys an instaneous force to the object.
-    func applyForce(x: CGFloat, y: CGFloat) // Cartesian Form
-    {
-        self.physicsBody?.applyForce(CGVector.init(dx: x, dy: y))
-    }
-    func applyForce(magnitude: CGFloat, direction: CGFloat) // Polar form
-    {
-        let x = magnitude * cos(direction)
-        let y = magnitude * sin(direction)
-        let vec = CGVector(dx: x, dy: y)
-        self.physicsBody?.applyForce(vec)
     }
     
     
@@ -237,7 +176,7 @@ class PWObject: SKSpriteNode
         self.physicsBody?.linearDamping = 0
         self.physicsBody?.restitution = 0.7
     }
-
+    
     required convenience init?(coder aDecoder: NSCoder) {
         self.init(coder: aDecoder);
 //        fatalError("init(coder:) has not been implemented")
