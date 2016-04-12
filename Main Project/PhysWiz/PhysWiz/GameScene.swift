@@ -202,7 +202,7 @@ class GameScene: SKScene {
 
     // Creates an SKSpriteNode object at the location marked by position using the image passed in.
     func createObject(position: CGPoint, image: String) -> SKSpriteNode {
-        let size = CGSize(width: 60, height: 60)
+        let size = CGSize(width: 40, height: 40)
         var object = SKSpriteNode()
         let objectTexture = SKTexture(imageNamed: image)
         object = SKSpriteNode(texture: objectTexture)
@@ -381,6 +381,13 @@ class GameScene: SKScene {
                 selectedShape.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
                 //changes values in the input box to the position it is dragged to
                 viewController.setsInputBox(getParameters(selectedShape))
+                
+                // Connects selectedShape to its nearestNodes
+                let nearest = nearestNodes(selectedShape)
+                for node in nearest {
+                    let joinNodes = SKPhysicsJointFixed.jointWithBodyA(selectedShape.physicsBody!, bodyB: node.physicsBody!, anchor: node.position)
+                    self.physicsWorld.addJoint(joinNodes)
+                }
             }
         }
         
@@ -399,5 +406,21 @@ class GameScene: SKScene {
         if stopped {
             panForTranslation(translation)
         }
+    }
+    
+    // Returns an array of all nodes within a certain distance away from the queryNode.
+    func nearestNodes(queryNode: SKSpriteNode) -> [SKNode] {
+        let joinDist: CGFloat = 40.0
+        var array = [SKNode]()
+        for object in self.children {
+            let dx = queryNode.position.x - object.position.x
+            let dy = queryNode.position.y - object.position.y
+            
+            let distance = sqrt(dx*dx + dy*dy)
+            if (distance <= joinDist) {
+                array.append(object)
+            }
+        }
+        return array
     }
 }
