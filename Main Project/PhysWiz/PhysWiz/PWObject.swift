@@ -50,6 +50,7 @@ class PWObject: SKSpriteNode
         case BIKE       = "bike"
         case CAR        = "car"
         case BUTTON     = "button"
+        case FLOOR      = "floor"
     }
     
     
@@ -71,6 +72,7 @@ class PWObject: SKSpriteNode
         objectTextureMap["bike"]        = "bike.jpg"
         objectTextureMap["car"]         = "car.jpg"
         objectTextureMap["button"]      = "button.jpg"
+        objectTextureMap["floor"]       = "floor.jpg"
     }
     
     // Returns the string name of the image texture that represents
@@ -212,7 +214,7 @@ class PWObject: SKSpriteNode
     
     // Initializes the sprite object. This is what we will use to create
     // PWObjects set at specific coordinates.
-    init(objectStringName: String, position: CGPoint, isMovable: Bool, isSelectable: Bool) {
+    required init(objectStringName: String, position: CGPoint, isMovable: Bool, isSelectable: Bool) {
         PWObject.initStaticVariables(); // Mandatory call to populate static variables.
         
         let objTextureName = PWObject.getObjectTextureName(objectStringName)
@@ -238,26 +240,42 @@ class PWObject: SKSpriteNode
         self.physicsBody?.restitution = 0.7
     }
     
-//    // Initialize object without texture, only color.
-//    // This will be used to create a floor.
-//    init(objName: String, position: CGPoint, color: UIColor, size: CGSize, isMovable: Bool, isSelectable: Bool)
-//    {
-//        PWObject.initStaticVariables(); // Mandatory call to populate static variables.
-//        super.init(texture: nil, color: color, size: size)
-//        
-//        self.movable = isMovable
-//        self.selectable = isSelectable
-//        
-//        self.size = size
-//        self.position = position
-//        self.name = objName
-//        self.physicsBody = SKPhysicsBody(texture: nil, size: size)
-//        self.physicsBody?.mass = 1
-//        self.physicsBody?.friction = 0
-//        self.physicsBody?.linearDamping = 0
-//        self.physicsBody?.restitution = 0.7
-//    }
-
+    // Initialize object without texture, only color.
+    // This will be used to create a floor.
+    required convenience init(objName: String, position: CGPoint, color: UIColor, size: CGSize, isMovable: Bool, isSelectable: Bool)
+    {
+        PWObject.initStaticVariables(); // Mandatory call to populate static variables.
+        
+        self.init(objectStringName: objName, position: position, isMovable: isMovable, isSelectable: isSelectable)
+        
+        self.movable = isMovable
+        self.selectable = isSelectable
+        
+        self.size = size
+        self.position = position
+        self.name = objName
+        self.physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
+        self.physicsBody?.mass = 1
+        self.physicsBody?.friction = 0
+        self.physicsBody?.linearDamping = 0
+        self.physicsBody?.restitution = 0.7
+    }
+    
+    // Creates a brown floor given a specified position and size.
+    static func createFloor(position: CGPoint, size: CGSize) -> PWObject
+    {
+        let color = SKColor.brownColor()
+        let floor = self.init(objName: "floor", position: position, color: color, size:size, isMovable: false, isSelectable: false)
+        floor.anchorPoint = CGPointMake(0, 0)
+        floor.physicsBody = SKPhysicsBody(edgeLoopFromRect: floor.frame)
+        floor.physicsBody?.dynamic = false
+        floor.physicsBody?.friction = 0
+        return floor
+    }
+    
+    
+    
+    // Don't know why this is needed. Swift semantics...
     required convenience init?(coder aDecoder: NSCoder) {
         self.init(coder: aDecoder);
 //        fatalError("init(coder:) has not been implemented")
