@@ -15,8 +15,8 @@ class GameViewController: UIViewController {
     // and the scene.
     var currentGame: GameScene!
     var parameternames = ["mass", "Px", "Py","Vx", "Vy", "Av", "Ax", "Ay", "Fx", "Fy"]
-    var objectflag = -1
-    var gadgetflag = -1
+    var objectflag = 0
+    var gadgetflag = 0
     // Implementation of slide out menus
     @IBOutlet weak var gadgetMenu: UIBarButtonItem!
     @IBOutlet weak var objectMenu: UIBarButtonItem!
@@ -28,7 +28,11 @@ class GameViewController: UIViewController {
             
             objectMenu.target = revealViewController()
             objectMenu.action = "rightRevealToggle:"
+<<<<<<< HEAD
             // self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+=======
+//            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer()) Gesture recognizer
+>>>>>>> origin/master
         }
         
         currentGame = GameScene(fileNamed: "GameScene")

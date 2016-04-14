@@ -12,8 +12,11 @@ class TableViewController: UITableViewController {
     @IBOutlet var objectMenu: UITableView!
     @IBOutlet var gadgetMenu: UITableView!
     
+    var gameview: GameViewController? = nil
+    var gamescene: GameScene? = nil
+    
     var shapes = ["circle.png", "square.png", "triangle.png", "crate.png", "baseball.png", "brickwall.png", "airplane.png", "bike.png", "car.png"]
-    var gadgets = ["rope.png"]
+    var gadgets = ["rope.png", "blank.png"]
     override func viewDidLoad() {
         super.viewDidLoad()
         if (objectMenu != nil) {
@@ -67,15 +70,26 @@ class TableViewController: UITableViewController {
         return cell!
     }
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-    self.performSegueWithIdentifier("toHomeView", sender: self)
+        self.performSegueWithIdentifier("toHomeView", sender: self)
+        
     }
+
    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "toHomeView" {
+            // Set the GameViewController as a global variable.
+            // This will later be used to unify the game scene.
             let destinationViewController = segue.destinationViewController as! GameViewController;
+<<<<<<< HEAD
             
+=======
+            if (self.gameview == nil) {
+                self.gameview = destinationViewController
+                gamescene = self.gameview?.currentGame
+            }
+>>>>>>> origin/master
             if (objectMenu != nil) {
-            destinationViewController.setObjectFlag((objectMenu.indexPathForSelectedRow?.row)!)
+                destinationViewController.setObjectFlag((objectMenu.indexPathForSelectedRow?.row)!)
             }
             if (gadgetMenu != nil) {
                 destinationViewController.setGadgetFlag((gadgetMenu.indexPathForSelectedRow?.row)!)
