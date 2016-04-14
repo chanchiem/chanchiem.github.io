@@ -9,7 +9,6 @@
 import UIKit
 
 class TableViewController: UITableViewController {
-
     @IBOutlet var objectMenu: UITableView!
     @IBOutlet var gadgetMenu: UITableView!
     
@@ -62,23 +61,23 @@ class TableViewController: UITableViewController {
             cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "Cell")
             //cell.textLabel?.text = shapes[indexPath.row]
             cell!.imageView!.image = UIImage(named: shapes[indexPath.row])
-            cell!.backgroundColor = UIColor.blackColor()
+            cell!.backgroundColor = UIColor.clearColor()
         }
         }
         return cell!
     }
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
     self.performSegueWithIdentifier("toHomeView", sender: self)
-        
     }
-    
-    
-    
+   
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "toHomeView" {
             let destinationViewController = segue.destinationViewController as! GameViewController;
             if (objectMenu != nil) {
-            destinationViewController.setflag((objectMenu.indexPathForSelectedRow?.row)!)
+            destinationViewController.setObjectFlag((objectMenu.indexPathForSelectedRow?.row)!)
+            }
+            if (gadgetMenu != nil) {
+                destinationViewController.setGadgetFlag((gadgetMenu.indexPathForSelectedRow?.row)!)
             }
             // setup the destination controller
         }

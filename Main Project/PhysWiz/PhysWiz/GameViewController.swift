@@ -15,10 +15,8 @@ class GameViewController: UIViewController {
     // and the scene.
     var currentGame: GameScene!
     var parameternames = ["mass", "Px", "Py","Vx", "Vy", "Av", "Ax", "Ay", "Fx", "Fy"]
-    var flag = 0
-
-
-    
+    var objectflag = -1
+    var gadgetflag = -1
     // Implementation of slide out menus
     @IBOutlet weak var gadgetMenu: UIBarButtonItem!
     @IBOutlet weak var objectMenu: UIBarButtonItem!
@@ -73,15 +71,22 @@ class GameViewController: UIViewController {
     }
    
     // Finds the index on the table that the user selected
-    func setflag(index: Int) {
+    func setObjectFlag(index: Int) {
         print(index)
-        flag = index
+        objectflag = index
         NSLog("Test")
     }
-    func getflag()->Int{
-        return flag
+    func setGadgetFlag(index: Int) {
+        print(index)
+        gadgetflag = index
+        NSLog("Test")
     }
-    
+    func getObjectFlag()->Int{
+        return objectflag
+    }
+    func getGadgetFlag()->Int{
+        return gadgetflag
+    }
     // return from selecting table object
     @IBAction func unwindSegue(segue: UIStoryboardSegue) {
         // do stuff
