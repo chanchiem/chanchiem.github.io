@@ -249,7 +249,7 @@ class GameScene: SKScene {
             // If the person selected a node, set it as the selected node.
             if touchedNode is SKSpriteNode && touchedNode.name == movableNodeName {
                 // Applying the rope!!!
-                if (ropeOn == true) {
+                if (viewController.getGadgetFlag() == 0) {
                     if (ropeNode1 == nil) {
                         ropeNode1 = touchedNode as! SKSpriteNode
                     } else if(ropeNode2 == nil) {
@@ -314,8 +314,7 @@ class GameScene: SKScene {
                   var timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: "runtime", userInfo: nil, repeats: true)
                     stopped = false
                 } else {
-         
-
+                    stopped = true
                 }
 
             }
