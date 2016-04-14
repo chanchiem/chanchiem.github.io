@@ -18,6 +18,8 @@ class GameScene: SKScene {
     
     var stopped = true
     var button: SKShapeNode! = nil
+    var trash: SKSpriteNode! = nil
+    //var bg: SKSpriteNode! = nil
     var flag = shapeType.CIRCLE;
     var shapeArray = [shapeType]()
     var viewController: GameViewController!
@@ -79,6 +81,7 @@ class GameScene: SKScene {
         /* Setup your scene here */
         self.addChild(self.createFloor())
         self.addChild(self.pausePlay())
+        self.addChild(self.createTrash())
         objectProperties = [SKSpriteNode: [Float]]()
         physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
         // INIT Shape arrays to call later in flag function
@@ -92,6 +95,11 @@ class GameScene: SKScene {
         shapeArray.append(shapeType.BIKE)
         shapeArray.append(shapeType.CAR)
     }
+    
+    // Creates a background for the gamescene
+    /*func createBG() -> SKSpriteNode {
+        
+    }*/
     
     // Creates a floor for the physics simulation.
     func createFloor() -> SKSpriteNode {
@@ -115,6 +123,15 @@ class GameScene: SKScene {
         return button
     }
     
+    // Creates a trash bin on the lower right hand side of the screen
+    func createTrash() -> SKSpriteNode {
+        trash = SKSpriteNode(imageNamed: "trash.png")
+        trash.position = CGPoint(x: self.size.width - self.size.width/15, y: self.size.height/10)
+        trash.zPosition = -1
+        trash.size = CGSize(width: 60, height: 60)
+        trash.name = "trash"
+        return trash
+    }
     
     // return parameters of given object from either the object itself or dictionary
    func getParameters(object: SKSpriteNode) -> [Float]{
@@ -315,6 +332,12 @@ class GameScene: SKScene {
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for touch: AnyObject in touches {
             let location = touch.locationInNode(self)
+            // Removes the selectedShape if it's over the trash bin
+            if trash.containsPoint(location) {
+                objectProperties.removeValueForKey(selectedShape)
+                selectedShape.removeFromParent()
+                selectedShape = nil
+            }
             // Gives the pause play button the ability to pause and play a scene
             if button.containsPoint(location) {
                 // temp variable to signify start of program
@@ -348,11 +371,11 @@ class GameScene: SKScene {
                 } else {
                     stopped = true
                 }
-
             }
-
+            
         }
     }
+    
     //being used to try and figure out the time component
     func runtime() {
         timeCounter += 1
@@ -420,11 +443,7 @@ class GameScene: SKScene {
                 viewController.setsInputBox(getParameters(selectedShape))
                 
                 // Connects selectedShape to its nearestNodes
-                let nearest = nearestNodes(selectedShape)
-                for node in nearest {
-                    let joinNodes = SKPhysicsJointFixed.jointWithBodyA(selectedShape.physicsBody!, bodyB: node.physicsBody!, anchor: node.position)
-                    self.physicsWorld.addJoint(joinNodes)
-                }
+                //connectNodes(selectedShape)
             }
         }
         
@@ -447,7 +466,7 @@ class GameScene: SKScene {
     
     // Returns an array of all nodes within a certain distance away from the queryNode.
     func nearestNodes(queryNode: SKSpriteNode) -> [SKNode] {
-        let joinDist: CGFloat = 40.0
+        let joinDist: CGFloat = 30.0
         var array = [SKNode]()
         for object in self.children {
             let dx = queryNode.position.x - object.position.x
@@ -459,5 +478,15 @@ class GameScene: SKScene {
             }
         }
         return array
+    }
+    
+    // Connects the selectedNode with all nodes in its vicinity.
+    func connectNodes(selectedNode: SKSpriteNode) {
+        let nearest = nearestNodes(selectedShape)
+        for node in nearest {
+            let midPoint = CGPoint(x: (selectedNode.position.x + node.position.x)/2, y: (selectedNode.position.y + node.position.y)/2)
+            let joinNodes = SKPhysicsJointFixed.jointWithBodyA(selectedShape.physicsBody!, bodyB: node.physicsBody!, anchor: midPoint)
+            self.physicsWorld.addJoint(joinNodes)
+        }
     }
 }
