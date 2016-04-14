@@ -12,6 +12,10 @@ import Foundation
 private let movableNodeName = "movable"
 
 class GameScene: SKScene {
+    var ropeOn = false; // The flag for the ropes.
+    var ropeNode1: SKSpriteNode! = nil;
+    var ropeNode2: SKSpriteNode! = nil;
+    
     var stopped = true
     var button: SKShapeNode! = nil
     var flag = shapeType.CIRCLE;
@@ -250,9 +254,22 @@ class GameScene: SKScene {
             let touchedNode = self.nodeAtPoint(location)
             // If the person selected a node, set it as the selected node.
             if touchedNode is SKSpriteNode && touchedNode.name == movableNodeName {
-                print("touchedNode ran")
-                selectedShape = touchedNode as! SKSpriteNode
-                viewController.setsInputBox(objectProperties[selectedShape]!)
+                // Applying the rope!!!
+                if (ropeOn == true) {
+                    if (ropeNode1 == nil) {
+                        ropeNode1 = touchedNode as! SKSpriteNode
+                    } else if(ropeNode2 == nil) {
+                        ropeNode2 = touchedNode as! SKSpriteNode
+                        if (ropeNode1 != ropeNode2) {
+                            self.addChild(Rope.init(parentScene: self, node: ropeNode1, node: ropeNode2, texture: "rope.png"))
+                        }
+                        ropeNode2 = nil;
+                        ropeNode1 = nil;
+                    }
+                } else {
+                    selectedShape = touchedNode as! SKSpriteNode
+                    viewController.setsInputBox(objectProperties[selectedShape]!)
+                }
             }
             if floor?.containsPoint(location) != nil {
                 
@@ -262,7 +279,8 @@ class GameScene: SKScene {
                 // game
                 if(checkValidPoint(location) && stopped) {
                     let img = String(flag).lowercaseString + ".png"
-                    self.addChild(self.createObject(location, image: img))
+                    let obj = self.createObject(location, image: img)
+                    self.addChild(obj)
                 }
             }
         }

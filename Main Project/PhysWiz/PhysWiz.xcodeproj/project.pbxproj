@@ -15,6 +15,8 @@
 		1A99C2781CA098950021F14B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A99C2761CA098950021F14B /* Main.storyboard */; };
 		1A99C27A1CA098950021F14B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A99C2791CA098950021F14B /* Assets.xcassets */; };
 		1A99C27D1CA098950021F14B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A99C27B1CA098950021F14B /* LaunchScreen.storyboard */; };
+		9FBFD4821CBF5D5B0024505D /* Rope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FBFD4811CBF5D5B0024505D /* Rope.swift */; };
+		9FBFD4841CBF5DE60024505D /* rope.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FBFD4831CBF5DE60024505D /* rope.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -28,6 +30,8 @@
 		1A99C2791CA098950021F14B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1A99C27C1CA098950021F14B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1A99C27E1CA098950021F14B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9FBFD4811CBF5D5B0024505D /* Rope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rope.swift; sourceTree = "<group>"; };
+		9FBFD4831CBF5DE60024505D /* rope.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rope.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +64,7 @@
 		1A99C26D1CA098950021F14B /* PhysWiz */ = {
 			isa = PBXGroup;
 			children = (
+				9FBFD4811CBF5D5B0024505D /* Rope.swift */,
 				1A99C26E1CA098950021F14B /* AppDelegate.swift */,
 				1A938E7B1CBC9D7B00690BA3 /* PWObject.swift */,
 				1A99C2701CA098950021F14B /* GameScene.sks */,
@@ -67,6 +72,7 @@
 				1A99C2741CA098950021F14B /* GameViewController.swift */,
 				1A99C2761CA098950021F14B /* Main.storyboard */,
 				1A99C2791CA098950021F14B /* Assets.xcassets */,
+				9FBFD4831CBF5DE60024505D /* rope.png */,
 				1A99C27B1CA098950021F14B /* LaunchScreen.storyboard */,
 				1A99C27E1CA098950021F14B /* Info.plist */,
 			);
@@ -132,6 +138,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				1A99C2711CA098950021F14B /* GameScene.sks in Resources */,
+				9FBFD4841CBF5DE60024505D /* rope.png in Resources */,
 				1A99C27D1CA098950021F14B /* LaunchScreen.storyboard in Resources */,
 				1A99C27A1CA098950021F14B /* Assets.xcassets in Resources */,
 				1A99C2781CA098950021F14B /* Main.storyboard in Resources */,
@@ -149,6 +156,7 @@
 				1A99C2751CA098950021F14B /* GameViewController.swift in Sources */,
 				1A99C26F1CA098950021F14B /* AppDelegate.swift in Sources */,
 				1A938E7C1CBC9D7B00690BA3 /* PWObject.swift in Sources */,
+				9FBFD4821CBF5D5B0024505D /* Rope.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

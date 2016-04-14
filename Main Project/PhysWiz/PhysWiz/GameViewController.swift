@@ -25,7 +25,7 @@ class GameViewController: UIViewController {
     // var shapes = ["circle.png", "square.png", "triangle.png"]
     var shapes = ["circle.png", "square.png", "triangle.png", "crate.png", "baseball.png", "brickwall.png", "airplane.png", "bike.png", "car.png"]
     var shapeArray = [shapeType]()
-    var gadgets = ["rope.png"]
+    var gadgets = ["rope.png", "blank.png"]
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -119,7 +119,17 @@ class GameViewController: UIViewController {
     // Finds the index on the table that the user selected
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
         // NOTICE: MUST IMPLEMENT FOR BOTH THE SHAPES AND THE GADGETS VIEW. CURRENTLY DOES THE SAME THING FOR BOTH.
-        currentGame.setFlag(indexPath.row)
+        if (tableView == self.shapesTableView) {
+            currentGame.setFlag(indexPath.row)
+        }
+        if (tableView == self.gadgetsTableView) {
+            if (indexPath.item == 0) { // Rope
+                currentGame.ropeOn = true;
+            }
+            if (indexPath.item == 1) {
+                currentGame.ropeOn = false;
+            }
+        }
         NSLog("Test")
     }
     // Label that contains the information about the px, py, etc...
