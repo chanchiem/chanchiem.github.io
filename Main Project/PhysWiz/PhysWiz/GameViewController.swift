@@ -15,21 +15,8 @@ class GameViewController: UIViewController {
     // and the scene.
     var currentGame: GameScene!
     var parameternames = ["mass", "Px", "Py","Vx", "Vy", "Av", "Ax", "Ay", "Fx", "Fy"]
-<<<<<<< Updated upstream
-    enum shapeType{
-        case BALL
-        case RECT
-    }
-    
-    @IBOutlet var shapesTableView: UITableView?
-    @IBOutlet var gadgetsTableView: UITableView?
-    // var shapes = ["circle.png", "square.png", "triangle.png"]
-    var shapes = ["circle.png", "square.png", "triangle.png", "crate.png", "baseball.png", "brickwall.png", "airplane.png", "bike.png", "car.png"]
-    var shapeArray = [shapeType]()
-    var gadgets = ["rope.png", "blank.png"]
-=======
     var flag = 0
->>>>>>> Stashed changes
+
 
     
     // Implementation of slide out menus
@@ -87,23 +74,8 @@ class GameViewController: UIViewController {
    
     // Finds the index on the table that the user selected
     func setflag(index: Int) {
-        // NOTICE: MUST IMPLEMENT FOR BOTH THE SHAPES AND THE GADGETS VIEW. CURRENTLY DOES THE SAME THING FOR BOTH.
-<<<<<<< Updated upstream
-        if (tableView == self.shapesTableView) {
-            currentGame.setFlag(indexPath.row)
-        }
-        if (tableView == self.gadgetsTableView) {
-            if (indexPath.item == 0) { // Rope
-                currentGame.ropeOn = true;
-            }
-            if (indexPath.item == 1) {
-                currentGame.ropeOn = false;
-            }
-        }
-=======
         print(index)
         flag = index
->>>>>>> Stashed changes
         NSLog("Test")
     }
     func getflag()->Int{

@@ -272,15 +272,9 @@ class GameScene: SKScene {
                 // Make sure the point that is being touched is part of the game scene plane is part of the
                 // game
                 if(checkValidPoint(location) && stopped) {
-<<<<<<< Updated upstream
-                    let img = String(flag).lowercaseString + ".png"
-                    let obj = self.createObject(location, image: img)
-                    self.addChild(obj)
-=======
                     var objecttype = shapeArray[viewController.getflag()]
                     let img = String(objecttype).lowercaseString + ".png"
                     self.addChild(self.createObject(location, image: img))
->>>>>>> Stashed changes
                 }
             }
         }

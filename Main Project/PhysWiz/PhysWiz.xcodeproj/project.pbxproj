@@ -15,13 +15,10 @@
 		1A99C2781CA098950021F14B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A99C2761CA098950021F14B /* Main.storyboard */; };
 		1A99C27A1CA098950021F14B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A99C2791CA098950021F14B /* Assets.xcassets */; };
 		1A99C27D1CA098950021F14B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A99C27B1CA098950021F14B /* LaunchScreen.storyboard */; };
-<<<<<<< Updated upstream
 		9FBFD4821CBF5D5B0024505D /* Rope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FBFD4811CBF5D5B0024505D /* Rope.swift */; };
 		9FBFD4841CBF5DE60024505D /* rope.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FBFD4831CBF5DE60024505D /* rope.png */; };
-=======
 		28BD20851CBCB6B100D54416 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BD20841CBCB6B100D54416 /* TableViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		28EF64001CBC4D9C00AF5765 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28EF63FF1CBC4D9C00AF5765 /* SWRevealViewController.m */; settings = {ASSET_TAGS = (); }; };
->>>>>>> Stashed changes
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -35,15 +32,12 @@
 		1A99C2791CA098950021F14B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1A99C27C1CA098950021F14B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1A99C27E1CA098950021F14B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-<<<<<<< Updated upstream
 		9FBFD4811CBF5D5B0024505D /* Rope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rope.swift; sourceTree = "<group>"; };
 		9FBFD4831CBF5DE60024505D /* rope.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = rope.png; sourceTree = "<group>"; };
-=======
 		28BD20841CBCB6B100D54416 /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		28EF63FD1CBC4D8E00AF5765 /* SWRevealViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
 		28EF63FE1CBC4D9B00AF5765 /* PhysWiz-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PhysWiz-Bridging-Header.h"; sourceTree = "<group>"; };
 		28EF63FF1CBC4D9C00AF5765 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
->>>>>>> Stashed changes
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -83,11 +77,8 @@
 				1A99C2721CA098950021F14B /* GameScene.swift */,
 				1A99C2741CA098950021F14B /* GameViewController.swift */,
 				1A99C2791CA098950021F14B /* Assets.xcassets */,
-<<<<<<< Updated upstream
 				9FBFD4831CBF5DE60024505D /* rope.png */,
-=======
 				1A99C2761CA098950021F14B /* Main.storyboard */,
->>>>>>> Stashed changes
 				1A99C27B1CA098950021F14B /* LaunchScreen.storyboard */,
 				1A99C27E1CA098950021F14B /* Info.plist */,
 				28BD20841CBCB6B100D54416 /* TableViewController.swift */,
@@ -183,13 +174,10 @@
 				1A99C2731CA098950021F14B /* GameScene.swift in Sources */,
 				1A99C2751CA098950021F14B /* GameViewController.swift in Sources */,
 				1A99C26F1CA098950021F14B /* AppDelegate.swift in Sources */,
-<<<<<<< Updated upstream
 				1A938E7C1CBC9D7B00690BA3 /* PWObject.swift in Sources */,
 				9FBFD4821CBF5D5B0024505D /* Rope.swift in Sources */,
-=======
 				28BD20851CBCB6B100D54416 /* TableViewController.swift in Sources */,
 				28EF64001CBC4D9C00AF5765 /* SWRevealViewController.m in Sources */,
->>>>>>> Stashed changes
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
