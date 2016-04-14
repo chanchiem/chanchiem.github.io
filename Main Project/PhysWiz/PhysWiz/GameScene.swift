@@ -46,7 +46,6 @@ class GameScene: SKScene {
     }
     // keeps track of time parameter
     var timeCounter = 0
-    
     // This enumeration defines the standard indices for each of the shape properties.
     // To use, you will have to obtain the raw value of the enumeration:
     // shapePropertyIndex(rawValue)
@@ -242,11 +241,6 @@ class GameScene: SKScene {
         return nodeAtPoint(location)
         
     }
-
-    func setFlag(index: Int) {
-        flag = shapeArray[index]
-    }
-
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for touch: AnyObject in touches {
             let location:CGPoint = touch.locationInNode(self)
@@ -278,9 +272,15 @@ class GameScene: SKScene {
                 // Make sure the point that is being touched is part of the game scene plane is part of the
                 // game
                 if(checkValidPoint(location) && stopped) {
+<<<<<<< Updated upstream
                     let img = String(flag).lowercaseString + ".png"
                     let obj = self.createObject(location, image: img)
                     self.addChild(obj)
+=======
+                    var objecttype = shapeArray[viewController.getflag()]
+                    let img = String(objecttype).lowercaseString + ".png"
+                    self.addChild(self.createObject(location, image: img))
+>>>>>>> Stashed changes
                 }
             }
         }
@@ -317,15 +317,10 @@ class GameScene: SKScene {
                 // Updates the value of the variable 'stopped'
                 if (stopped) {
                     // being used to try and figure put the time component
-                  var timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: "printposition", userInfo: nil, repeats: true)
+                  var timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: "runtime", userInfo: nil, repeats: true)
                     stopped = false
-                    //self.viewController.tableView!.alpha = 0
-                    UIView.animateWithDuration(1.5, animations: {self.viewController.shapesTableView!.alpha = 0})
-                    UIView.animateWithDuration(1.5, animations: {self.viewController.gadgetsTableView!.alpha = 0})
                 } else {
-                    stopped = true
-                    UIView.animateWithDuration(1.5, animations: {self.viewController.shapesTableView!.alpha = 1})
-                    UIView.animateWithDuration(1.5, animations: {self.viewController.gadgetsTableView!.alpha = 1})
+         
 
                 }
 
@@ -334,9 +329,9 @@ class GameScene: SKScene {
         }
     }
     //being used to try and figure out the time component
-    func printposition() {
+    func runtime() {
         timeCounter += 1
-        if timeCounter == 7 {
+        if timeCounter == 4 {
             for shape in self.children {
                 if (stopped) {
                     // Playing
@@ -352,8 +347,7 @@ class GameScene: SKScene {
     }
     }
     /* Called before each frame is rendered */
-    override func update(currentTime: CFTimeInterval) {
-        // continously update values of parameters for selected object
+    override func update(currentTime: CFTimeInterval) {        // continously update values of parameters for selected object
         counter += 1
         if (counter % 20 == 0) {
             if selectedShape != nil && !stopped  {

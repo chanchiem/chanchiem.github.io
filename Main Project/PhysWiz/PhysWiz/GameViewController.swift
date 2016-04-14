@@ -15,6 +15,7 @@ class GameViewController: UIViewController {
     // and the scene.
     var currentGame: GameScene!
     var parameternames = ["mass", "Px", "Py","Vx", "Vy", "Av", "Ax", "Ay", "Fx", "Fy"]
+<<<<<<< Updated upstream
     enum shapeType{
         case BALL
         case RECT
@@ -26,12 +27,24 @@ class GameViewController: UIViewController {
     var shapes = ["circle.png", "square.png", "triangle.png", "crate.png", "baseball.png", "brickwall.png", "airplane.png", "bike.png", "car.png"]
     var shapeArray = [shapeType]()
     var gadgets = ["rope.png", "blank.png"]
+=======
+    var flag = 0
+>>>>>>> Stashed changes
 
+    
+    // Implementation of slide out menus
+    @IBOutlet weak var gadgetMenu: UIBarButtonItem!
+    @IBOutlet weak var objectMenu: UIBarButtonItem!
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        shapeArray.append(shapeType.BALL)
-        shapeArray.append(shapeType.RECT)
+        if self.revealViewController() != nil {
+            gadgetMenu.target = self.revealViewController()
+            gadgetMenu.action = "revealToggle:"
+            
+            objectMenu.target = revealViewController()
+            objectMenu.action = "rightRevealToggle:"
+            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
+        }
         
         currentGame = GameScene(fileNamed: "GameScene")
         if currentGame != nil {
@@ -49,8 +62,6 @@ class GameViewController: UIViewController {
             skView.presentScene(currentGame)
         }
 
-        self.shapesTableView!.separatorStyle = UITableViewCellSeparatorStyle.None
-        self.gadgetsTableView!.separatorStyle = UITableViewCellSeparatorStyle.None
 
         currentGame.viewController = self
     }
@@ -68,57 +79,16 @@ class GameViewController: UIViewController {
         // Release any cached data, images, etc that aren't in use.
        
     }
+    
 
     override func prefersStatusBarHidden() -> Bool {
         return true
     }
-    
-    
-    
-    // TABLE STUFF STARTS BELOW
-    // Sets the size of the two table views
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        var count: Int?
-        
-        // Size of the shapes table
-        if tableView == self.shapesTableView {
-            count = self.shapes.count
-        }
-        
-        // Size of the gadgets table
-        if tableView == self.gadgetsTableView {
-            count = self.gadgets.count
-        }
-        
-        return count!
-    }
-    
-    // Sets the contents of the two table views
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell:UITableViewCell?
-        
-        // Contents of the shapes table
-        if tableView == self.shapesTableView {
-            cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "Cell")
-            //cell.textLabel?.text = shapes[indexPath.row]
-            cell!.imageView!.image = UIImage(named: shapes[indexPath.row])
-            cell!.backgroundColor = UIColor.blackColor()
-        }
-        
-        // Contents of the gadgets Table
-        if tableView == self.gadgetsTableView {
-            cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "Cell")
-            //cell.textLabel?.text = shapes[indexPath.row]
-            cell!.imageView!.image = UIImage(named: gadgets[indexPath.row] )
-            cell!.backgroundColor = UIColor.blackColor()
-        }
-        
-        return cell!
-    }
-    
+   
     // Finds the index on the table that the user selected
-    func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+    func setflag(index: Int) {
         // NOTICE: MUST IMPLEMENT FOR BOTH THE SHAPES AND THE GADGETS VIEW. CURRENTLY DOES THE SAME THING FOR BOTH.
+<<<<<<< Updated upstream
         if (tableView == self.shapesTableView) {
             currentGame.setFlag(indexPath.row)
         }
@@ -130,7 +100,19 @@ class GameViewController: UIViewController {
                 currentGame.ropeOn = false;
             }
         }
+=======
+        print(index)
+        flag = index
+>>>>>>> Stashed changes
         NSLog("Test")
+    }
+    func getflag()->Int{
+        return flag
+    }
+    
+    // return from selecting table object
+    @IBAction func unwindSegue(segue: UIStoryboardSegue) {
+        // do stuff
     }
     // Label that contains the information about the px, py, etc...
     // This is used to let the user know information about the selected
@@ -163,7 +145,7 @@ class GameViewController: UIViewController {
     @IBOutlet weak var Av: UITextField!
     
     
-    
+   
     
     
     
