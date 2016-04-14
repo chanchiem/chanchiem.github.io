@@ -28,11 +28,8 @@ class GameViewController: UIViewController {
             
             objectMenu.target = revealViewController()
             objectMenu.action = "rightRevealToggle:"
-<<<<<<< HEAD
-            // self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-=======
-//            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer()) Gesture recognizer
->>>>>>> origin/master
+      //self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer()) Gesture recognizer
+
         }
         
         currentGame = GameScene(fileNamed: "GameScene")
@@ -124,11 +121,13 @@ class GameViewController: UIViewController {
     @IBOutlet weak var Fy: UITextField!
     @IBOutlet weak var Fx: UITextField!
     @IBOutlet weak var Av: UITextField!
-    
+    @IBOutlet weak var Time: UITextField!
     
    
     
-    
+    func getTime() -> String {
+        return self.Time.text!
+    }
     
     // Gets the input from all the TextFields inside the inputBox.
     func getInput() -> [String] {

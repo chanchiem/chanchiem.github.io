@@ -263,6 +263,19 @@
                                     <outlet property="delegate" destination="BV1-FR-VrT" id="S8V-gQ-8Qf"/>
                                 </connections>
                             </scrollView>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="10" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="6Ve-VT-Dxz">
+                                <rect key="frame" x="521" y="64" width="59" height="30"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Time" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ONR-c3-zFh">
+                                <rect key="frame" x="475" y="68" width="38" height="21"/>
+                                <animations/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" red="0.99546116590499878" green="0.1182686910033226" blue="0.0029111162293702364" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
@@ -279,6 +292,7 @@
                         <outlet property="Fy" destination="eav-RN-VyD" id="k1m-uI-qwp"/>
                         <outlet property="Px" destination="jCc-em-oYC" id="WjD-1l-cuQ"/>
                         <outlet property="Py" destination="Xi0-MD-sR7" id="HRp-UL-Est"/>
+                        <outlet property="Time" destination="6Ve-VT-Dxz" id="bZ6-Jj-iC0"/>
                         <outlet property="Vx" destination="dWF-hy-ptt" id="bw1-RQ-GJ2"/>
                         <outlet property="Vy" destination="t46-X5-5Ui" id="CBc-C9-lbe"/>
                         <outlet property="gadgetMenu" destination="IWo-wJ-ePe" id="wZN-S1-5BE"/>

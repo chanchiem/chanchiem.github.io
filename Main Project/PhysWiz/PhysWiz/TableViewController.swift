@@ -54,7 +54,7 @@ class TableViewController: UITableViewController {
             cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "Cell")
             //cell.textLabel?.text = shapes[indexPath.row]
             cell!.imageView!.image = UIImage(named: gadgets[indexPath.row] )
-            cell!.backgroundColor = UIColor.blackColor()
+            cell!.backgroundColor = UIColor.clearColor()
         }
         }
         
@@ -80,14 +80,6 @@ class TableViewController: UITableViewController {
             // Set the GameViewController as a global variable.
             // This will later be used to unify the game scene.
             let destinationViewController = segue.destinationViewController as! GameViewController;
-<<<<<<< HEAD
-            
-=======
-            if (self.gameview == nil) {
-                self.gameview = destinationViewController
-                gamescene = self.gameview?.currentGame
-            }
->>>>>>> origin/master
             if (objectMenu != nil) {
                 destinationViewController.setObjectFlag((objectMenu.indexPathForSelectedRow?.row)!)
             }
