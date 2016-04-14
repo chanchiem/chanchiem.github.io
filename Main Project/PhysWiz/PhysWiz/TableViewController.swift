@@ -73,6 +73,7 @@ class TableViewController: UITableViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "toHomeView" {
             let destinationViewController = segue.destinationViewController as! GameViewController;
+            
             if (objectMenu != nil) {
             destinationViewController.setObjectFlag((objectMenu.indexPathForSelectedRow?.row)!)
             }
