@@ -249,13 +249,45 @@ class GameScene: SKScene {
             // If the person selected a node, set it as the selected node.
             if touchedNode is SKSpriteNode && touchedNode.name == movableNodeName {
                 // Applying the rope!!!
-                if (viewController.getGadgetFlag() == 0) {
+                if (viewController.getGadgetFlag() == 0) { // Rope
                     if (ropeNode1 == nil) {
                         ropeNode1 = touchedNode as! SKSpriteNode
                     } else if(ropeNode2 == nil) {
                         ropeNode2 = touchedNode as! SKSpriteNode
                         if (ropeNode1 != ropeNode2) {
                             self.addChild(Rope.init(parentScene: self, node: ropeNode1, node: ropeNode2, texture: "rope.png"))
+                        }
+                        ropeNode2 = nil;
+                        ropeNode1 = nil;
+                    }
+                } else if (viewController.getGadgetFlag() == 1) { // Spring
+                    if (ropeNode1 == nil) {
+                        ropeNode1 = touchedNode as! SKSpriteNode
+                    } else if(ropeNode2 == nil) {
+                        ropeNode2 = touchedNode as! SKSpriteNode
+                        if (ropeNode1 != ropeNode2) {
+                            let node1Mid = ropeNode1.anchorPoint
+                            let node2Mid = ropeNode2.anchorPoint
+                            let pin = SKPhysicsJointSpring.jointWithBodyA(ropeNode1.physicsBody!, bodyB: ropeNode2.physicsBody!, anchorA: node1Mid, anchorB: node2Mid)
+                            self.physicsWorld.addJoint(pin)
+//                            self.addChild(Rope.init(parentScene: self, node: ropeNode1, node: ropeNode2, texture: "rope.png"))
+                        }
+                        ropeNode2 = nil;
+                        ropeNode1 = nil;
+                    }
+                } else if (viewController.getGadgetFlag() == 2) { // Rod
+                    if (ropeNode1 == nil) {
+                        ropeNode1 = touchedNode as! SKSpriteNode
+                    } else if(ropeNode2 == nil) {
+                        ropeNode2 = touchedNode as! SKSpriteNode
+                        if (ropeNode1 != ropeNode2) {
+                            let node1Mid = ropeNode1.position
+                            let node2Mid = ropeNode2.position
+                            
+                            
+                            let spring = SKPhysicsJointSpring.jointWithBodyA(ropeNode1.physicsBody!, bodyB: ropeNode2.physicsBody!, anchorA: node1Mid, anchorB: node2Mid)
+                            self.physicsWorld.addJoint(spring)
+                            
                         }
                         ropeNode2 = nil;
                         ropeNode1 = nil;
@@ -328,11 +360,11 @@ class GameScene: SKScene {
             for shape in self.children {
                 if (stopped) {
                     // Playing
-                    shape.physicsBody?.dynamic = true
+//                    shape.physicsBody?.dynamic = true
                 }
                 else if (!stopped) {
                     // Paused
-                    shape.physicsBody?.dynamic = false
+//                    shape.physicsBody?.dynamic = false
                 }
  
         }

@@ -28,11 +28,7 @@ class GameViewController: UIViewController {
             
             objectMenu.target = revealViewController()
             objectMenu.action = "rightRevealToggle:"
-<<<<<<< HEAD
             // self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-=======
-//            self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer()) Gesture recognizer
->>>>>>> origin/master
         }
         
         currentGame = GameScene(fileNamed: "GameScene")
