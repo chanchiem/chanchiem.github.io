@@ -356,7 +356,8 @@ class GameScene: SKScene {
     //being used to try and figure out the time component
     func runtime() {
         timeCounter += 1
-        if timeCounter == 4 {
+        var time = Int(viewController.getTime())
+        if timeCounter ==  time {
             for shape in self.children {
                 if (stopped) {
                     // Playing
@@ -366,9 +367,8 @@ class GameScene: SKScene {
                     // Paused
 //                    shape.physicsBody?.dynamic = false
                 }
- 
+                button.physicsBody?.dynamic = false 
         }
-        
     }
     }
     /* Called before each frame is rendered */

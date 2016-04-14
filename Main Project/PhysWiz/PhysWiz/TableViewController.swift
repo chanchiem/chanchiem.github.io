@@ -80,7 +80,6 @@ class TableViewController: UITableViewController {
             // Set the GameViewController as a global variable.
             // This will later be used to unify the game scene.
             let destinationViewController = segue.destinationViewController as! GameViewController;
-
             if (objectMenu != nil) {
                 destinationViewController.setObjectFlag((objectMenu.indexPathForSelectedRow?.row)!)
             }
