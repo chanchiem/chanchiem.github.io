@@ -380,14 +380,16 @@ class GameScene: SKScene {
             }
             // Removes all non-essential nodes from the gamescene
             if stop.containsPoint(location) {
-                let staticSprites = ["floor", "button", "stop", "trash", "background"]
                 for node in self.children {
-                    if !staticSprites.contains(node.name!) {
-                        node.removeFromParent()
-                    }
+                    node.removeFromParent()
                     stopped = true
                     button.texture = SKTexture(imageNamed: "play.png")
                 }
+                self.addChild(self.createFloor())
+                self.addChild(self.createPausePlay())
+                self.addChild(self.createStop())
+                self.addChild(self.createTrash())
+                self.addChild(self.createBG())
             }
             // Gives the pause play button the ability to pause and play a scene
             if button.containsPoint(location) {

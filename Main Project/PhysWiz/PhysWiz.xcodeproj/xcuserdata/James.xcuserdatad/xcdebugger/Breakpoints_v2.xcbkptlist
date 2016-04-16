@@ -26,12 +26,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PhysWiz/GameScene.swift"
-            timestampString = "482529464.278284"
+            timestampString = "482530010.580416"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "499"
-            endingLineNumber = "499"
-            landmarkName = "touchesMoved(_:withEvent:)"
+            startingLineNumber = "501"
+            endingLineNumber = "501"
+            landmarkName = "boundLayerPos(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
