@@ -16,7 +16,14 @@ class TableViewController: UITableViewController {
     var gamescene: GameScene? = nil
     
     var shapes = ["circle.png", "square.png", "triangle.png", "crate.png", "baseball.png", "brickwall.png", "airplane.png", "bike.png", "car.png"]
-    var gadgets = ["rope.png", "spring.png", "rod.png", "black.png"]
+    var gadgets = ["black.png", "rope.png", "spring.png", "rod.png"]
+    struct gadgetIndex {
+        let blank = 0
+        let rope = 1
+        let spring = 2
+        let rod = 3
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         if (objectMenu != nil) {
