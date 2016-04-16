@@ -15,7 +15,7 @@ class TableViewController: UITableViewController {
     var gameview: GameViewController? = nil
     var gamescene: GameScene? = nil
     
-    var shapes = ["circle.png", "square.png", "triangle.png", "crate.png", "baseball.png", "brickwall.png", "airplane.png", "bike.png", "car.png"]
+    var shapes = ["circle.png", "square.png", "triangle.png", "crate.png", "baseball.png", "brickwall.png", "airplane.png", "bike.png", "car.png", "black.png"]
     var gadgets = ["rope.png", "spring.png", "rod.png", "black.png"]
     override func viewDidLoad() {
         super.viewDidLoad()

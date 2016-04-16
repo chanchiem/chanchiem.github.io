@@ -19,7 +19,7 @@ class GameScene: SKScene {
     var stopped = true
     var button: SKShapeNode! = nil
     var trash: SKSpriteNode! = nil
-    //var bg: SKSpriteNode! = nil
+    var bg: SKSpriteNode! = nil
     var flag = shapeType.CIRCLE;
     var shapeArray = [shapeType]()
     var viewController: GameViewController!
@@ -45,6 +45,7 @@ class GameScene: SKScene {
         case AIRPLANE = "airplane.png"
         case BIKE = "bike.png"
         case CAR = "car.png"
+        case BLACK = "black.png"
     }
     // keeps track of time parameter
     var timeCounter = 0
@@ -70,18 +71,13 @@ class GameScene: SKScene {
     // This reference holds the link of communication between the interface
     // and the game scene itself.
     override func didMoveToView(view: SKView) {
-        // Adds a background to the scene
-        /*background.position = CGPoint(x: self.size.width/2, y: self.size.height/2)
-        background.size.height = self.size.height
-        background.size.width = self.size.width
-        background.zPosition = -1
-        self.addChild(background)*/
         // make gravity equal to 981 pixels
         self.physicsWorld.gravity = CGVectorMake(0.0, -6.54);
         /* Setup your scene here */
         self.addChild(self.createFloor())
         self.addChild(self.pausePlay())
         self.addChild(self.createTrash())
+        self.addChild(self.createBG())
         objectProperties = [SKSpriteNode: [Float]]()
         physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
         // INIT Shape arrays to call later in flag function
@@ -94,12 +90,19 @@ class GameScene: SKScene {
         shapeArray.append(shapeType.AIRPLANE)
         shapeArray.append(shapeType.BIKE)
         shapeArray.append(shapeType.CAR)
+        shapeArray.append(shapeType.BLACK)
     }
     
     // Creates a background for the gamescene
-    /*func createBG() -> SKSpriteNode {
-        
-    }*/
+    func createBG() -> SKSpriteNode {
+        bg = SKSpriteNode(imageNamed: "bg")
+        bg.anchorPoint = CGPointZero
+        bg.name = "background"
+        bg.size.height = self.size.height * 2
+        bg.size.width = self.size.width * 3
+        bg.zPosition = -2
+        return bg
+    }
     
     // Creates a floor for the physics simulation.
     func createFloor() -> SKSpriteNode {
@@ -322,8 +325,12 @@ class GameScene: SKScene {
                 // game
                 if(checkValidPoint(location) && stopped) {
                     var objecttype = shapeArray[viewController.getObjectFlag()]
-                    let img = String(objecttype).lowercaseString + ".png"
-                    self.addChild(self.createObject(location, image: img))
+                    if (objecttype == shapeType.BLACK) {
+                        selectedShape = nil
+                    } else {
+                        let img = String(objecttype).lowercaseString + ".png"
+                        self.addChild(self.createObject(location, image: img))
+                    }
                 }
             }
         }
@@ -433,6 +440,17 @@ class GameScene: SKScene {
             }
         })
     }
+    
+    func boundLayerPos(aNewPosition: CGPoint) -> CGPoint {
+        let winSize = self.size
+        var retval = aNewPosition
+        retval.x = CGFloat(min(retval.x, 0))
+        retval.x = CGFloat(max(retval.x, -(bg.size.width) + winSize.width))
+        retval.y = CGFloat(min(retval.y, 0))
+        retval.y = CGFloat(max(retval.y, -(bg.size.height) + winSize.height))
+        
+        return retval
+    }
 
     func panForTranslation(translation: CGPoint) {
         if selectedShape != nil {
@@ -446,12 +464,13 @@ class GameScene: SKScene {
                 //connectNodes(selectedShape)
             }
         }
-        
-    
-        // Add this when we have a background image
-        /*else {
-            background.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
-        }*/
+        else {
+            let position = bg.position
+            print("made it")
+            let aNewPosition = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
+            bg.position = self.boundLayerPos(aNewPosition)
+            print(bg.position)
+        }
     }
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {

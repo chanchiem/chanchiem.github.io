@@ -14,7 +14,7 @@
 		1A99C2751CA098950021F14B /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A99C2741CA098950021F14B /* GameViewController.swift */; };
 		1A99C2781CA098950021F14B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A99C2761CA098950021F14B /* Main.storyboard */; };
 		1A99C27D1CA098950021F14B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A99C27B1CA098950021F14B /* LaunchScreen.storyboard */; };
-		1ACD17191CC05ABA002FB7D8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1ACD17181CC05ABA002FB7D8 /* Assets.xcassets */; };
+		1ACD17431CC070FC002FB7D8 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1ACD17421CC070FC002FB7D8 /* Assets.xcassets */; };
 		28BD20851CBCB6B100D54416 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BD20841CBCB6B100D54416 /* TableViewController.swift */; };
 		28EF64001CBC4D9C00AF5765 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28EF63FF1CBC4D9C00AF5765 /* SWRevealViewController.m */; };
 		9FBFD4821CBF5D5B0024505D /* Rope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FBFD4811CBF5D5B0024505D /* Rope.swift */; };
@@ -30,7 +30,7 @@
 		1A99C2771CA098950021F14B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		1A99C27C1CA098950021F14B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1A99C27E1CA098950021F14B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		1ACD17181CC05ABA002FB7D8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../../../../Assets.xcassets; sourceTree = "<group>"; };
+		1ACD17421CC070FC002FB7D8 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../../../../Assets.xcassets; sourceTree = "<group>"; };
 		28BD20841CBCB6B100D54416 /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		28EF63FD1CBC4D8E00AF5765 /* SWRevealViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
 		28EF63FE1CBC4D9B00AF5765 /* PhysWiz-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PhysWiz-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -74,11 +74,11 @@
 				1A99C2701CA098950021F14B /* GameScene.sks */,
 				1A99C2721CA098950021F14B /* GameScene.swift */,
 				1A99C2741CA098950021F14B /* GameViewController.swift */,
-				1ACD17181CC05ABA002FB7D8 /* Assets.xcassets */,
+				28BD20841CBCB6B100D54416 /* TableViewController.swift */,
+				1ACD17421CC070FC002FB7D8 /* Assets.xcassets */,
 				1A99C2761CA098950021F14B /* Main.storyboard */,
 				1A99C27B1CA098950021F14B /* LaunchScreen.storyboard */,
 				1A99C27E1CA098950021F14B /* Info.plist */,
-				28BD20841CBCB6B100D54416 /* TableViewController.swift */,
 				28EF64011CBC4DA700AF5765 /* SWRevealViewController */,
 			);
 			path = PhysWiz;
@@ -155,7 +155,7 @@
 			files = (
 				1A99C2711CA098950021F14B /* GameScene.sks in Resources */,
 				1A99C27D1CA098950021F14B /* LaunchScreen.storyboard in Resources */,
-				1ACD17191CC05ABA002FB7D8 /* Assets.xcassets in Resources */,
+				1ACD17431CC070FC002FB7D8 /* Assets.xcassets in Resources */,
 				1A99C2781CA098950021F14B /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
