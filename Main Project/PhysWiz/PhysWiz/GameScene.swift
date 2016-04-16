@@ -17,7 +17,8 @@ class GameScene: SKScene {
     var ropeNode2: SKSpriteNode! = nil;
     
     var stopped = true
-    var button: SKShapeNode! = nil
+    var button: SKSpriteNode! = nil
+    var stop: SKSpriteNode! = nil
     var trash: SKSpriteNode! = nil
     var bg: SKSpriteNode! = nil
     var flag = shapeType.CIRCLE;
@@ -75,7 +76,8 @@ class GameScene: SKScene {
         self.physicsWorld.gravity = CGVectorMake(0.0, -6.54);
         /* Setup your scene here */
         self.addChild(self.createFloor())
-        self.addChild(self.pausePlay())
+        self.addChild(self.createPausePlay())
+        self.addChild(self.createStop())
         self.addChild(self.createTrash())
         self.addChild(self.createBG())
         objectProperties = [SKSpriteNode: [Float]]()
@@ -116,13 +118,11 @@ class GameScene: SKScene {
     }
     
     // Creates a node that will act as a pause play button for the user.
-    func pausePlay() -> SKShapeNode {
-        button = SKShapeNode(circleOfRadius: 20.0)
-        button.fillColor = SKColor(red: 0.0, green: 0.0, blue: 256.0, alpha: 1)
-        button.position = CGPoint(x: self.size.width / 2, y: self.size.height / 2)
+    func createPausePlay() -> SKSpriteNode {
+        button = SKSpriteNode(imageNamed: "play.png")
+        button.position = CGPoint(x: self.size.width - self.size.width/15, y: self.size.height - self.size.height/10)
+        button.size = CGSize(width: 50, height: 50)
         button.name = "button"
-        button.physicsBody = SKPhysicsBody(circleOfRadius: 20.0)
-        button.physicsBody?.dynamic = false
         return button
     }
     
@@ -134,6 +134,15 @@ class GameScene: SKScene {
         trash.size = CGSize(width: 60, height: 60)
         trash.name = "trash"
         return trash
+    }
+    
+    // Creates a node that will act as a stop button for the user.
+    func createStop() -> SKSpriteNode {
+        stop = SKSpriteNode(imageNamed: "stop.png")
+        stop.position = CGPoint(x: self.size.width - self.size.width/8, y: self.size.height - self.size.height/10)
+        stop.size = CGSize(width: 50, height: 50)
+        stop.name = "stop"
+        return stop
     }
     
     // return parameters of given object from either the object itself or dictionary
@@ -345,6 +354,17 @@ class GameScene: SKScene {
                 selectedShape.removeFromParent()
                 selectedShape = nil
             }
+            // Removes all non-essential nodes from the gamescene
+            if stop.containsPoint(location) {
+                let staticSprites = ["floor", "button", "stop", "trash", "background"]
+                for node in self.children {
+                    if !staticSprites.contains(node.name!) {
+                        node.removeFromParent()
+                    }
+                    stopped = true
+                    button.texture = SKTexture(imageNamed: "play.png")
+                }
+            }
             // Gives the pause play button the ability to pause and play a scene
             if button.containsPoint(location) {
                 // temp variable to signify start of program
@@ -375,8 +395,10 @@ class GameScene: SKScene {
                     // being used to try and figure put the time component
                   var timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: "runtime", userInfo: nil, repeats: true)
                     stopped = false
+                    button.texture = SKTexture(imageNamed: "pause.png")
                 } else {
                     stopped = true
+                    button.texture = SKTexture(imageNamed: "play.png")
                 }
             }
             
