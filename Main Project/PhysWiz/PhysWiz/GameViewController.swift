@@ -48,7 +48,6 @@ class GameViewController: UIViewController {
             skView.presentScene(currentGame)
         }
 
-
         currentGame.viewController = self
     }
 

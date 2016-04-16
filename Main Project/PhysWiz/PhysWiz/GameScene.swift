@@ -18,6 +18,8 @@ class GameScene: SKScene {
     
     var stopped = true
     var button: SKShapeNode! = nil
+    var trash: SKSpriteNode! = nil
+    var bg: SKSpriteNode! = nil
     var flag = shapeType.CIRCLE;
     var shapeArray = [shapeType]()
     var viewController: GameViewController!
@@ -43,6 +45,7 @@ class GameScene: SKScene {
         case AIRPLANE = "airplane.png"
         case BIKE = "bike.png"
         case CAR = "car.png"
+        case BLACK = "black.png"
     }
     // keeps track of time parameter
     var timeCounter = 0
@@ -68,17 +71,13 @@ class GameScene: SKScene {
     // This reference holds the link of communication between the interface
     // and the game scene itself.
     override func didMoveToView(view: SKView) {
-        // Adds a background to the scene
-        /*background.position = CGPoint(x: self.size.width/2, y: self.size.height/2)
-        background.size.height = self.size.height
-        background.size.width = self.size.width
-        background.zPosition = -1
-        self.addChild(background)*/
         // make gravity equal to 981 pixels
         self.physicsWorld.gravity = CGVectorMake(0.0, -6.54);
         /* Setup your scene here */
         self.addChild(self.createFloor())
         self.addChild(self.pausePlay())
+        self.addChild(self.createTrash())
+        self.addChild(self.createBG())
         objectProperties = [SKSpriteNode: [Float]]()
         physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
         // INIT Shape arrays to call later in flag function
@@ -91,6 +90,18 @@ class GameScene: SKScene {
         shapeArray.append(shapeType.AIRPLANE)
         shapeArray.append(shapeType.BIKE)
         shapeArray.append(shapeType.CAR)
+        shapeArray.append(shapeType.BLACK)
+    }
+    
+    // Creates a background for the gamescene
+    func createBG() -> SKSpriteNode {
+        bg = SKSpriteNode(imageNamed: "bg")
+        bg.anchorPoint = CGPointZero
+        bg.name = "background"
+        bg.size.height = self.size.height * 2
+        bg.size.width = self.size.width * 3
+        bg.zPosition = -2
+        return bg
     }
     
     // Creates a floor for the physics simulation.
@@ -115,6 +126,15 @@ class GameScene: SKScene {
         return button
     }
     
+    // Creates a trash bin on the lower right hand side of the screen
+    func createTrash() -> SKSpriteNode {
+        trash = SKSpriteNode(imageNamed: "trash.png")
+        trash.position = CGPoint(x: self.size.width - self.size.width/15, y: self.size.height/10)
+        trash.zPosition = -1
+        trash.size = CGSize(width: 60, height: 60)
+        trash.name = "trash"
+        return trash
+    }
     
     // return parameters of given object from either the object itself or dictionary
    func getParameters(object: SKSpriteNode) -> [Float]{
@@ -329,8 +349,12 @@ class GameScene: SKScene {
                 // game
                 if(checkValidPoint(location) && stopped) {
                     var objecttype = shapeArray[viewController.getObjectFlag()]
-                    let img = String(objecttype).lowercaseString + ".png"
-                    self.addChild(self.createObject(location, image: img))
+                    if (objecttype == shapeType.BLACK) {
+                        selectedShape = nil
+                    } else {
+                        let img = String(objecttype).lowercaseString + ".png"
+                        self.addChild(self.createObject(location, image: img))
+                    }
                 }
             }
         }
@@ -339,6 +363,12 @@ class GameScene: SKScene {
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for touch: AnyObject in touches {
             let location = touch.locationInNode(self)
+            // Removes the selectedShape if it's over the trash bin
+            if trash.containsPoint(location) {
+                objectProperties.removeValueForKey(selectedShape)
+                selectedShape.removeFromParent()
+                selectedShape = nil
+            }
             // Gives the pause play button the ability to pause and play a scene
             if button.containsPoint(location) {
                 // temp variable to signify start of program
@@ -372,11 +402,11 @@ class GameScene: SKScene {
                 } else {
                     stopped = true
                 }
-
             }
-
+            
         }
     }
+    
     //being used to try and figure out the time component
     func runtime() {
         timeCounter += 1
@@ -434,6 +464,17 @@ class GameScene: SKScene {
             }
         })
     }
+    
+    func boundLayerPos(aNewPosition: CGPoint) -> CGPoint {
+        let winSize = self.size
+        var retval = aNewPosition
+        retval.x = CGFloat(min(retval.x, 0))
+        retval.x = CGFloat(max(retval.x, -(bg.size.width) + winSize.width))
+        retval.y = CGFloat(min(retval.y, 0))
+        retval.y = CGFloat(max(retval.y, -(bg.size.height) + winSize.height))
+        
+        return retval
+    }
 
     func panForTranslation(translation: CGPoint) {
         if selectedShape != nil {
@@ -444,19 +485,16 @@ class GameScene: SKScene {
                 viewController.setsInputBox(getParameters(selectedShape))
                 
                 // Connects selectedShape to its nearestNodes
-                let nearest = nearestNodes(selectedShape)
-                for node in nearest {
-                    let joinNodes = SKPhysicsJointFixed.jointWithBodyA(selectedShape.physicsBody!, bodyB: node.physicsBody!, anchor: node.position)
-                    self.physicsWorld.addJoint(joinNodes)
-                }
+                //connectNodes(selectedShape)
             }
         }
-        
-    
-        // Add this when we have a background image
-        /*else {
-            background.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
-        }*/
+        else {
+            let position = bg.position
+            print("made it")
+            let aNewPosition = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
+            bg.position = self.boundLayerPos(aNewPosition)
+            print(bg.position)
+        }
     }
     
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -471,7 +509,7 @@ class GameScene: SKScene {
     
     // Returns an array of all nodes within a certain distance away from the queryNode.
     func nearestNodes(queryNode: SKSpriteNode) -> [SKNode] {
-        let joinDist: CGFloat = 40.0
+        let joinDist: CGFloat = 30.0
         var array = [SKNode]()
         for object in self.children {
             let dx = queryNode.position.x - object.position.x
@@ -483,5 +521,15 @@ class GameScene: SKScene {
             }
         }
         return array
+    }
+    
+    // Connects the selectedNode with all nodes in its vicinity.
+    func connectNodes(selectedNode: SKSpriteNode) {
+        let nearest = nearestNodes(selectedShape)
+        for node in nearest {
+            let midPoint = CGPoint(x: (selectedNode.position.x + node.position.x)/2, y: (selectedNode.position.y + node.position.y)/2)
+            let joinNodes = SKPhysicsJointFixed.jointWithBodyA(selectedShape.physicsBody!, bodyB: node.physicsBody!, anchor: midPoint)
+            self.physicsWorld.addJoint(joinNodes)
+        }
     }
 }
