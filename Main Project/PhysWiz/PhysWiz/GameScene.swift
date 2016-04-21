@@ -358,6 +358,8 @@ class GameScene: SKScene {
         rod.position = CGPoint.init(x: n1.x - xOffset, y: n1.y - yOffset)
         rod.zPosition = -1
         
+        rod.fillColor = UIColor.blueColor()
+        
         self.addChild(rod);
         
         let rodJoint1 = SKPhysicsJointFixed.jointWithBodyA(node1.physicsBody!, bodyB: rod.physicsBody!, anchor: n1)
