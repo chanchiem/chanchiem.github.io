@@ -11,7 +11,7 @@ import Foundation
 
 private let movableNodeName = "movable"
 
-class GameScene: SKScene {
+class GameScene: SKScene, SKPhysicsContactDelegate {
     var ropeOn = false; // The flag for the ropes.
     var gadgetNode1: SKSpriteNode! = nil;
     var gadgetNode2: SKSpriteNode! = nil;
@@ -99,7 +99,26 @@ class GameScene: SKScene {
         shapeArray.append(shapeType.BIKE)
         shapeArray.append(shapeType.CAR)
         shapeArray.append(shapeType.BLACK)
+        
+        
+        self.physicsWorld.contactDelegate = self
     }
+    
+    func didBeginContact(contact: SKPhysicsContact){
+        
+//        let sparkEmmiter = SKEmitterNode(fileNamed: "FloorImpact.sks")
+//        
+//        sparkEmmiter!.position = contact.contactPoint
+//        sparkEmmiter!.zPosition = 1
+//        sparkEmmiter!.targetNode = self
+//        sparkEmmiter!.particleLifetime = 0.25
+//        sparkEmmiter!.numParticlesToEmit = 2
+//        
+//        self.addChild(sparkEmmiter!)
+        
+    }
+    
+    
     
     // Creates a background for the gamescene
     func createBG() -> SKSpriteNode {
@@ -253,6 +272,9 @@ class GameScene: SKScene {
         object.physicsBody?.friction = 0.7
         object.physicsBody?.linearDamping = 0
         object.physicsBody?.restitution = 0.7
+        object.physicsBody?.contactTestBitMask = 1
+        object.physicsBody?.collisionBitMask = 1
+        object.physicsBody?.categoryBitMask = 1
         objectProperties[object] = getParameters(object)
         return object
     }
