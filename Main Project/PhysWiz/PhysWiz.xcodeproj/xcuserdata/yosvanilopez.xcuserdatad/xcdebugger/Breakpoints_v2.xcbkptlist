@@ -95,8 +95,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "74"
             endingLineNumber = "74"
-            landmarkName = "GameScene"
-            landmarkType = "3">
+            landmarkName = "didMoveToView(_:)"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -143,11 +143,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "98"
             endingLineNumber = "98"
-<<<<<<< HEAD
             landmarkName = "createFloor()"
-=======
-            landmarkName = "didMoveToView(_:)"
->>>>>>> origin/master
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -163,13 +159,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "101"
             endingLineNumber = "101"
-<<<<<<< HEAD
             landmarkName = "createFloor()"
             landmarkType = "5">
-=======
-            landmarkName = "GameScene"
-            landmarkType = "3">
->>>>>>> origin/master
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -292,11 +283,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "97"
             endingLineNumber = "97"
-<<<<<<< HEAD
             landmarkName = "createFloor()"
-=======
-            landmarkName = "didMoveToView(_:)"
->>>>>>> origin/master
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -424,11 +411,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "287"
             endingLineNumber = "287"
-<<<<<<< HEAD
             landmarkName = "touchesEnded(_:withEvent:)"
-=======
-            landmarkName = "createSpringBetweenNodes(_:node2:)"
->>>>>>> origin/master
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -444,11 +427,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "283"
             endingLineNumber = "283"
-<<<<<<< HEAD
             landmarkName = "touchesEnded(_:withEvent:)"
-=======
-            landmarkName = "createRopeBetweenNodes(_:node2:)"
->>>>>>> origin/master
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -464,11 +443,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "288"
             endingLineNumber = "288"
-<<<<<<< HEAD
             landmarkName = "touchesEnded(_:withEvent:)"
-=======
-            landmarkName = "createSpringBetweenNodes(_:node2:)"
->>>>>>> origin/master
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -500,11 +475,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "147"
             endingLineNumber = "147"
-<<<<<<< HEAD
             landmarkName = "getParameters(_:)"
-=======
-            landmarkName = "createStop()"
->>>>>>> origin/master
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
