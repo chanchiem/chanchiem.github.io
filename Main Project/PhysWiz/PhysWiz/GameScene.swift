@@ -81,7 +81,7 @@ class GameScene: SKScene {
         self.addChild(self.createTrash())
         self.addChild(self.createBG())
         objectProperties = [SKSpriteNode: [Float]]()
-        physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
+        physicsBody = SKPhysicsBody(rectangleOfSize: bg.size)
         // INIT Shape arrays to call later in flag function
         shapeArray.append(shapeType.CIRCLE)
         shapeArray.append(shapeType.SQUARE)
@@ -281,13 +281,30 @@ class GameScene: SKScene {
     }
     
     func createSpringBetweenNodes(node1: SKSpriteNode, node2: SKSpriteNode) {
-        let node1Mid = node1.position
-        let node2Mid = node2.position
-        let spring = SKPhysicsJointSpring.jointWithBodyA(node1.physicsBody!, bodyB: node2.physicsBody!, anchorA: node1Mid, anchorB: node2Mid)
+        let n1 = node1.position
+        let n2 = node2.position
+        let deltax = n1.x - n2.x
+        let deltay = n1.y - n2.y
+        
+        // Create the joint between the two objects
+        let spring = SKPhysicsJointSpring.jointWithBodyA(node1.physicsBody!, bodyB: node2.physicsBody!, anchorA: n1, anchorB: n2)
         spring.damping = 0.5
         spring.frequency = 0.5
         self.physicsWorld.addJoint(spring)
+        
+        // Actually create a spring image with physics properties.
+        let springobj = SKSpriteNode(imageNamed: "spring.png")
+        let angle = atan2f(Float(deltay), Float(deltax))
+        springobj.yScale = 3;
+        springobj.zRotation = CGFloat(angle + 1.57) // 1.57 because image is naturally vertical
+        let xOffset = deltax / 2
+        let yOffset = deltay / 2
+        springobj.position = CGPoint.init(x: n1.x - xOffset, y: n1.y - yOffset)
+        springobj.zPosition = -1
+        
+        self.addChild(springobj);
     }
+    
     
     func createRodBetweenNodes(node1: SKSpriteNode, node2: SKSpriteNode) {
         let n1 = node1.position
