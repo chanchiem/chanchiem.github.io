@@ -80,18 +80,19 @@ class TableViewController: UITableViewController {
         self.performSegueWithIdentifier("toHomeView", sender: self)
         
     }
-
+    
    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         if segue.identifier == "toHomeView" {
             // Set the GameViewController as a global variable.
             // This will later be used to unify the game scene.
-            let destinationViewController = segue.destinationViewController as! GameViewController;
+            let destinationViewController = segue.destinationViewController as! containerViewController;
+            let GameVC = destinationViewController.childViewControllers[1] as! GameViewController
             if (objectMenu != nil) {
-                destinationViewController.setObjectFlag((objectMenu.indexPathForSelectedRow?.row)!)
+                GameVC.setObjectFlag((objectMenu.indexPathForSelectedRow?.row)!)
             }
             if (gadgetMenu != nil) {
-                destinationViewController.setGadgetFlag((gadgetMenu.indexPathForSelectedRow?.row)!)
+                GameVC.setGadgetFlag((gadgetMenu.indexPathForSelectedRow?.row)!)
             }
             // setup the destination controller
         }

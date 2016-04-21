@@ -273,6 +273,52 @@ class GameScene: SKScene {
         return nodeAtPoint(location)
         
     }
+    
+    func createRopeBetweenNodes(node1: SKSpriteNode, node2: SKSpriteNode) {
+        let node1Mid = node1.position
+        let node2Mid = node2.position
+        let spring = SKPhysicsJointLimit.jointWithBodyA(node1.physicsBody!, bodyB: node2.physicsBody!, anchorA: node1Mid, anchorB: node2Mid)
+        self.physicsWorld.addJoint(spring)
+        
+        self.addChild(Rope.init(parentScene: self, node: node1, node: node2, texture: "rope.png"))
+    }
+    
+    func createSpringBetweenNodes(node1: SKSpriteNode, node2: SKSpriteNode) {
+        let node1Mid = node1.position
+        let node2Mid = node2.position
+        let spring = SKPhysicsJointSpring.jointWithBodyA(node1.physicsBody!, bodyB: node2.physicsBody!, anchorA: node1Mid, anchorB: node2Mid)
+        spring.damping = 0.5
+        spring.frequency = 0.5
+        self.physicsWorld.addJoint(spring)
+    }
+    
+    func createRodBetweenNodes(node1: SKSpriteNode, node2: SKSpriteNode) {
+        let n1 = node1.position
+        let n2 = node2.position
+        
+        let deltax = n1.x - n2.x
+        let deltay = n1.y - n2.y
+        let distance = sqrt(deltax * deltax + deltay*deltay)
+        let dimension = CGSizeMake(distance, 4)
+        let rod = SKShapeNode(rectOfSize: dimension)
+        rod.physicsBody = SKPhysicsBody.init(rectangleOfSize: dimension)
+        rod.physicsBody?.dynamic = false;
+        
+        let angle = atan2f(Float(deltay), Float(deltax))
+        rod.zRotation = CGFloat(angle)
+        let xOffset = deltax / 2
+        let yOffset = deltay / 2
+        rod.position = CGPoint.init(x: n1.x - xOffset, y: n1.y - yOffset)
+        rod.zPosition = -1
+        
+        self.addChild(rod);
+        
+        let rodJoint1 = SKPhysicsJointFixed.jointWithBodyA(node1.physicsBody!, bodyB: rod.physicsBody!, anchor: n1)
+        let rodJoint2 = SKPhysicsJointFixed.jointWithBodyA(node2.physicsBody!, bodyB: rod.physicsBody!, anchor: n2)
+        self.physicsWorld.addJoint(rodJoint1)
+        self.physicsWorld.addJoint(rodJoint2)
+    }
+    
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for touch: AnyObject in touches {
             let location:CGPoint = touch.locationInNode(bg)
@@ -282,68 +328,15 @@ class GameScene: SKScene {
             if touchedNode is SKSpriteNode && touchedNode.name == movableNodeName {
                 
                 // Applying the rope!!!
-                if (viewController.getGadgetFlag() == 1) { // Rope
+                if (viewController.getGadgetFlag() != 0) { // Rope
                     if (gadgetNode1 == nil) {
                         gadgetNode1 = touchedNode as! SKSpriteNode
                     } else if(gadgetNode2 == nil) {
                         gadgetNode2 = touchedNode as! SKSpriteNode
                         if (gadgetNode1 != gadgetNode2) {
-                            let node1Mid = gadgetNode1.position
-                            let node2Mid = gadgetNode2.position
-                            let spring = SKPhysicsJointLimit.jointWithBodyA(gadgetNode1.physicsBody!, bodyB: gadgetNode2.physicsBody!, anchorA: node1Mid, anchorB: node2Mid)
-                            self.physicsWorld.addJoint(spring)
-                            
-                            self.addChild(Rope.init(parentScene: self, node: gadgetNode1, node: gadgetNode2, texture: "rope.png"))
-                        }
-                        gadgetNode2 = nil;
-                        gadgetNode1 = nil;
-                    }
-                } else if (viewController.getGadgetFlag() == 2) { // Spring
-                    if (gadgetNode1 == nil) {
-                        gadgetNode1 = touchedNode as! SKSpriteNode
-                    } else if(gadgetNode2 == nil) {
-                        gadgetNode2 = touchedNode as! SKSpriteNode
-                        if (gadgetNode1 != gadgetNode2) {
-                            let node1Mid = gadgetNode1.position
-                            let node2Mid = gadgetNode2.position
-                            let spring = SKPhysicsJointSpring.jointWithBodyA(gadgetNode1.physicsBody!, bodyB: gadgetNode2.physicsBody!, anchorA: node1Mid, anchorB: node2Mid)
-                            spring.damping = 0.5
-                            spring.frequency = 0.5
-                            self.physicsWorld.addJoint(spring)
-                        }
-                        gadgetNode2 = nil;
-                        gadgetNode1 = nil;
-                    }
-                } else if (viewController.getGadgetFlag() == 3) { // Rod
-                    if (gadgetNode1 == nil) {
-                        gadgetNode1 = touchedNode as! SKSpriteNode
-                    } else if(gadgetNode2 == nil) {
-                        gadgetNode2 = touchedNode as! SKSpriteNode
-                        if (gadgetNode1 != gadgetNode2) {
-                            let n1 = gadgetNode1.position
-                            let n2 = gadgetNode2.position
-
-                            let deltax = n1.x - n2.x
-                            let deltay = n1.y - n2.y
-                            let distance = sqrt(deltax * deltax + deltay*deltay)
-                            let dimension = CGSizeMake(distance, 4)
-                            let rod = SKShapeNode(rectOfSize: dimension)
-                            rod.physicsBody = SKPhysicsBody.init(rectangleOfSize: dimension)
-                            rod.physicsBody?.dynamic = false;
-                            
-                            let angle = atan2f(Float(deltay), Float(deltax))
-                            rod.zRotation = CGFloat(angle)
-                            let xOffset = deltax / 2
-                            let yOffset = deltay / 2
-                            rod.position = CGPoint.init(x: n1.x - xOffset, y: n1.y - yOffset)
-                            rod.zPosition = -1
-                            
-                            self.addChild(rod);
-
-                            let rodJoint1 = SKPhysicsJointFixed.jointWithBodyA(gadgetNode1.physicsBody!, bodyB: rod.physicsBody!, anchor: n1)
-                            let rodJoint2 = SKPhysicsJointFixed.jointWithBodyA(gadgetNode2.physicsBody!, bodyB: rod.physicsBody!, anchor: n2)
-                            self.physicsWorld.addJoint(rodJoint1)
-                            self.physicsWorld.addJoint(rodJoint2)
+                            if (viewController.getGadgetFlag() == 1) { createRopeBetweenNodes(gadgetNode1, node2: gadgetNode2) }
+                            if (viewController.getGadgetFlag() == 2) { createSpringBetweenNodes(gadgetNode1, node2: gadgetNode2) }
+                            if (viewController.getGadgetFlag() == 3) { createRodBetweenNodes(gadgetNode1, node2: gadgetNode2) }
                         }
                         gadgetNode2 = nil;
                         gadgetNode1 = nil;
