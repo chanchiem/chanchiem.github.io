@@ -93,7 +93,7 @@ class physicslogViewController: UIViewController {
     {
         return String(format: "%.\(decLen)f", (inputString as NSString).floatValue)
     }
-    
+    //sets the output box to a given array of values 
     func setsOutputBox(input: [Float]) {
         self.OutputValues.text = ""
         for i in 0...input.count - 1 {

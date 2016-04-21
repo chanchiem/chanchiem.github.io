@@ -439,11 +439,11 @@ class GameScene: SKScene {
             for shape in self.children {
                 if (stopped) {
                     // Playing
-//                    shape.physicsBody?.dynamic = true
+                 shape.physicsBody?.dynamic = true
                 }
                 else if (!stopped) {
                     // Paused
-//                    shape.physicsBody?.dynamic = false
+                shape.physicsBody?.dynamic = false
                 }
                 button.physicsBody?.dynamic = false 
         }
@@ -459,7 +459,7 @@ class GameScene: SKScene {
         }
 
             // updates selected shapes values with input box values when stopped
-            if (selectedShape != nil && stopped && start == 0) {
+            if (selectedShape != nil && stopped) {
                 var values = objectProperties[selectedShape]!
                 let input = viewController.getInput()
                 for i in Range(start: 0, end: 10) {
