@@ -11,13 +11,10 @@ import Foundation
 
 private let movableNodeName = "movable"
 
-class GameScene: SKScene, SKPhysicsContactDelegate {
+class GameScene: SKScene {
     var ropeOn = false; // The flag for the ropes.
     var gadgetNode1: SKSpriteNode! = nil;
     var gadgetNode2: SKSpriteNode! = nil;
-    
-    var springglobal = [SKSpriteNode: [SKSpriteNode]]() // Spring that maps to two other nodes.
-    var initialHeight = [SKSpriteNode: CGFloat]();
     
     var stopped = true
     var button: SKSpriteNode! = nil
@@ -100,26 +97,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         shapeArray.append(shapeType.BIKE)
         shapeArray.append(shapeType.CAR)
         shapeArray.append(shapeType.BLACK)
-        
-        
-        self.physicsWorld.contactDelegate = self
     }
-    
-    func didBeginContact(contact: SKPhysicsContact){
-        
-//        let sparkEmmiter = SKEmitterNode(fileNamed: "FloorImpact.sks")
-//        
-//        sparkEmmiter!.position = contact.contactPoint
-//        sparkEmmiter!.zPosition = 1
-//        sparkEmmiter!.targetNode = self
-//        sparkEmmiter!.particleLifetime = 0.25
-//        sparkEmmiter!.numParticlesToEmit = 2
-//        
-//        self.addChild(sparkEmmiter!)
-        
-    }
-    
-    
     
     // Creates a background for the gamescene
     func createBG() -> SKSpriteNode {
@@ -273,9 +251,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         object.physicsBody?.friction = 0.7
         object.physicsBody?.linearDamping = 0
         object.physicsBody?.restitution = 0.7
-        object.physicsBody?.contactTestBitMask = 1
-        object.physicsBody?.collisionBitMask = 1
-        object.physicsBody?.categoryBitMask = 1
         objectProperties[object] = getParameters(object)
         return object
     }
@@ -310,57 +285,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func createSpringBetweenNodes(node1: SKSpriteNode, node2: SKSpriteNode) {
-        let n1 = node1.position
-        let n2 = node2.position
-        let deltax = n1.x - n2.x
-        let deltay = n1.y - n2.y
-        let distance = sqrt(deltax * deltax + deltay*deltay)
-        
-        // Create the joint between the two objects
-        let spring = SKPhysicsJointSpring.jointWithBodyA(node1.physicsBody!, bodyB: node2.physicsBody!, anchorA: n1, anchorB: n2)
+        let node1Mid = node1.position
+        let node2Mid = node2.position
+        let spring = SKPhysicsJointSpring.jointWithBodyA(node1.physicsBody!, bodyB: node2.physicsBody!, anchorA: node1Mid, anchorB: node2Mid)
         spring.damping = 0.5
         spring.frequency = 0.5
         self.physicsWorld.addJoint(spring)
-        
-        // Actually create a spring image with physics properties.
-        let springobj = SKSpriteNode(imageNamed: "spring.png")
-        
-        let nodes = [node1, node2];
-        springglobal[springobj] = nodes;
-        
-        let angle = atan2f(Float(deltay), Float(deltax))
-        springobj.zRotation = CGFloat(angle + 1.57) // 1.57 because image is naturally vertical
-        initialHeight[springobj] = springobj.size.height;
-        springobj.yScale = distance/springobj.size.height;
-        let xOffset = deltax / 2
-        let yOffset = deltay / 2
-        springobj.position = CGPoint.init(x: n1.x - xOffset, y: n1.y - yOffset)
-        springobj.zPosition = -1
-//        springobj.physicsBody = SKPhysicsBody.init(rectangleOfSize: springobj.size)
-//        springobj.physicsBody?.dynamic = false;
-        self.addChild(springobj);
-        
-    
     }
-    
-    func updateSprings()
-    {
-        for (spring, nodes) in springglobal {
-            let springnode1 = nodes[0];
-            let springnode2 = nodes[1];
-            
-            let deltax = springnode1.position.x - springnode2.position.x
-            let deltay = springnode1.position.y - springnode2.position.y
-            let distance = sqrt(deltax * deltax + deltay*deltay)
-            spring.yScale = distance/initialHeight[spring]!;
-            let xOffset = deltax / 2
-            let yOffset = deltay / 2
-            let angle = atan2f(Float(deltay), Float(deltax))
-            spring.zRotation = CGFloat(angle + 1.57) // 1.57 because image is naturally vertical
-            spring.position = CGPoint.init(x: springnode1.position.x - xOffset, y: springnode1.position.y - yOffset)
-        }
-    }
-    
     
     func createRodBetweenNodes(node1: SKSpriteNode, node2: SKSpriteNode) {
         let n1 = node1.position
@@ -380,8 +311,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let yOffset = deltay / 2
         rod.position = CGPoint.init(x: n1.x - xOffset, y: n1.y - yOffset)
         rod.zPosition = -1
-        
-        rod.fillColor = UIColor.blueColor()
         
         self.addChild(rod);
         
@@ -529,7 +458,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
             // updates selected shapes values with input box values when stopped
         if (selectedShape != nil && stopped) { //&& start == 0) {
-<<<<<<< HEAD
             var values = objectProperties[selectedShape]!
             let input = viewController.getInput()
             for i in Range(start: 0, end: 10) {
@@ -547,19 +475,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                     let shape = object as! SKSpriteNode
                     shape.physicsBody?.applyForce(CGVector(dx: CGFloat(objectProperties[shape]![shapePropertyIndex.AX.rawValue]*metricScale) , dy: CGFloat(objectProperties[shape]![shapePropertyIndex.AY.rawValue]*metricScale)));
                 }
-=======
-                var values = objectProperties[selectedShape]!
-                let input = viewController.getInput()
-                for i in Range(start: 0, end: 10) {
-                    if Float(input[i]) != nil {
-                     values[i] = Float(input[i])!
-                }
->>>>>>> origin/master
             }
-            objectProperties[selectedShape] = values
-            restoreAllobjectProperties(objectProperties)
         }
-<<<<<<< HEAD
         
         /*if selectedShape != nil {
             let position = bg.position
@@ -568,19 +485,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             bg.position = self.boundLayerPos(aNewPosition)
             self.centerOnNode(selectedShape)
         }*/
-=======
-    
-        if (start == 1) {
-            for object in self.children {
-                if (isShapeObject(object)) {
-                    let shape = object as! SKSpriteNode
-                    shape.physicsBody?.applyForce(CGVector(dx: CGFloat(objectProperties[shape]![shapePropertyIndex.AX.rawValue]*metricScale) , dy: CGFloat(objectProperties[shape]![shapePropertyIndex.AY.rawValue]*metricScale)));
-                }
-            }
-
-        }
-        updateSprings();
->>>>>>> origin/master
     }
     
     override func didSimulatePhysics() {

@@ -14,12 +14,10 @@
 		1A99C2751CA098950021F14B /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A99C2741CA098950021F14B /* GameViewController.swift */; };
 		1A99C2781CA098950021F14B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A99C2761CA098950021F14B /* Main.storyboard */; };
 		1A99C27D1CA098950021F14B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A99C27B1CA098950021F14B /* LaunchScreen.storyboard */; };
-		288AF9871CC315C000D1C7DD /* physicslogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 288AF9861CC315C000D1C7DD /* physicslogViewController.swift */; };
-		28A64D2D1CC411F300694D32 /* containerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A64D2C1CC411F300694D32 /* containerViewController.swift */; };
+		288AF9871CC315C000D1C7DD /* physicslogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 288AF9861CC315C000D1C7DD /* physicslogViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		28A64D2D1CC411F300694D32 /* containerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A64D2C1CC411F300694D32 /* containerViewController.swift */; settings = {ASSET_TAGS = (); }; };
 		28BD20851CBCB6B100D54416 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BD20841CBCB6B100D54416 /* TableViewController.swift */; };
 		28EF64001CBC4D9C00AF5765 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28EF63FF1CBC4D9C00AF5765 /* SWRevealViewController.m */; };
-		9F1A51211CC8AFC9001A4EB8 /* FloorImpact.sks in Resources */ = {isa = PBXBuildFile; fileRef = 9F1A511F1CC8AFC9001A4EB8 /* FloorImpact.sks */; };
-		9F1A51221CC8AFC9001A4EB8 /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = 9F1A51201CC8AFC9001A4EB8 /* spark.png */; };
 		9FBFD4821CBF5D5B0024505D /* Rope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FBFD4811CBF5D5B0024505D /* Rope.swift */; };
 		9FCD8FCD1CC2CC2E001393CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9FCD8FCC1CC2CC2E001393CE /* Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -40,8 +38,6 @@
 		28EF63FD1CBC4D8E00AF5765 /* SWRevealViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
 		28EF63FE1CBC4D9B00AF5765 /* PhysWiz-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PhysWiz-Bridging-Header.h"; sourceTree = "<group>"; };
 		28EF63FF1CBC4D9C00AF5765 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
-		9F1A511F1CC8AFC9001A4EB8 /* FloorImpact.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = FloorImpact.sks; sourceTree = "<group>"; };
-		9F1A51201CC8AFC9001A4EB8 /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
 		9FBFD4811CBF5D5B0024505D /* Rope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rope.swift; sourceTree = "<group>"; };
 		9FCD8FCC1CC2CC2E001393CE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -77,7 +73,6 @@
 			isa = PBXGroup;
 			children = (
 				9FCD8FCC1CC2CC2E001393CE /* Assets.xcassets */,
-				9F1A51231CC8B354001A4EB8 /* Emitter Particles */,
 				9FBFD4811CBF5D5B0024505D /* Rope.swift */,
 				1A99C26E1CA098950021F14B /* AppDelegate.swift */,
 				1A938E7B1CBC9D7B00690BA3 /* PWObject.swift */,
@@ -104,15 +99,6 @@
 			);
 			name = SWRevealViewController;
 			path = ..;
-			sourceTree = "<group>";
-		};
-		9F1A51231CC8B354001A4EB8 /* Emitter Particles */ = {
-			isa = PBXGroup;
-			children = (
-				9F1A511F1CC8AFC9001A4EB8 /* FloorImpact.sks */,
-				9F1A51201CC8AFC9001A4EB8 /* spark.png */,
-			);
-			name = "Emitter Particles";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -147,7 +133,6 @@
 				TargetAttributes = {
 					1A99C26A1CA098950021F14B = {
 						CreatedOnToolsVersion = 7.2.1;
-						DevelopmentTeam = 83FP3S8B4B;
 					};
 				};
 			};
@@ -175,10 +160,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				1A99C2711CA098950021F14B /* GameScene.sks in Resources */,
-				9F1A51221CC8AFC9001A4EB8 /* spark.png in Resources */,
 				1A99C27D1CA098950021F14B /* LaunchScreen.storyboard in Resources */,
 				1A99C2781CA098950021F14B /* Main.storyboard in Resources */,
-				9F1A51211CC8AFC9001A4EB8 /* FloorImpact.sks in Resources */,
 				9FCD8FCD1CC2CC2E001393CE /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -310,14 +293,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = PhysWiz/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Intuition.PhysWiz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "PhysWiz-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 2;
@@ -329,14 +309,11 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = PhysWiz/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Intuition.PhysWiz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "PhysWiz-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 2;
 			};
