@@ -16,6 +16,9 @@ class GameScene: SKScene {
     var gadgetNode1: SKSpriteNode! = nil;
     var gadgetNode2: SKSpriteNode! = nil;
     
+    var springglobal = [SKSpriteNode: [SKSpriteNode]]() // Spring that maps to two other nodes.
+    var initialHeight = [SKSpriteNode: CGFloat]();
+    
     var stopped = true
     var button: SKSpriteNode! = nil
     var stop: SKSpriteNode! = nil
@@ -81,7 +84,7 @@ class GameScene: SKScene {
         self.addChild(self.createTrash())
         self.addChild(self.createBG())
         objectProperties = [SKSpriteNode: [Float]]()
-        physicsBody = SKPhysicsBody(rectangleOfSize: bg.size)
+        physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
         // INIT Shape arrays to call later in flag function
         shapeArray.append(shapeType.CIRCLE)
         shapeArray.append(shapeType.SQUARE)
@@ -285,6 +288,7 @@ class GameScene: SKScene {
         let n2 = node2.position
         let deltax = n1.x - n2.x
         let deltay = n1.y - n2.y
+        let distance = sqrt(deltax * deltax + deltay*deltay)
         
         // Create the joint between the two objects
         let spring = SKPhysicsJointSpring.jointWithBodyA(node1.physicsBody!, bodyB: node2.physicsBody!, anchorA: n1, anchorB: n2)
@@ -294,15 +298,41 @@ class GameScene: SKScene {
         
         // Actually create a spring image with physics properties.
         let springobj = SKSpriteNode(imageNamed: "spring.png")
+        
+        let nodes = [node1, node2];
+        springglobal[springobj] = nodes;
+        
         let angle = atan2f(Float(deltay), Float(deltax))
-        springobj.yScale = 3;
         springobj.zRotation = CGFloat(angle + 1.57) // 1.57 because image is naturally vertical
+        initialHeight[springobj] = springobj.size.height;
+        springobj.yScale = distance/springobj.size.height;
         let xOffset = deltax / 2
         let yOffset = deltay / 2
         springobj.position = CGPoint.init(x: n1.x - xOffset, y: n1.y - yOffset)
         springobj.zPosition = -1
-        
+//        springobj.physicsBody = SKPhysicsBody.init(rectangleOfSize: springobj.size)
+//        springobj.physicsBody?.dynamic = false;
         self.addChild(springobj);
+        
+    
+    }
+    
+    func updateSprings()
+    {
+        for (spring, nodes) in springglobal {
+            let springnode1 = nodes[0];
+            let springnode2 = nodes[1];
+            
+            let deltax = springnode1.position.x - springnode2.position.x
+            let deltay = springnode1.position.y - springnode2.position.y
+            let distance = sqrt(deltax * deltax + deltay*deltay)
+            spring.yScale = distance/initialHeight[spring]!;
+            let xOffset = deltax / 2
+            let yOffset = deltay / 2
+            let angle = atan2f(Float(deltay), Float(deltax))
+            spring.zRotation = CGFloat(angle + 1.57) // 1.57 because image is naturally vertical
+            spring.position = CGPoint.init(x: springnode1.position.x - xOffset, y: springnode1.position.y - yOffset)
+        }
     }
     
     
@@ -468,28 +498,29 @@ class GameScene: SKScene {
             }
         }
 
-            // updates selected shapes values with input box values when stopped
-            if (selectedShape != nil && stopped && start == 0) {
-                var values = objectProperties[selectedShape]!
-                let input = viewController.getInput()
-                for i in Range(start: 0, end: 10) {
-                    if Float(input[i]) != nil {
-                     values[i] = Float(input[i])!
-                    }
+        // updates selected shapes values with input box values when stopped
+        if (selectedShape != nil && stopped && start == 0) {
+            var values = objectProperties[selectedShape]!
+            let input = viewController.getInput()
+            for i in Range(start: 0, end: 10) {
+                if Float(input[i]) != nil {
+                 values[i] = Float(input[i])!
                 }
-                objectProperties[selectedShape] = values
-                restoreAllobjectProperties(objectProperties)
             }
-        
-            if (start == 1) {
-                for object in self.children {
-                    if (isShapeObject(object)) {
-                        let shape = object as! SKSpriteNode
-                        shape.physicsBody?.applyForce(CGVector(dx: CGFloat(objectProperties[shape]![shapePropertyIndex.AX.rawValue]*metricScale) , dy: CGFloat(objectProperties[shape]![shapePropertyIndex.AY.rawValue]*metricScale)));
-            }
+            objectProperties[selectedShape] = values
+            restoreAllobjectProperties(objectProperties)
         }
+    
+        if (start == 1) {
+            for object in self.children {
+                if (isShapeObject(object)) {
+                    let shape = object as! SKSpriteNode
+                    shape.physicsBody?.applyForce(CGVector(dx: CGFloat(objectProperties[shape]![shapePropertyIndex.AX.rawValue]*metricScale) , dy: CGFloat(objectProperties[shape]![shapePropertyIndex.AY.rawValue]*metricScale)));
+                }
+            }
 
-    }
+        }
+        updateSprings();
     }
     override func didSimulatePhysics() {
         self.enumerateChildNodesWithName("ball", usingBlock: { (node: SKNode!, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
