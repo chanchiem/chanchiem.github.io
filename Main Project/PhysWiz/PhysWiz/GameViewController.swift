@@ -60,12 +60,18 @@ class GameViewController: UIViewController {
    
     // Finds the index on the table that the user selected
     func setObjectFlag(index: Int) {
-        print(index)
+        //set other flag to null 
+        if index != 9 {
+            gadgetflag = 0
+        }
         objectflag = index
         NSLog("Test")
     }
     func setGadgetFlag(index: Int) {
-        print(index)
+        // set other flag to null
+        if index != 0 {
+        objectflag = 9
+        }
         gadgetflag = index
         NSLog("Test")
     }
