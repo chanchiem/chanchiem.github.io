@@ -319,11 +319,13 @@ class GameScene: SKScene {
         self.physicsWorld.addJoint(rodJoint1)
         self.physicsWorld.addJoint(rodJoint2)
     }
+    // still have to fix this
     func createRamp(location:CGPoint){
         let newObj = self.createObject(location, image: "ramp.png")
         newObj.size = CGSize(width: 200, height: 200)
         let objectTexture = SKTexture.init(imageNamed: "ramp.png")
         newObj.physicsBody = SKPhysicsBody(texture: objectTexture, size: newObj.size)
+        newObj.physicsBody?.mass = 1000000
         self.addChild(newObj)
         
     }
@@ -359,6 +361,8 @@ class GameScene: SKScene {
                 if(checkValidPoint(location) && stopped) {
                     if (viewController.getGadgetFlag() == 4) {
                         createRamp(location)
+                        viewController.gadgetflag = 0
+
                     }
                     let objectType = shapeArray[viewController.getObjectFlag()]
                     if (objectType == shapeType.BLACK) {
@@ -367,7 +371,8 @@ class GameScene: SKScene {
                         let img = String(objectType).lowercaseString + ".png"
                         let newObj = self.createObject(location, image: img)
                         self.addChild(newObj)
-                        //selectedShape = newObj
+                        selectedShape = newObj
+                        viewController.objectflag = 9
                         //self.addChild(self.createObject(location, image: img))
                     }
                 }
@@ -411,12 +416,12 @@ class GameScene: SKScene {
                     if (stopped) {
                         // Playing
                         //shape.physicsBody?.dynamic = true
-                        self.physicsWorld.speed = 0
+                        self.physicsWorld.speed = 1
                     }
                     else if (!stopped) {
                         // Paused
                         //shape.physicsBody?.dynamic = false
-                        self.physicsWorld.speed = 1
+                        self.physicsWorld.speed = 0
                     }
                 }
                 // apply forces and  velocities to object as it can not be done before
@@ -447,11 +452,11 @@ class GameScene: SKScene {
             for shape in self.children {
                 if (stopped) {
                     // Playing
-//                    shape.physicsBody?.dynamic = true
+                    physicsWorld.speed = 1
                 }
                 else if (!stopped) {
                     // Paused
-//                    shape.physicsBody?.dynamic = false
+                    physicsWorld.speed = 0
                 }
                 button.physicsBody?.dynamic = false 
         }
