@@ -86,6 +86,7 @@ class GameScene: SKScene {
         //physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
         physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: 0, y: 0, width: bg.size.width, height: bg.size.height))
         //physicsBody = SKPhysicsBody(rectangleOfSize: bg.size)
+        
         // INIT Shape arrays to call later in flag function
         shapeArray.append(shapeType.CIRCLE)
         shapeArray.append(shapeType.SQUARE)
@@ -243,7 +244,12 @@ class GameScene: SKScene {
         let objectTexture = SKTexture(imageNamed: image)
         object = SKSpriteNode(texture: objectTexture)
         object.size = size
-        object.position = position
+        
+        var newPosition = CGPoint()
+        newPosition.x = position.x + bg.position.x
+        newPosition.y = position.y + bg.position.y
+        
+        object.position = newPosition
         object.name = movableNodeName
         object.physicsBody = SKPhysicsBody(texture: objectTexture, size: size)
         object.physicsBody?.dynamic = true//!stopped
@@ -397,18 +403,18 @@ class GameScene: SKScene {
                 if (!stopped) {
                     objectProperties = saveAllObjectProperties()
                 }
-                for shape in self.children {
-                    if (stopped) {
-                        // Playing
-                        //shape.physicsBody?.dynamic = true
-                        self.physicsWorld.speed = 0
-                    }
-                    else if (!stopped) {
-                        // Paused
-                        //shape.physicsBody?.dynamic = false
-                        self.physicsWorld.speed = 1
-                    }
+                
+                if (stopped) {
+                    // Playing
+                    //shape.physicsBody?.dynamic = true
+                    self.physicsWorld.speed = 1
                 }
+                else if (!stopped) {
+                    // Paused
+                    //shape.physicsBody?.dynamic = false
+                    self.physicsWorld.speed = 0
+                }
+                
                 // apply forces and  velocities to object as it can not be done before
                 // dynamic is set to true or the force and velocity value are set to 0
                 //restoreAllobjectProperties(objectProperties)
@@ -536,19 +542,22 @@ class GameScene: SKScene {
                 let position = node.position
                 let aNewPosition = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
                 let boundedPosition = self.boundLayerPos(aNewPosition)
+                print(bg.position.y)
                 if node.name == "floor" {
                     node.position = boundedPosition
                 } else {
+                    // BUG: MOVES OBJECTS WHEN SCREEN IS SLAMMED AGAINST WALL
                     if bg.position.x != 0.0 && bg.position.x != -2*self.size.width {
                         node.position.x = aNewPosition.x
-                    } else {
+                    } /*else {
                         node.position.x = position.x
-                    }
+                    }*/
                     if bg.position.y != 0.0 && bg.position.y != -self.size.height {
                         node.position.y = aNewPosition.y
-                    } else {
+                    } /*else {
+                        print(position.y)
                         node.position.y = position.y
-                    }
+                    }*/
                 }
             }
         }
