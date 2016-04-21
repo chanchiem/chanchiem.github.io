@@ -36,6 +36,7 @@ class GameScene: SKScene {
     // saves the color of the currently selected node
     var savedColor = SKColor.whiteColor()
     let background = SKSpriteNode(imageNamed: "bg.png")
+    
     enum shapeType: String {
         case CIRCLE = "circle.png"
         case SQUARE = "square.png"
@@ -81,7 +82,9 @@ class GameScene: SKScene {
         self.addChild(self.createTrash())
         self.addChild(self.createBG())
         objectProperties = [SKSpriteNode: [Float]]()
-        physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
+        //physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
+        physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: 0, y: 0, width: bg.size.width, height: bg.size.height))
+        //physicsBody = SKPhysicsBody(rectangleOfSize: bg.size)
         // INIT Shape arrays to call later in flag function
         shapeArray.append(shapeType.CIRCLE)
         shapeArray.append(shapeType.SQUARE)
@@ -108,8 +111,8 @@ class GameScene: SKScene {
     
     // Creates a floor for the physics simulation.
     func createFloor() -> SKSpriteNode {
-        let floor = SKSpriteNode(color: SKColor.brownColor(), size: CGSizeMake(self.frame.size.width, 20))
-        floor.anchorPoint = CGPointMake(0, 0)
+        let floor = SKSpriteNode(color: SKColor.brownColor(), size: CGSizeMake(self.frame.size.width * 3, 20))
+        floor.anchorPoint = CGPointZero
         floor.name = "floor"
         floor.physicsBody = SKPhysicsBody(edgeLoopFromRect: floor.frame)
         floor.physicsBody?.dynamic = false
@@ -272,7 +275,7 @@ class GameScene: SKScene {
     }
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for touch: AnyObject in touches {
-            let location:CGPoint = touch.locationInNode(self)
+            let location:CGPoint = touch.locationInNode(bg)
             let floor:SKNode? = self.childNodeWithName("floor")
             let touchedNode = self.nodeAtPoint(location)
             // If the person selected a node, set it as the selected node.
@@ -350,19 +353,18 @@ class GameScene: SKScene {
                     viewController.setsInputBox(objectProperties[selectedShape]!)
                 }
             }
-            if floor?.containsPoint(location) != nil {
-                
-            //NSLog("Client requesting to create at %f, %f", location.x, location.y)
-                
-                // Make sure the point that is being touched is part of the game scene plane is part of the
-                // game
+            if floor?.containsPoint(location) == false {
+                // Make sure the point that is being touched is part of the game scene plane is part of the game
                 if(checkValidPoint(location) && stopped) {
-                    var objecttype = shapeArray[viewController.getObjectFlag()]
-                    if (objecttype == shapeType.BLACK) {
+                    let objectType = shapeArray[viewController.getObjectFlag()]
+                    if (objectType == shapeType.BLACK) {
                         selectedShape = nil
                     } else {
-                        let img = String(objecttype).lowercaseString + ".png"
-                        self.addChild(self.createObject(location, image: img))
+                        let img = String(objectType).lowercaseString + ".png"
+                        let newObj = self.createObject(location, image: img)
+                        self.addChild(newObj)
+                        //selectedShape = newObj
+                        //self.addChild(self.createObject(location, image: img))
                     }
                 }
             }
@@ -459,7 +461,7 @@ class GameScene: SKScene {
         }
 
             // updates selected shapes values with input box values when stopped
-            if (selectedShape != nil && stopped && start == 0) {
+        if (selectedShape != nil && stopped) { //&& start == 0) {
                 var values = objectProperties[selectedShape]!
                 let input = viewController.getInput()
                 for i in Range(start: 0, end: 10) {
@@ -489,6 +491,7 @@ class GameScene: SKScene {
         })
     }
     
+    // Bounds how far the user can pan the gamescene according to the size of the background.
     func boundLayerPos(aNewPosition: CGPoint) -> CGPoint {
         let winSize = self.size
         var retval = aNewPosition
@@ -500,6 +503,7 @@ class GameScene: SKScene {
         return retval
     }
 
+    // Allows users to drag and drop selectedShapes and the background
     func panForTranslation(translation: CGPoint) {
         if selectedShape != nil {
             let position = selectedShape.position
@@ -514,13 +518,39 @@ class GameScene: SKScene {
         }
         else {
             let position = bg.position
-            print("made it")
             let aNewPosition = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
             bg.position = self.boundLayerPos(aNewPosition)
-            print(bg.position)
+            moveObjects(translation)
         }
     }
     
+    // Moves the objects that are on the screen by the amount that the background is being moved
+    func moveObjects(translation: CGPoint) {
+        let movableObjects = ["movable", "floor"]
+        for node in self.children {
+            if node.name == nil || movableObjects.contains(node.name!) {
+                let position = node.position
+                let aNewPosition = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
+                let boundedPosition = self.boundLayerPos(aNewPosition)
+                if node.name == "floor" {
+                    node.position = boundedPosition
+                } else {
+                    if bg.position.x != 0.0 && bg.position.x != -2*self.size.width {
+                        node.position.x = aNewPosition.x
+                    } else {
+                        node.position.x = position.x
+                    }
+                    if bg.position.y != 0.0 && bg.position.y != -self.size.height {
+                        node.position.y = aNewPosition.y
+                    } else {
+                        node.position.y = position.y
+                    }
+                }
+            }
+        }
+    }
+    
+    // Makes sure the user can only drag objects when the simulation is paused and sets up for panForTranslation
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
         let touch = touches.first
         let positionInScene = touch?.locationInNode(self)
