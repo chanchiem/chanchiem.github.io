@@ -7,31 +7,39 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1A938E7C1CBC9D7B00690BA3 /* PWObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A938E7B1CBC9D7B00690BA3 /* PWObject.swift */; };
 		1A99C26F1CA098950021F14B /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A99C26E1CA098950021F14B /* AppDelegate.swift */; };
 		1A99C2711CA098950021F14B /* GameScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = 1A99C2701CA098950021F14B /* GameScene.sks */; };
 		1A99C2731CA098950021F14B /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A99C2721CA098950021F14B /* GameScene.swift */; };
 		1A99C2751CA098950021F14B /* GameViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1A99C2741CA098950021F14B /* GameViewController.swift */; };
 		1A99C2781CA098950021F14B /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A99C2761CA098950021F14B /* Main.storyboard */; };
-		1A99C27A1CA098950021F14B /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1A99C2791CA098950021F14B /* Assets.xcassets */; };
 		1A99C27D1CA098950021F14B /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1A99C27B1CA098950021F14B /* LaunchScreen.storyboard */; };
-		9FC7C7641CAD8E5300397163 /* circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FC7C7611CAD8E5300397163 /* circle.png */; };
-		9FC7C7651CAD8E5300397163 /* square.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FC7C7621CAD8E5300397163 /* square.png */; };
-		9FC7C7661CAD8E5300397163 /* triangle.png in Resources */ = {isa = PBXBuildFile; fileRef = 9FC7C7631CAD8E5300397163 /* triangle.png */; };
+		288AF9871CC315C000D1C7DD /* physicslogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 288AF9861CC315C000D1C7DD /* physicslogViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		28A64D2D1CC411F300694D32 /* containerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A64D2C1CC411F300694D32 /* containerViewController.swift */; settings = {ASSET_TAGS = (); }; };
+		28BD20851CBCB6B100D54416 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BD20841CBCB6B100D54416 /* TableViewController.swift */; };
+		28EF64001CBC4D9C00AF5765 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28EF63FF1CBC4D9C00AF5765 /* SWRevealViewController.m */; };
+		9FBFD4821CBF5D5B0024505D /* Rope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FBFD4811CBF5D5B0024505D /* Rope.swift */; };
+		9FCD8FCD1CC2CC2E001393CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9FCD8FCC1CC2CC2E001393CE /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1A938E7B1CBC9D7B00690BA3 /* PWObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PWObject.swift; sourceTree = "<group>"; };
 		1A99C26B1CA098950021F14B /* PhysWiz.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PhysWiz.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1A99C26E1CA098950021F14B /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		1A99C2701CA098950021F14B /* GameScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = GameScene.sks; sourceTree = "<group>"; };
 		1A99C2721CA098950021F14B /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		1A99C2741CA098950021F14B /* GameViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameViewController.swift; sourceTree = "<group>"; };
 		1A99C2771CA098950021F14B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		1A99C2791CA098950021F14B /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		1A99C27C1CA098950021F14B /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1A99C27E1CA098950021F14B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9FC7C7611CAD8E5300397163 /* circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circle.png; sourceTree = "<group>"; };
-		9FC7C7621CAD8E5300397163 /* square.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = square.png; sourceTree = "<group>"; };
-		9FC7C7631CAD8E5300397163 /* triangle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = triangle.png; sourceTree = "<group>"; };
+		288AF9861CC315C000D1C7DD /* physicslogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = physicslogViewController.swift; path = ../physicslogViewController.swift; sourceTree = "<group>"; };
+		28A64D2C1CC411F300694D32 /* containerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = containerViewController.swift; sourceTree = "<group>"; };
+		28BD20841CBCB6B100D54416 /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
+		28EF63FD1CBC4D8E00AF5765 /* SWRevealViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
+		28EF63FE1CBC4D9B00AF5765 /* PhysWiz-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PhysWiz-Bridging-Header.h"; sourceTree = "<group>"; };
+		28EF63FF1CBC4D9C00AF5765 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
+		9FBFD4811CBF5D5B0024505D /* Rope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rope.swift; sourceTree = "<group>"; };
+		9FCD8FCC1CC2CC2E001393CE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,19 +72,33 @@
 		1A99C26D1CA098950021F14B /* PhysWiz */ = {
 			isa = PBXGroup;
 			children = (
-				9FC7C7611CAD8E5300397163 /* circle.png */,
-				9FC7C7621CAD8E5300397163 /* square.png */,
-				9FC7C7631CAD8E5300397163 /* triangle.png */,
+				9FCD8FCC1CC2CC2E001393CE /* Assets.xcassets */,
+				9FBFD4811CBF5D5B0024505D /* Rope.swift */,
 				1A99C26E1CA098950021F14B /* AppDelegate.swift */,
+				1A938E7B1CBC9D7B00690BA3 /* PWObject.swift */,
 				1A99C2701CA098950021F14B /* GameScene.sks */,
 				1A99C2721CA098950021F14B /* GameScene.swift */,
 				1A99C2741CA098950021F14B /* GameViewController.swift */,
+				288AF9861CC315C000D1C7DD /* physicslogViewController.swift */,
+				28BD20841CBCB6B100D54416 /* TableViewController.swift */,
+				28A64D2C1CC411F300694D32 /* containerViewController.swift */,
 				1A99C2761CA098950021F14B /* Main.storyboard */,
-				1A99C2791CA098950021F14B /* Assets.xcassets */,
 				1A99C27B1CA098950021F14B /* LaunchScreen.storyboard */,
 				1A99C27E1CA098950021F14B /* Info.plist */,
+				28EF64011CBC4DA700AF5765 /* SWRevealViewController */,
 			);
 			path = PhysWiz;
+			sourceTree = "<group>";
+		};
+		28EF64011CBC4DA700AF5765 /* SWRevealViewController */ = {
+			isa = PBXGroup;
+			children = (
+				28EF63FD1CBC4D8E00AF5765 /* SWRevealViewController.h */,
+				28EF63FF1CBC4D9C00AF5765 /* SWRevealViewController.m */,
+				28EF63FE1CBC4D9B00AF5765 /* PhysWiz-Bridging-Header.h */,
+			);
+			name = SWRevealViewController;
+			path = ..;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -139,11 +161,8 @@
 			files = (
 				1A99C2711CA098950021F14B /* GameScene.sks in Resources */,
 				1A99C27D1CA098950021F14B /* LaunchScreen.storyboard in Resources */,
-				9FC7C7641CAD8E5300397163 /* circle.png in Resources */,
-				1A99C27A1CA098950021F14B /* Assets.xcassets in Resources */,
-				9FC7C7651CAD8E5300397163 /* square.png in Resources */,
-				9FC7C7661CAD8E5300397163 /* triangle.png in Resources */,
 				1A99C2781CA098950021F14B /* Main.storyboard in Resources */,
+				9FCD8FCD1CC2CC2E001393CE /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -157,6 +176,12 @@
 				1A99C2731CA098950021F14B /* GameScene.swift in Sources */,
 				1A99C2751CA098950021F14B /* GameViewController.swift in Sources */,
 				1A99C26F1CA098950021F14B /* AppDelegate.swift in Sources */,
+				1A938E7C1CBC9D7B00690BA3 /* PWObject.swift in Sources */,
+				9FBFD4821CBF5D5B0024505D /* Rope.swift in Sources */,
+				288AF9871CC315C000D1C7DD /* physicslogViewController.swift in Sources */,
+				28BD20851CBCB6B100D54416 /* TableViewController.swift in Sources */,
+				28A64D2D1CC411F300694D32 /* containerViewController.swift in Sources */,
+				28EF64001CBC4D9C00AF5765 /* SWRevealViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -267,11 +292,14 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = PhysWiz/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Intuition.PhysWiz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "PhysWiz-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Debug;
@@ -280,11 +308,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				INFOPLIST_FILE = PhysWiz/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.Intuition.PhysWiz;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "PhysWiz-Bridging-Header.h";
 				TARGETED_DEVICE_FAMILY = 2;
 			};
 			name = Release;
