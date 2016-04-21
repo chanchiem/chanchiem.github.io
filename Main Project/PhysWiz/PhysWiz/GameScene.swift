@@ -325,16 +325,7 @@ class GameScene: SKScene {
         self.physicsWorld.addJoint(rodJoint1)
         self.physicsWorld.addJoint(rodJoint2)
     }
-    // still have to fix this
-    func createRamp(location:CGPoint){
-        let newObj = self.createObject(location, image: "ramp.png")
-        newObj.size = CGSize(width: 200, height: 200)
-        let objectTexture = SKTexture.init(imageNamed: "ramp.png")
-        newObj.physicsBody = SKPhysicsBody(texture: objectTexture, size: newObj.size)
-        newObj.physicsBody?.mass = 1000000
-        self.addChild(newObj)
-        
-    }
+    
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for touch: AnyObject in touches {
             let location:CGPoint = touch.locationInNode(bg)
@@ -365,11 +356,6 @@ class GameScene: SKScene {
             if floor?.containsPoint(location) == false {
                 // Make sure the point that is being touched is part of the game scene plane is part of the game
                 if(checkValidPoint(location) && stopped) {
-                    if (viewController.getGadgetFlag() == 4) {
-                        createRamp(location)
-                        viewController.gadgetflag = 0
-
-                    }
                     let objectType = shapeArray[viewController.getObjectFlag()]
                     if (objectType == shapeType.BLACK) {
                         selectedShape = nil
@@ -377,8 +363,7 @@ class GameScene: SKScene {
                         let img = String(objectType).lowercaseString + ".png"
                         let newObj = self.createObject(location, image: img)
                         self.addChild(newObj)
-                        selectedShape = newObj
-                        viewController.objectflag = 9
+                        //selectedShape = newObj
                         //self.addChild(self.createObject(location, image: img))
                     }
                 }
@@ -418,25 +403,11 @@ class GameScene: SKScene {
                 if (!stopped) {
                     objectProperties = saveAllObjectProperties()
                 }
-<<<<<<< HEAD
                 
                 if (stopped) {
                     // Playing
                     //shape.physicsBody?.dynamic = true
                     self.physicsWorld.speed = 1
-=======
-                for shape in self.children {
-                    if (stopped) {
-                        // Playing
-                        //shape.physicsBody?.dynamic = true
-                        self.physicsWorld.speed = 1
-                    }
-                    else if (!stopped) {
-                        // Paused
-                        //shape.physicsBody?.dynamic = false
-                        self.physicsWorld.speed = 0
-                    }
->>>>>>> origin/master
                 }
                 else if (!stopped) {
                     // Paused
@@ -472,11 +443,11 @@ class GameScene: SKScene {
             for shape in self.children {
                 if (stopped) {
                     // Playing
-                    physicsWorld.speed = 1
+//                    shape.physicsBody?.dynamic = true
                 }
                 else if (!stopped) {
                     // Paused
-                    physicsWorld.speed = 0
+//                    shape.physicsBody?.dynamic = false
                 }
                 button.physicsBody?.dynamic = false 
         }
