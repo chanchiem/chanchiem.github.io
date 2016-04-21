@@ -318,7 +318,14 @@ class GameScene: SKScene {
         self.physicsWorld.addJoint(rodJoint1)
         self.physicsWorld.addJoint(rodJoint2)
     }
-    
+    func createRamp(location:CGPoint){
+        let newObj = self.createObject(location, image: "ramp.png")
+        newObj.size = CGSize(width: 200, height: 200)
+        let objectTexture = SKTexture.init(imageNamed: "ramp.png")
+        newObj.physicsBody = SKPhysicsBody(texture: objectTexture, size: newObj.size)
+        self.addChild(newObj)
+        
+    }
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for touch: AnyObject in touches {
             let location:CGPoint = touch.locationInNode(bg)
@@ -349,6 +356,9 @@ class GameScene: SKScene {
             if floor?.containsPoint(location) == false {
                 // Make sure the point that is being touched is part of the game scene plane is part of the game
                 if(checkValidPoint(location) && stopped) {
+                    if (viewController.getGadgetFlag() == 4) {
+                        createRamp(location)
+                    }
                     let objectType = shapeArray[viewController.getObjectFlag()]
                     if (objectType == shapeType.BLACK) {
                         selectedShape = nil
