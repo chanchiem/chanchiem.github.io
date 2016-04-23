@@ -366,6 +366,7 @@ class GameScene: SKScene {
                         let img = String(objectType).lowercaseString + ".png"
                         let newObj = self.createObject(location, image: img)
                         self.addChild(newObj)
+                        viewController.objectflag = 9
                         //selectedShape = newObj
                         //self.addChild(self.createObject(location, image: img))
                     }
