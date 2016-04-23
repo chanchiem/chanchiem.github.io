@@ -95,7 +95,7 @@
                     <navigationItem key="navigationItem" id="hNh-OJ-fjD">
                         <leftBarButtonItems>
                             <barButtonItem title="Gadgets" id="Wcz-Pc-vvH"/>
-                            <barButtonItem title="Item" id="UuB-WA-CK0">
+                            <barButtonItem title="Log" id="UuB-WA-CK0">
                                 <connections>
                                     <action selector="showPhysicsLog:" destination="Ddb-st-tCg" id="l3S-BB-t97"/>
                                 </connections>
@@ -124,11 +124,11 @@
                         <viewControllerLayoutGuide type="bottom" id="fcb-Ps-wOo"/>
                     </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="GWf-sF-3lX" customClass="SKView">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="200"/>
+                        <rect key="frame" x="0.0" y="0.0" width="1024" height="500"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3gf-js-iHe" userLabel="Input">
-                                <rect key="frame" x="26" y="20" width="240" height="160"/>
+                                <rect key="frame" x="20" y="32" width="240" height="160"/>
                                 <subviews>
                                     <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0.00" borderStyle="bezel" placeholder="0.00" textAlignment="natural" minimumFontSize="17" clearButtonMode="whileEditing" translatesAutoresizingMaskIntoConstraints="NO" id="SAj-CO-JnA" userLabel="Px">
                                         <rect key="frame" x="50" y="35" width="60" height="22"/>
@@ -246,6 +246,7 @@
                                         <rect key="frame" x="118" y="9" width="60" height="22"/>
                                         <animations/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
@@ -275,10 +276,10 @@
                                 <color key="backgroundColor" red="0.83733822601010099" green="0.83733822601010099" blue="0.83733822601010099" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="7bm-Bg-3yw" userLabel="Output">
-                                <rect key="frame" x="280" y="20" width="240" height="160"/>
+                                <rect key="frame" x="280" y="32" width="240" height="160"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xlG-n4-IjE" userLabel="OutputValues">
-                                        <rect key="frame" x="14" y="15" width="212" height="130"/>
+                                        <rect key="frame" x="14" y="22" width="212" height="130"/>
                                         <animations/>
                                         <fontDescription key="fontDescription" type="system" pointSize="10"/>
                                         <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
@@ -288,10 +289,80 @@
                                 <animations/>
                                 <color key="backgroundColor" red="0.83733822599999996" green="0.83733822599999996" blue="0.83733822599999996" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eGr-56-BwD">
+                                <rect key="frame" x="947" y="0.0" width="57" height="30"/>
+                                <animations/>
+                                <state key="normal" title="Settings"/>
+                            </button>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yyp-7e-3tV">
+                                <rect key="frame" x="541" y="32" width="453" height="160"/>
+                                <subviews>
+                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="CqY-vA-Xjd">
+                                        <rect key="frame" x="140" y="42" width="51" height="31"/>
+                                        <animations/>
+                                        <connections>
+                                            <action selector="changeVelocityType:" destination="fPQ-S9-gZ9" eventType="valueChanged" id="vnd-rb-Xwo"/>
+                                        </connections>
+                                    </switch>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Cartesian" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="D7z-6v-M7b">
+                                        <rect key="frame" x="77" y="12" width="74" height="21"/>
+                                        <animations/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Vector" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="hSM-tG-D6C">
+                                        <rect key="frame" x="180" y="12" width="51" height="21"/>
+                                        <animations/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="Co5-0K-9xW">
+                                        <rect key="frame" x="140" y="81" width="51" height="31"/>
+                                        <animations/>
+                                        <connections>
+                                            <action selector="changeAccelerationType:" destination="fPQ-S9-gZ9" eventType="valueChanged" id="4fg-Wi-bzW"/>
+                                        </connections>
+                                    </switch>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Velocity" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Oa6-QL-vr0">
+                                        <rect key="frame" x="16" y="47" width="61" height="21"/>
+                                        <animations/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Acceleration" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="cou-JN-9S5">
+                                        <rect key="frame" x="8" y="86" width="96" height="21"/>
+                                        <animations/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Force" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H1A-fZ-97b">
+                                        <rect key="frame" x="24" y="125" width="44" height="21"/>
+                                        <animations/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="AjY-gf-SuK">
+                                        <rect key="frame" x="140" y="120" width="51" height="31"/>
+                                        <animations/>
+                                        <connections>
+                                            <action selector="changeForceType:" destination="fPQ-S9-gZ9" eventType="valueChanged" id="8cX-cb-n4d"/>
+                                        </connections>
+                                    </switch>
+                                </subviews>
+                                <animations/>
+                                <color key="backgroundColor" red="0.83733822599999996" green="0.83733822599999996" blue="0.83733822599999996" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
                         </subviews>
                         <animations/>
                         <color key="backgroundColor" red="0.9379142992424242" green="0.9379142992424242" blue="0.9379142992424242" alpha="1" colorSpace="calibratedRGB"/>
                     </view>
+                    <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
+                    <size key="freeformSize" width="1024" height="500"/>
                     <connections>
                         <outlet property="Av" destination="j94-0H-MU0" id="wUk-ZY-wcF"/>
                         <outlet property="Ax" destination="0CG-g6-Olw" id="KFd-c5-cbf"/>
@@ -305,7 +376,16 @@
                         <outlet property="Py" destination="3Wv-pP-Dpf" id="Dt2-ia-sL2"/>
                         <outlet property="Vx" destination="dxd-0f-9B3" id="ckF-YE-aZj"/>
                         <outlet property="Vy" destination="tl4-fr-azw" id="vPo-Ay-KJ0"/>
+                        <outlet property="accelerationType" destination="Co5-0K-9xW" id="9aN-hv-reA"/>
+                        <outlet property="accelerationXLabel" destination="GrL-bh-ztA" id="u3B-Ge-ijM"/>
+                        <outlet property="accelerationYLabel" destination="H1N-ed-y6W" id="w5p-kf-rsh"/>
+                        <outlet property="forceType" destination="AjY-gf-SuK" id="nPM-Fh-Ssn"/>
+                        <outlet property="forceXLabel" destination="yyM-cY-9JS" id="B27-y7-2Xv"/>
+                        <outlet property="forceYLabel" destination="B0F-7L-kSn" id="w9H-Qk-S7m"/>
                         <outlet property="physicsLog" destination="GWf-sF-3lX" id="TGd-Tv-WZD"/>
+                        <outlet property="velocityType" destination="CqY-vA-Xjd" id="UBq-HH-baW"/>
+                        <outlet property="velocityXLabel" destination="6Cf-1Y-Rgx" id="rb2-YI-JOj"/>
+                        <outlet property="velocityYLabel" destination="USS-ny-MT7" id="XCS-6B-WFM"/>
                         <segue destination="mSw-wh-qeC" kind="unwind" identifier="toHomeView" unwindAction="unwindSegue:" id="Z8A-hk-8lm"/>
                     </connections>
                 </viewController>

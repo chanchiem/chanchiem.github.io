@@ -252,7 +252,6 @@ class GameScene: SKScene {
         object.position = newPosition
         object.name = movableNodeName
         object.physicsBody = SKPhysicsBody(texture: objectTexture, size: size)
-        object.physicsBody?.dynamic = true//!stopped
         object.physicsBody?.mass = 1
         object.physicsBody?.friction = 0.7
         object.physicsBody?.linearDamping = 0
@@ -325,7 +324,15 @@ class GameScene: SKScene {
         self.physicsWorld.addJoint(rodJoint1)
         self.physicsWorld.addJoint(rodJoint2)
     }
-    
+
+    func createRamp(location:CGPoint){
+        let newObj = self.createObject(location, image: "ramp.png")
+        newObj.size = CGSize(width: 200, height: 200)
+        let objectTexture = SKTexture.init(imageNamed: "ramp.png")
+        newObj.physicsBody = SKPhysicsBody(texture: objectTexture, size: newObj.size)
+        self.addChild(newObj)
+        
+    }
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for touch: AnyObject in touches {
             let location:CGPoint = touch.locationInNode(bg)
@@ -356,6 +363,10 @@ class GameScene: SKScene {
             if floor?.containsPoint(location) == false {
                 // Make sure the point that is being touched is part of the game scene plane is part of the game
                 if(checkValidPoint(location) && stopped) {
+                    if (viewController.getGadgetFlag() == 4) {
+                        createRamp(location)
+                    }
+
                     let objectType = shapeArray[viewController.getObjectFlag()]
                     if (objectType == shapeType.BLACK) {
                         selectedShape = nil
@@ -403,7 +414,7 @@ class GameScene: SKScene {
                 if (!stopped) {
                     objectProperties = saveAllObjectProperties()
                 }
-                
+  
                 if (stopped) {
                     // Playing
                     //shape.physicsBody?.dynamic = true
@@ -413,6 +424,7 @@ class GameScene: SKScene {
                     // Paused
                     //shape.physicsBody?.dynamic = false
                     self.physicsWorld.speed = 0
+
                 }
                 
                 // apply forces and  velocities to object as it can not be done before
@@ -440,18 +452,15 @@ class GameScene: SKScene {
         timeCounter += 1
         var time = Int(viewController.getTime())
         if timeCounter ==  time {
-            for shape in self.children {
+            //for shape in self.children {
                 if (stopped) {
-                    // Playing
-//                    shape.physicsBody?.dynamic = true
-                }
+                    self.physicsWorld.speed = 1
+                    }
                 else if (!stopped) {
-                    // Paused
-//                    shape.physicsBody?.dynamic = false
+                  self.physicsWorld.speed = 0
                 }
                 button.physicsBody?.dynamic = false 
         }
-    }
     }
     /* Called before each frame is rendered */
     override func update(currentTime: CFTimeInterval) {        // continously update values of parameters for selected object
@@ -464,35 +473,27 @@ class GameScene: SKScene {
 
             // updates selected shapes values with input box values when stopped
         if (selectedShape != nil && stopped) { //&& start == 0) {
-            var values = objectProperties[selectedShape]!
-            let input = viewController.getInput()
-            for i in Range(start: 0, end: 10) {
-                if Float(input[i]) != nil {
-                    values[i] = Float(input[i])!
+                var values = objectProperties[selectedShape]!
+                let input = viewController.getInput()
+                for i in Range(start: 0, end: 10) {
+                    if Float(input[i]) != nil {
+                     values[i] = Float(input[i])!
+                    }
                 }
+                objectProperties[selectedShape] = values
+                //restoreAllobjectProperties(objectProperties)
             }
-            objectProperties[selectedShape] = values
-            //restoreAllobjectProperties(objectProperties)
-        }
         
-        if (start == 1) {
-            for object in self.children {
-                if (isShapeObject(object)) {
-                    let shape = object as! SKSpriteNode
-                    shape.physicsBody?.applyForce(CGVector(dx: CGFloat(objectProperties[shape]![shapePropertyIndex.AX.rawValue]*metricScale) , dy: CGFloat(objectProperties[shape]![shapePropertyIndex.AY.rawValue]*metricScale)));
-                }
+            if (start == 1) {
+                for object in self.children {
+                    if (isShapeObject(object)) {
+                        let shape = object as! SKSpriteNode
+                        shape.physicsBody?.applyForce(CGVector(dx: CGFloat(objectProperties[shape]![shapePropertyIndex.AX.rawValue]*metricScale) , dy: CGFloat(objectProperties[shape]![shapePropertyIndex.AY.rawValue]*metricScale)));
             }
         }
-        
-        /*if selectedShape != nil {
-            let position = bg.position
-            let translation = selectedShape.physicsBody?.velocity
-            let aNewPosition = CGPoint(x: position.x - translation!.dx/CGFloat(metricScale), y: position.y - translation!.dy/CGFloat(metricScale))
-            bg.position = self.boundLayerPos(aNewPosition)
-            self.centerOnNode(selectedShape)
-        }*/
+
     }
-    
+    }
     override func didSimulatePhysics() {
         self.enumerateChildNodesWithName("ball", usingBlock: { (node: SKNode!, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
             if node.position.y < 0 {
@@ -509,7 +510,7 @@ class GameScene: SKScene {
         retval.x = CGFloat(max(retval.x, -(bg.size.width) + winSize.width))
         retval.y = CGFloat(min(retval.y, 0))
         retval.y = CGFloat(max(retval.y, -(bg.size.height) + winSize.height))
-
+        
         return retval
     }
 

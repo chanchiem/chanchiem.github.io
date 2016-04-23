@@ -16,6 +16,13 @@
             startingLineNumber = "294"
             endingLineNumber = "294"
             landmarkName = "createSpringBetweenNodes(_:node2:)"
+
+            timestampString = "482903279.205671"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "287"
+            endingLineNumber = "287"
+            landmarkName = "touchesBegan(_:withEvent:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -26,12 +33,21 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PhysWiz/GameScene.swift"
+
             timestampString = "482952931.707913"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "521"
             endingLineNumber = "521"
             landmarkName = "panForTranslation(_:)"
+
+            timestampString = "482903279.205671"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "504"
+            endingLineNumber = "504"
+            landmarkName = "boundLayerPos(_:)"
+>>>>>>> origin/master
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
