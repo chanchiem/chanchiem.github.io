@@ -552,7 +552,7 @@ class GameScene: SKScene {
                 // Updates the value of the variable 'stopped'
                 if (stopped) {
                     // being used to try and figure put the time component
-                  //var timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: "runtime", userInfo: nil, repeats: true)
+                  var timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: "runtime", userInfo: nil, repeats: true)
                     stopped = false
                     button.texture = SKTexture(imageNamed: "pause.png")
                 } else {
