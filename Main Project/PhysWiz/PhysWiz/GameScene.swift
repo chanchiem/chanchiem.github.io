@@ -440,7 +440,10 @@ class GameScene: SKScene {
         self.physicsWorld.addJoint(rodJoint2)
     }
 
-
+<<<<<<< HEAD
+=======
+    
+>>>>>>> origin/master
     func createRamp(location:CGPoint){
         let newObj = self.createObject(location, image: "ramp.png")
         newObj.size = CGSize(width: 200, height: 200)
