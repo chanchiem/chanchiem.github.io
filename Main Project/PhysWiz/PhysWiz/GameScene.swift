@@ -16,6 +16,10 @@ class GameScene: SKScene {
     var gadgetNode1: SKSpriteNode! = nil;
     var gadgetNode2: SKSpriteNode! = nil;
     
+    var springglobal = [SKSpriteNode: [SKSpriteNode]]() // Spring that maps to two other nodes.
+    var initialHeight = [SKSpriteNode: CGFloat]();
+    var labelMap = [SKSpriteNode: SKLabelNode](); // Each sk spritenode will have a label associated with it
+    
     var stopped = true
     var button: SKSpriteNode! = nil
     var stop: SKSpriteNode! = nil
@@ -290,13 +294,122 @@ class GameScene: SKScene {
     }
     
     func createSpringBetweenNodes(node1: SKSpriteNode, node2: SKSpriteNode) {
-        let node1Mid = node1.position
-        let node2Mid = node2.position
-        let spring = SKPhysicsJointSpring.jointWithBodyA(node1.physicsBody!, bodyB: node2.physicsBody!, anchorA: node1Mid, anchorB: node2Mid)
+        let n1 = node1.position
+        let n2 = node2.position
+        let deltax = n1.x - n2.x
+        let deltay = n1.y - n2.y
+        let distance = sqrt(deltax * deltax + deltay*deltay)
+        
+        // Create the joint between the two objects
+        let spring = SKPhysicsJointSpring.jointWithBodyA(node1.physicsBody!, bodyB: node2.physicsBody!, anchorA: n1, anchorB: n2)
         spring.damping = 0.5
         spring.frequency = 0.5
         self.physicsWorld.addJoint(spring)
+        
+        // Actually create a spring image with physics properties.
+        let springobj = SKSpriteNode(imageNamed: "spring.png")
+        
+        let nodes = [node1, node2];
+        springglobal[springobj] = nodes;
+        
+        let angle = atan2f(Float(deltay), Float(deltax))
+        springobj.zRotation = CGFloat(angle + 1.57) // 1.57 because image is naturally vertical
+        initialHeight[springobj] = springobj.size.height;
+        springobj.yScale = distance/springobj.size.height;
+        let xOffset = deltax / 2
+        let yOffset = deltay / 2
+        springobj.position = CGPoint.init(x: n1.x - xOffset, y: n1.y - yOffset)
+        springobj.zPosition = -1
+        //        springobj.physicsBody = SKPhysicsBody.init(rectangleOfSize: springobj.size)
+        //        springobj.physicsBody?.dynamic = false;
+        self.addChild(springobj);
     }
+    
+    func distBetweenNodes(node1: SKSpriteNode, node2: SKSpriteNode) -> CGFloat
+    {
+        let n1 = node1.position
+        let n2 = node2.position
+        let deltax = n1.x - n2.x
+        let deltay = n1.y - n2.y
+        let distance = sqrt(deltax * deltax + deltay*deltay)
+        
+        return distance;
+    }
+    
+    func updateSprings()
+    {
+        for (spring, nodes) in springglobal {
+            let springnode1 = nodes[0];
+            let springnode2 = nodes[1];
+            
+            let deltax = springnode1.position.x - springnode2.position.x
+            let deltay = springnode1.position.y - springnode2.position.y
+            let distance = sqrt(deltax * deltax + deltay*deltay)
+            spring.yScale = distance/initialHeight[spring]!;
+            let xOffset = deltax / 2
+            let yOffset = deltay / 2
+            let angle = atan2f(Float(deltay), Float(deltax))
+            spring.zRotation = CGFloat(angle + 1.57) // 1.57 because image is naturally vertical
+            spring.position = CGPoint.init(x: springnode1.position.x - xOffset, y: springnode1.position.y - yOffset)
+        }
+    }
+    
+    // Updates relative distance labels when an object is being dragged.
+    func updateNodeLabels()
+    {
+        
+        // Otherwise, label is on when simulation is NOT running
+        for node in self.children
+        {
+            if (!isShapeObject(node)) { continue }
+            let sksprite = node as! SKSpriteNode
+            if (selectedShape == nil) { return }
+            if (sksprite == selectedShape) { continue }
+            
+            if (labelMap[sksprite] == nil) {
+                let newLabel = SKLabelNode.init(text: "name")
+                newLabel.fontColor = UIColor.blackColor();
+                newLabel.fontSize = 15.0
+                newLabel.fontName = "AvenirNext-Bold"
+                labelMap[sksprite] = newLabel;
+                self.addChild(newLabel);
+            }
+            
+            let label = labelMap[sksprite];
+            label?.hidden = false;
+            let dist = String(distBetweenNodes(selectedShape, node2: sksprite) / CGFloat(metricScale))
+            label?.text = truncateString(dist, decLen: 3)
+            let pos = sksprite.position;
+            label?.position = CGPoint.init(x: pos.x, y: pos.y + sksprite.size.height/2)
+        }
+    }
+    
+    // Truncates the string so that it shows only the given
+    // amount of numbers after the first decimal.
+    // For example:
+    // decLen = 3; 3.1023915 would return 3.102
+    //
+    // If there are no decimals, then it just returns the string.
+    func truncateString(inputString: String, decLen: Int) -> String
+    {
+        return String(format: "%.\(decLen)f", (inputString as NSString).floatValue)
+    }
+    
+    func hideLabels()
+    {
+        for node in self.children{
+            if (!isShapeObject(node)) { continue }
+            let sksprite = node as! SKSpriteNode
+            
+            let label = labelMap[sksprite];
+            
+            if (label != nil) {
+                label?.hidden = true;
+            }
+        }
+        return;
+    }
+    
     
     func createRodBetweenNodes(node1: SKSpriteNode, node2: SKSpriteNode) {
         let n1 = node1.position
@@ -317,6 +430,8 @@ class GameScene: SKScene {
         rod.position = CGPoint.init(x: n1.x - xOffset, y: n1.y - yOffset)
         rod.zPosition = -1
         
+        rod.fillColor = UIColor.blueColor()
+        
         self.addChild(rod);
         
         let rodJoint1 = SKPhysicsJointFixed.jointWithBodyA(node1.physicsBody!, bodyB: rod.physicsBody!, anchor: n1)
@@ -325,6 +440,10 @@ class GameScene: SKScene {
         self.physicsWorld.addJoint(rodJoint2)
     }
 
+<<<<<<< HEAD
+=======
+    
+>>>>>>> origin/master
     func createRamp(location:CGPoint){
         let newObj = self.createObject(location, image: "ramp.png")
         newObj.size = CGSize(width: 200, height: 200)
@@ -385,6 +504,7 @@ class GameScene: SKScene {
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for touch: AnyObject in touches {
             let location = touch.locationInNode(self)
+            hideLabels();
             // Removes the selectedShape if it's over the trash bin
             if trash.containsPoint(location) {
                 objectProperties.removeValueForKey(selectedShape)
@@ -489,11 +609,14 @@ class GameScene: SKScene {
                     if (isShapeObject(object)) {
                         let shape = object as! SKSpriteNode
                         shape.physicsBody?.applyForce(CGVector(dx: CGFloat(objectProperties[shape]![shapePropertyIndex.AX.rawValue]*metricScale) , dy: CGFloat(objectProperties[shape]![shapePropertyIndex.AY.rawValue]*metricScale)));
-            }
-        }
+                    }
+                }
 
+            }
+        updateSprings();
     }
-    }
+    
+    
     override func didSimulatePhysics() {
         self.enumerateChildNodesWithName("ball", usingBlock: { (node: SKNode!, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
             if node.position.y < 0 {
@@ -516,6 +639,7 @@ class GameScene: SKScene {
 
     // Allows users to drag and drop selectedShapes and the background
     func panForTranslation(translation: CGPoint) {
+        updateNodeLabels();
         if selectedShape != nil {
             let position = selectedShape.position
             if selectedShape.name! == movableNodeName {
