@@ -11,16 +11,10 @@ import Foundation
 
 private let movableNodeName = "movable"
 
-class GameScene: SKScene, SKPhysicsContactDelegate {
+class GameScene: SKScene {
     var ropeOn = false; // The flag for the ropes.
     var gadgetNode1: SKSpriteNode! = nil;
     var gadgetNode2: SKSpriteNode! = nil;
-    
-    var springglobal = [SKSpriteNode: [SKSpriteNode]]() // Spring that maps to two other nodes.
-    var initialHeight = [SKSpriteNode: CGFloat]();
-//    var collision_handler: CollisionHandler!
-    var labelMap = [SKSpriteNode: SKLabelNode](); // Each sk spritenode will have a label associated with it
-    
     
     var stopped = true
     var button: SKSpriteNode! = nil
@@ -36,7 +30,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var counter = 0
     // temporary variable to signify start or simulation
     var start = 0
-    // used to scale all parameters from pixels to other metric system
+    // used to scale all parameters from pixels to other metric system 
     // not applied to mass or values not associated with pixels
     var metricScale = Float(100)
     // saves the color of the currently selected node
@@ -71,7 +65,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         case AY     = 7
         case FX     = 8
         case FY     = 9
-        
+
     }
     
     
@@ -102,12 +96,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         shapeArray.append(shapeType.BIKE)
         shapeArray.append(shapeType.CAR)
         shapeArray.append(shapeType.BLACK)
-        
-//        collision_handler = CollisionHandler.init(g_scene: self);
-//        self.physicsWorld.contactDelegate = collision_handler;
     }
-    
-    
     
     // Creates a background for the gamescene
     func createBG() -> SKSpriteNode {
@@ -160,13 +149,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     // return parameters of given object from either the object itself or dictionary
-    func getParameters(object: SKSpriteNode) -> [Float]{
+   func getParameters(object: SKSpriteNode) -> [Float]{
         var input = [Float]()
         // handle properties that remain the same when static and when dynamic
         input.insert(Float((object.physicsBody?.mass)!), atIndex: shapePropertyIndex.MASS.rawValue)
         input.insert(Float((object.position.x))/metricScale, atIndex: shapePropertyIndex.PX.rawValue)
         input.insert(Float((object.position.y))/metricScale, atIndex: shapePropertyIndex.PY.rawValue)
-        // handle properties that lose values when static
+        // handle properties that lose values when static 
         if stopped {
             if objectProperties[object] != nil {
                 for i in Range(start: 3, end: 10) {
@@ -175,7 +164,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
             else {
                 for i in Range(start: 3, end: 10) {
-                    input.insert(0, atIndex: i)
+                input.insert(0, atIndex: i)
                 }
             }
         }
@@ -204,7 +193,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     // Stores all object properties in the scene (velocity, position, and acceleration) to a data structure.
-    // This function will be called when the user presses pause.
+    // This function will be called when the user presses pause. 
     // Returns a dictionary with keys as each shape in the scene and
     // the values as a float array with the shape properties as defined
     // in the shapePropertyIndex enumeration.
@@ -222,7 +211,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     // Restores all the object properties of each shape given an dictionary
-    // with keys as each shape in the scene and values as a float array
+    // with keys as each shape in the scene and values as a float array 
     // with the shape properties as defined in the shapePropertyindex enumeration.
     // DEVELOPER'S NOTE: MAKE SURE TO ADD FORCES TO THIS
     // WITH THE CURRENT IMPLMENETATION OF getParameters,
@@ -233,7 +222,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         for (object, properties) in inputDictionary {
             if (isShapeObject(object)) {
-                
+    
                 // Note: This format is based on the getObjectProperties function.
                 object.physicsBody?.mass = CGFloat(properties[0])
                 object.position.x = CGFloat(properties[1]*metricScale)
@@ -241,11 +230,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 object.physicsBody?.velocity.dx = CGFloat(properties[3]*metricScale)
                 object.physicsBody?.velocity.dy = CGFloat(properties[4]*metricScale)
                 object.physicsBody?.angularVelocity = CGFloat(properties[5]*metricScale)
-                
+
             }
         }
     }
-    
+
     // Creates an SKSpriteNode object at the location marked by position using the image passed in.
     func createObject(position: CGPoint, image: String) -> SKSpriteNode {
         let size = CGSize(width: 40, height: 40)
@@ -261,11 +250,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         object.physicsBody?.friction = 0.7
         object.physicsBody?.linearDamping = 0
         object.physicsBody?.restitution = 0.7
-        object.physicsBody?.contactTestBitMask = 1
-        object.physicsBody?.collisionBitMask = 1
-        object.physicsBody?.categoryBitMask = 1
         objectProperties[object] = getParameters(object)
-        
         return object
     }
     
@@ -279,7 +264,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     // Checks to see if there is a node at the location
-    // Returns the shape if it's true, otherwise return
+    // Returns the shape if it's true, otherwise return 
     // the false.
     func checkLocforNode(location: CGPoint) -> SKNode! {
         if(nodeAtPoint(location) == self) {
@@ -299,122 +284,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     func createSpringBetweenNodes(node1: SKSpriteNode, node2: SKSpriteNode) {
-        let n1 = node1.position
-        let n2 = node2.position
-        let deltax = n1.x - n2.x
-        let deltay = n1.y - n2.y
-        let distance = sqrt(deltax * deltax + deltay*deltay)
-        
-        // Create the joint between the two objects
-        let spring = SKPhysicsJointSpring.jointWithBodyA(node1.physicsBody!, bodyB: node2.physicsBody!, anchorA: n1, anchorB: n2)
+        let node1Mid = node1.position
+        let node2Mid = node2.position
+        let spring = SKPhysicsJointSpring.jointWithBodyA(node1.physicsBody!, bodyB: node2.physicsBody!, anchorA: node1Mid, anchorB: node2Mid)
         spring.damping = 0.5
         spring.frequency = 0.5
         self.physicsWorld.addJoint(spring)
-        
-        // Actually create a spring image with physics properties.
-        let springobj = SKSpriteNode(imageNamed: "spring.png")
-        
-        let nodes = [node1, node2];
-        springglobal[springobj] = nodes;
-        
-        let angle = atan2f(Float(deltay), Float(deltax))
-        springobj.zRotation = CGFloat(angle + 1.57) // 1.57 because image is naturally vertical
-        initialHeight[springobj] = springobj.size.height;
-        springobj.yScale = distance/springobj.size.height;
-        let xOffset = deltax / 2
-        let yOffset = deltay / 2
-        springobj.position = CGPoint.init(x: n1.x - xOffset, y: n1.y - yOffset)
-        springobj.zPosition = -1
-        //        springobj.physicsBody = SKPhysicsBody.init(rectangleOfSize: springobj.size)
-        //        springobj.physicsBody?.dynamic = false;
-        self.addChild(springobj);
     }
-    
-    func distBetweenNodes(node1: SKSpriteNode, node2: SKSpriteNode) -> CGFloat
-    {
-        let n1 = node1.position
-        let n2 = node2.position
-        let deltax = n1.x - n2.x
-        let deltay = n1.y - n2.y
-        let distance = sqrt(deltax * deltax + deltay*deltay)
-        
-        return distance;
-    }
-    
-    func updateSprings()
-    {
-        for (spring, nodes) in springglobal {
-            let springnode1 = nodes[0];
-            let springnode2 = nodes[1];
-            
-            let deltax = springnode1.position.x - springnode2.position.x
-            let deltay = springnode1.position.y - springnode2.position.y
-            let distance = sqrt(deltax * deltax + deltay*deltay)
-            spring.yScale = distance/initialHeight[spring]!;
-            let xOffset = deltax / 2
-            let yOffset = deltay / 2
-            let angle = atan2f(Float(deltay), Float(deltax))
-            spring.zRotation = CGFloat(angle + 1.57) // 1.57 because image is naturally vertical
-            spring.position = CGPoint.init(x: springnode1.position.x - xOffset, y: springnode1.position.y - yOffset)
-        }
-    }
-    
-    // Updates relative distance labels when an object is being dragged.
-    func updateNodeLabels()
-    {
-        
-        // Otherwise, label is on when simulation is NOT running
-        for node in self.children
-        {
-            if (!isShapeObject(node)) { continue }
-            let sksprite = node as! SKSpriteNode
-            if (selectedShape == nil) { return }
-            if (sksprite == selectedShape) { continue }
-            
-            if (labelMap[sksprite] == nil) {
-                let newLabel = SKLabelNode.init(text: "name")
-                newLabel.fontColor = UIColor.blackColor();
-                newLabel.fontSize = 15.0
-                newLabel.fontName = "AvenirNext-Bold"
-                labelMap[sksprite] = newLabel;
-                self.addChild(newLabel);
-            }
-            
-            let label = labelMap[sksprite];
-            label?.hidden = false;
-            let dist = String(distBetweenNodes(selectedShape, node2: sksprite) / CGFloat(metricScale))
-            label?.text = truncateString(dist, decLen: 3)
-            let pos = sksprite.position;
-            label?.position = CGPoint.init(x: pos.x, y: pos.y + sksprite.size.height/2)
-        }
-    }
-    
-    // Truncates the string so that it shows only the given
-    // amount of numbers after the first decimal.
-    // For example:
-    // decLen = 3; 3.1023915 would return 3.102
-    //
-    // If there are no decimals, then it just returns the string.
-    func truncateString(inputString: String, decLen: Int) -> String
-    {
-        return String(format: "%.\(decLen)f", (inputString as NSString).floatValue)
-    }
-    
-    func hideLabels()
-    {
-        for node in self.children{
-            if (!isShapeObject(node)) { continue }
-            let sksprite = node as! SKSpriteNode
-            
-            let label = labelMap[sksprite];
-            
-            if (label != nil) {
-                label?.hidden = true;
-            }
-        }
-        return;
-    }
-    
     
     func createRodBetweenNodes(node1: SKSpriteNode, node2: SKSpriteNode) {
         let n1 = node1.position
@@ -435,8 +311,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         rod.position = CGPoint.init(x: n1.x - xOffset, y: n1.y - yOffset)
         rod.zPosition = -1
         
-        rod.fillColor = UIColor.blueColor()
-        
         self.addChild(rod);
         
         let rodJoint1 = SKPhysicsJointFixed.jointWithBodyA(node1.physicsBody!, bodyB: rod.physicsBody!, anchor: n1)
@@ -444,7 +318,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.physicsWorld.addJoint(rodJoint1)
         self.physicsWorld.addJoint(rodJoint2)
     }
-    
+    func createRamp(location:CGPoint){
+        let newObj = self.createObject(location, image: "ramp.png")
+        newObj.size = CGSize(width: 200, height: 200)
+        let objectTexture = SKTexture.init(imageNamed: "ramp.png")
+        newObj.physicsBody = SKPhysicsBody(texture: objectTexture, size: newObj.size)
+        self.addChild(newObj)
+        
+    }
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for touch: AnyObject in touches {
             let location:CGPoint = touch.locationInNode(bg)
@@ -453,7 +334,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             // If the person selected a node, set it as the selected node.
             if touchedNode is SKSpriteNode && touchedNode.name == movableNodeName {
                 
-                // Applying the gadgets!!!
+                // Applying the rope!!!
                 if (viewController.getGadgetFlag() != 0) { // Rope
                     if (gadgetNode1 == nil) {
                         gadgetNode1 = touchedNode as! SKSpriteNode
@@ -475,6 +356,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             if floor?.containsPoint(location) == false {
                 // Make sure the point that is being touched is part of the game scene plane is part of the game
                 if(checkValidPoint(location) && stopped) {
+                    if (viewController.getGadgetFlag() == 4) {
+                        createRamp(location)
+                    }
                     let objectType = shapeArray[viewController.getObjectFlag()]
                     if (objectType == shapeType.BLACK) {
                         selectedShape = nil
@@ -493,7 +377,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for touch: AnyObject in touches {
             let location = touch.locationInNode(self)
-            hideLabels();
             // Removes the selectedShape if it's over the trash bin
             if trash.containsPoint(location) {
                 objectProperties.removeValueForKey(selectedShape)
@@ -541,7 +424,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 // Updates the value of the variable 'stopped'
                 if (stopped) {
                     // being used to try and figure put the time component
-                    var timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: "runtime", userInfo: nil, repeats: true)
+                  var timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: "runtime", userInfo: nil, repeats: true)
                     stopped = false
                     button.texture = SKTexture(imageNamed: "pause.png")
                 } else {
@@ -561,15 +444,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             for shape in self.children {
                 if (stopped) {
                     // Playing
-                    //                    shape.physicsBody?.dynamic = true
+//                    shape.physicsBody?.dynamic = true
                 }
                 else if (!stopped) {
                     // Paused
-                    //                    shape.physicsBody?.dynamic = false
+//                    shape.physicsBody?.dynamic = false
                 }
-                button.physicsBody?.dynamic = false
-            }
+                button.physicsBody?.dynamic = false 
         }
+    }
     }
     /* Called before each frame is rendered */
     override func update(currentTime: CFTimeInterval) {        // continously update values of parameters for selected object
@@ -579,31 +462,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 viewController.setsStaticBox(getParameters(selectedShape))
             }
         }
-        
-        // updates selected shapes values with input box values when stopped
+
+            // updates selected shapes values with input box values when stopped
         if (selectedShape != nil && stopped) { //&& start == 0) {
-            var values = objectProperties[selectedShape]!
-            let input = viewController.getInput()
-            for i in Range(start: 0, end: 10) {
-                if Float(input[i]) != nil {
-                    values[i] = Float(input[i])!
+                var values = objectProperties[selectedShape]!
+                let input = viewController.getInput()
+                for i in Range(start: 0, end: 10) {
+                    if Float(input[i]) != nil {
+                     values[i] = Float(input[i])!
+                    }
                 }
+                objectProperties[selectedShape] = values
+                restoreAllobjectProperties(objectProperties)
             }
-            objectProperties[selectedShape] = values
-            restoreAllobjectProperties(objectProperties)
-        }
         
-        if (start == 1) {
-            for object in self.children {
-                if (isShapeObject(object)) {
-                    let shape = object as! SKSpriteNode
-                    shape.physicsBody?.applyForce(CGVector(dx: CGFloat(objectProperties[shape]![shapePropertyIndex.AX.rawValue]*metricScale) , dy: CGFloat(objectProperties[shape]![shapePropertyIndex.AY.rawValue]*metricScale)));
-                }
+            if (start == 1) {
+                for object in self.children {
+                    if (isShapeObject(object)) {
+                        let shape = object as! SKSpriteNode
+                        shape.physicsBody?.applyForce(CGVector(dx: CGFloat(objectProperties[shape]![shapePropertyIndex.AX.rawValue]*metricScale) , dy: CGFloat(objectProperties[shape]![shapePropertyIndex.AY.rawValue]*metricScale)));
             }
-            
         }
-        updateSprings();
-        
+
+    }
     }
     override func didSimulatePhysics() {
         self.enumerateChildNodesWithName("ball", usingBlock: { (node: SKNode!, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
@@ -624,10 +505,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         return retval
     }
-    
+
     // Allows users to drag and drop selectedShapes and the background
     func panForTranslation(translation: CGPoint) {
-        updateNodeLabels();
         if selectedShape != nil {
             let position = selectedShape.position
             if selectedShape.name! == movableNodeName {
