@@ -92,7 +92,7 @@ class GameViewController: UIViewController {
     // metric parameter is added to scale according to users desired metric ( meter/feet etc
     func setsStaticBox(input: [Float]) {
         let physicsLog = parentView.childViewControllers[0] as! physicslogViewController
-        return physicsLog.setsInputBox(input, state: "static")
+        return physicsLog.setsOutputBox(input)
     }
     
 
@@ -113,7 +113,7 @@ class GameViewController: UIViewController {
     // Resets the input fields in the input box
     func setsInputBox(input: [Float]) {
         let physicsLog = parentView.childViewControllers[0] as! physicslogViewController
-        physicsLog.setsInputBox(input, state: "editable")
+        physicsLog.setsInputBox(input)
     }
     
 
