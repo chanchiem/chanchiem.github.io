@@ -61,14 +61,10 @@ class physicslogViewController: UIViewController {
         if velocityType.on {
             velocityXLabel.text = "V"
             velocityYLabel.text = "θ"
-            Vx.text = truncateString(String(toMagnitude(Vx.text!, y: Vy.text!)), decLen: 2)
-            Vy.text = truncateString(String(toTheta(Vx.text!, y: Vy.text!)), decLen: 2)
-            }
+        }
         if !velocityType.on {
             velocityXLabel.text = "Vx"
             velocityYLabel.text = "Vy"
-            Vx.text = toX(self.Vx.text!, theta: self.Vy.text!)
-            Vy.text = toY(self.Vx.text!, theta: self.Vy.text!)
         }
     }
     // changes acceleration types tells whether acceleration input is cartesian (off) or polar/vectorial (on)
@@ -139,14 +135,8 @@ class physicslogViewController: UIViewController {
         return values
     }
     
-    // Resets the input fields in the input box state variable is either static or editable
-    func setsInputBox(input: [Float], state: String ) {
-        if state == "static" {
-        makeInputBoxStatic()
-        }
-        else if state == "editable" {
-        makeInputBoxEditable()
-        }
+    // Resets the input fields in the input box
+    func setsInputBox(input: [Float]) {
         Mass.text = truncateString(String(input[0]), decLen: 2)
         Px.text = truncateString(String(input[1]), decLen: 2)
         Py.text = truncateString(String(input[2]), decLen: 2)
@@ -159,54 +149,14 @@ class physicslogViewController: UIViewController {
         Fy.text = truncateString(String(input[9]), decLen: 2)
     }
     
-    // changes inputbox to static state
-    func makeInputBoxStatic() {
-        Mass.userInteractionEnabled = false
-        Mass.backgroundColor = UIColor.clearColor()
-        Px.userInteractionEnabled = false
-        Px.backgroundColor = UIColor.clearColor()
-        Py.userInteractionEnabled = false
-        Py.backgroundColor = UIColor.clearColor()
-        Vx.userInteractionEnabled = false
-        Vx.backgroundColor = UIColor.clearColor()
-        Vy.userInteractionEnabled = false
-        Vy.backgroundColor = UIColor.clearColor()
-        Av.userInteractionEnabled = false
-        Av.backgroundColor = UIColor.clearColor()
-        Ax.userInteractionEnabled = false
-        Ax.backgroundColor = UIColor.clearColor()
-        Ay.userInteractionEnabled = false
-        Ay.backgroundColor = UIColor.clearColor()
-        Fx.userInteractionEnabled = false
-        Fx.backgroundColor = UIColor.clearColor()
-        Fy.userInteractionEnabled = false
-        Fy.backgroundColor = UIColor.clearColor()
-        
+    // sets static label with values in a given input array
+    func setsOutputBox(input: [Float]) {
+        self.OutputValues.text = ""
+        for i in 0...input.count - 1 {
+            self.OutputValues.text = self.OutputValues.text! + parameternames[i] + " = " + truncateString(String(input[i]), decLen: 2) + "\n"
+        }
     }
-    // changes input box to editable state
-    func makeInputBoxEditable() {
-        Mass.userInteractionEnabled = true
-        Mass.backgroundColor = UIColor.whiteColor()
-        Px.userInteractionEnabled = true
-        Px.backgroundColor = UIColor.whiteColor()
-        Py.userInteractionEnabled = true
-        Py.backgroundColor = UIColor.whiteColor()
-        Vx.userInteractionEnabled = true
-        Vx.backgroundColor = UIColor.whiteColor()
-        Vy.userInteractionEnabled = true
-        Vy.backgroundColor = UIColor.whiteColor()
-        Av.userInteractionEnabled = true
-        Av.backgroundColor = UIColor.whiteColor()
-        Ax.userInteractionEnabled = true
-        Ax.backgroundColor = UIColor.whiteColor()
-        Ay.userInteractionEnabled = true
-        Ay.backgroundColor = UIColor.whiteColor()
-        Fx.userInteractionEnabled = true
-        Fx.backgroundColor = UIColor.whiteColor()
-        Fy.userInteractionEnabled = true
-        Fy.backgroundColor = UIColor.whiteColor()
-        
-    }
+    
     // Truncates the string so that it shows only the given
     // amount of numbers after the first decimal.
     // For example:
@@ -226,29 +176,18 @@ class physicslogViewController: UIViewController {
     
     // converts to X given magnitude and angle returns 0 if either value is nil (Note: this may need to change to keep current val)
     func toX(velocity: String, theta: String)->String{
-        if (Float(velocity) != nil  && Float(theta) != nil) {
+        while (Float(velocity) != nil  && Float(theta) != nil) {
             return String(Float(velocity)!*Darwin.cos(degToRad(Float(theta)!)))
         }
         return "0"
     }
     // converts to Y given magnitude and angle returns 0 if either value is nil (Note: this may need to change to keep current val)
     func toY(velocity: String, theta: String)->String{
-        if (Float(velocity) != nil  && Float(theta) != nil) {
+        while (Float(velocity) != nil  && Float(theta) != nil) {
             return String(Float(velocity)!*Darwin.sin(degToRad(Float(theta)!)))
         }
         return "0"
     }
-    func toTheta(x:String, y: String) -> String{
-        while (Float(x) != nil  && Float(y) != nil) {
-            return  String(Darwin.atan(Float(y)!/Float(x)!)*100)
-        }
-        return "0"
-    }
-    func toMagnitude (x:String, y: String) -> String {
-        while (Float(x) != nil  && Float(y) != nil) {
-            return String(Darwin.sqrt(Darwin.powf(Float(x)!, 2) + Darwin.powf(Float(y)!, 2)))
-        }
-        return "0"
-        
-    }
+
+    
 }
