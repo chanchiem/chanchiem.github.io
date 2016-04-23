@@ -60,18 +60,12 @@ class GameViewController: UIViewController {
    
     // Finds the index on the table that the user selected
     func setObjectFlag(index: Int) {
-        //set other flag to null 
-        if index != 9 {
-            gadgetflag = 0
-        }
+        print(index)
         objectflag = index
         NSLog("Test")
     }
     func setGadgetFlag(index: Int) {
-        // set other flag to null
-        if index != 0 {
-        objectflag = 9
-        }
+        print(index)
         gadgetflag = index
         NSLog("Test")
     }
@@ -92,7 +86,7 @@ class GameViewController: UIViewController {
     // metric parameter is added to scale according to users desired metric ( meter/feet etc
     func setsStaticBox(input: [Float]) {
         let physicsLog = parentView.childViewControllers[0] as! physicslogViewController
-        return physicsLog.setsInputBox(input, state: "static")
+        return physicsLog.setsOutputBox(input)
     }
     
 
@@ -113,7 +107,7 @@ class GameViewController: UIViewController {
     // Resets the input fields in the input box
     func setsInputBox(input: [Float]) {
         let physicsLog = parentView.childViewControllers[0] as! physicslogViewController
-        physicsLog.setsInputBox(input, state: "editable")
+        physicsLog.setsInputBox(input)
     }
     
 
