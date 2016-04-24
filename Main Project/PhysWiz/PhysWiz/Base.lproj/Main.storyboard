@@ -72,7 +72,7 @@
                                 <animations/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
-                                    <segue destination="fPQ-S9-gZ9" kind="embed" id="PeU-Dd-TqK"/>
+                                    <segue destination="fPQ-S9-gZ9" kind="embed" identifier="toPhysicsLog" id="PeU-Dd-TqK"/>
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jW7-Xe-uZu">

@@ -14,6 +14,7 @@ class physicslogViewController: UIViewController, UITextFieldDelegate, UIPickerV
     var currentTextField: UITextField?
     var objects = ["none", "test"]
     var parameternames = ["Mass", "Px", "Py","Vx", "Vy", "Av", "Ax", "Ay", "Fx", "Fy"]
+    var parentVC = containerViewController()
     @IBOutlet var physicsLog: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,6 +38,7 @@ class physicslogViewController: UIViewController, UITextFieldDelegate, UIPickerV
         // Dispose of any resources that can be recreated.
     }
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        
 
     }
     

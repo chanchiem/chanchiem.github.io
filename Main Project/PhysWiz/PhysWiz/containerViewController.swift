@@ -15,22 +15,26 @@ class containerViewController: UIViewController {
     @IBOutlet weak var physicsLog: UIView!
     @IBOutlet weak var objectMenu: UIBarButtonItem!
     @IBOutlet weak var gadgetMenu: UIBarButtonItem!
-    
     @IBOutlet weak var NavigationBar: UINavigationItem!
     @IBOutlet weak var physicsLogButton: UIBarButtonItem!
+    var GameVC: GameViewController!
+    var PhysicsLogVC: physicslogViewController!
+    var objectflag = 0
+    var gadgetflag = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        // handles animation of object and gadget menus
         if self.revealViewController() != nil {
             gadgetMenu.target = self.revealViewController()
             gadgetMenu.action = "revealToggle:"
             objectMenu.target = revealViewController()
             objectMenu.action = "rightRevealToggle:"
             // self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
-            
         }
         
     }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -61,18 +65,59 @@ class containerViewController: UIViewController {
         })
         
     }
-    
-    // return from selecting table object
-    @IBAction func unwindSegue(segue: UIStoryboardSegue) {
-        // do stuff
-    }
+    // give access from childviewcontrollers to the parentview controller(self)
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
     if (segue.identifier == "toGameView") {
-    let GameVC = segue.destinationViewController as! GameViewController
-    GameVC.parentView = self
+    GameVC = segue.destinationViewController as! GameViewController
+    GameVC.parentVC = self
         }
-        
+    if (segue.identifier == "toPhysicsLog") {
+        PhysicsLogVC = segue.destinationViewController as! physicslogViewController
+        PhysicsLogVC.parentVC = self
+        }
     }
     
+    // Finds the index on the table that the user selected
+    func setObjectFlag(index: Int) {
+        //set other flag to null
+        if index != 9 {
+            gadgetflag = 0
+        }
+        objectflag = index
+        NSLog("Test")
+    }
+    func setGadgetFlag(index: Int) {
+        // set other flag to null
+        if index != 0 {
+            objectflag = 9
+        }
+        gadgetflag = index
+        NSLog("Test")
+    }
+    func getObjectFlag()->Int{
+        return objectflag
+    }
+    func getGadgetFlag()->Int{
+        return gadgetflag
+    }
+    // Gets the input from all the TextFields inside the inputBox.
+    func getInput() -> [String] {
+        return PhysicsLogVC.getInput()
+    }
     
+    // Resets the input fields in the input box
+    func setsInputBox(input: [Float]) {
+        PhysicsLogVC.setsInputBox(input, state: "editable")
+    }
+    
+    // display parameters of selected object in label by modifying
+    // labels in the static box.
+    // metric parameter is added to scale according to users desired metric ( meter/feet etc
+    func setsStaticBox(input: [Float]) {
+        return PhysicsLogVC.setsInputBox(input, state: "static")
+    }
+    func getTime() -> String {
+            return GameVC.getTime()
+        }
+
 }
