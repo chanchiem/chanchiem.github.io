@@ -12,34 +12,30 @@ import Foundation
 private let movableNodeName = "movable"
 
 class GameScene: SKScene {
-    var ropeOn = false; // The flag for the ropes.
-    var gadgetNode1: SKSpriteNode! = nil;
-    var gadgetNode2: SKSpriteNode! = nil;
+    var gadgetNode1: PWObject! = nil;
+    var gadgetNode2: PWObject! = nil;
     
-    var springglobal = [SKSpriteNode: [SKSpriteNode]]() // Spring that maps to two other nodes.
-    var initialHeight = [SKSpriteNode: CGFloat]();
-    var labelMap = [SKSpriteNode: SKLabelNode](); // Each sk spritenode will have a label associated with it
+    var springglobal = [SKSpriteNode: [SKSpriteNode]]() // Spring that maps to two other nodes. PWOBJECT
+    var initialHeight = [SKSpriteNode: CGFloat](); // PWOBJECT
+    var labelMap = [SKSpriteNode: SKLabelNode](); // Each sk spritenode will have a label associated with it. PWOBJECT
     
-    var stopped = true
+    var pwPaused = true // Paused
     var button: SKSpriteNode! = nil
     var stop: SKSpriteNode! = nil
     var trash: SKSpriteNode! = nil
-    var bg: SKSpriteNode! = nil
-    var flag = shapeType.CIRCLE;
-    var shapeArray = [shapeType]()
-    var viewController: GameViewController!
+    
+    var background: SKSpriteNode! = nil
+    
+    var toggledSprite = shapeType.CIRCLE;
+    var shapeArray = [shapeType]();
+    var gameVC: GameViewController!
     // The selected object for parameters
-    var selectedShape: SKSpriteNode! = nil
-    var objectProperties: [SKSpriteNode: [Float]]!
-    var counter = 0
-    // temporary variable to signify start or simulation
-    var start = 0
-    // used to scale all parameters from pixels to other metric system 
+    var selectedSprite: PWObject! = nil
+    var objectProperties: [PWObject : [Float]]!
+    var updateFrameCounter = 0
+    // used to scale all parameters from pixels to other metric system
     // not applied to mass or values not associated with pixels
-    var metricScale = Float(100)
-    // saves the color of the currently selected node
-    var savedColor = SKColor.whiteColor()
-    let background = SKSpriteNode(imageNamed: "bg.png")
+    var pixelToMetric = Float(100)
     
     enum shapeType: String {
         case CIRCLE = "circle.png"
@@ -53,8 +49,10 @@ class GameScene: SKScene {
         case CAR = "car.png"
         case BLACK = "black.png"
     }
+    
     // keeps track of time parameter
-    var timeCounter = 0
+    var runtimeCounter = 0
+    
     // This enumeration defines the standard indices for each of the shape properties.
     // To use, you will have to obtain the raw value of the enumeration:
     // shapePropertyIndex(rawValue)
@@ -69,7 +67,6 @@ class GameScene: SKScene {
         case AY     = 7
         case FX     = 8
         case FY     = 9
-
     }
     
     
@@ -80,16 +77,14 @@ class GameScene: SKScene {
         // make gravity equal to 981 pixels
         self.physicsWorld.gravity = CGVectorMake(0.0, -6.54);
         /* Setup your scene here */
-        self.addChild(self.createFloor())
         self.addChild(self.createPausePlay())
         self.addChild(self.createStop())
         self.addChild(self.createTrash())
         self.addChild(self.createBG())
+        self.addChild(PWObject.createFloor(CGSize.init(width: background.size.width, height: 20))) // Floor
         self.physicsWorld.speed = 0
-        objectProperties = [SKSpriteNode: [Float]]()
-        //physicsBody = SKPhysicsBody(edgeLoopFromRect: self.frame)
-        physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: 0, y: 0, width: bg.size.width, height: bg.size.height))
-        //physicsBody = SKPhysicsBody(rectangleOfSize: bg.size)
+        objectProperties = [PWObject: [Float]]()
+        physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: 0, y: 0, width: background.size.width, height: background.size.height))
         
         // INIT Shape arrays to call later in flag function
         shapeArray.append(shapeType.CIRCLE)
@@ -102,29 +97,22 @@ class GameScene: SKScene {
         shapeArray.append(shapeType.BIKE)
         shapeArray.append(shapeType.CAR)
         shapeArray.append(shapeType.BLACK)
+        
+        PWObject.initStaticVariables();
     }
     
     // Creates a background for the gamescene
     func createBG() -> SKSpriteNode {
-        bg = SKSpriteNode(imageNamed: "bg")
-        bg.anchorPoint = CGPointZero
-        bg.name = "background"
-        bg.size.height = self.size.height * 2
-        bg.size.width = self.size.width * 3
-        bg.zPosition = -2
-        return bg
+        background = SKSpriteNode(imageNamed: "bg")
+        background.anchorPoint = CGPointZero
+        background.name = "background"
+        background.size.height = self.size.height * 2
+        background.size.width = self.size.width * 3
+        background.zPosition = -2
+        return background
     }
     
-    // Creates a floor for the physics simulation.
-    func createFloor() -> SKSpriteNode {
-        let floor = SKSpriteNode(color: SKColor.brownColor(), size: CGSizeMake(self.frame.size.width * 3, 20))
-        floor.anchorPoint = CGPointZero
-        floor.name = "floor"
-        floor.physicsBody = SKPhysicsBody(edgeLoopFromRect: floor.frame)
-        floor.physicsBody?.dynamic = false
-        floor.physicsBody?.friction = 0
-        return floor
-    }
+    
     
     // Creates a node that will act as a pause play button for the user.
     func createPausePlay() -> SKSpriteNode {
@@ -155,47 +143,27 @@ class GameScene: SKScene {
     }
     
     // return parameters of given object from either the object itself or dictionary
-   func getParameters(object: SKSpriteNode) -> [Float]{
-        var input = [Float]()
+   func getParameters(object: PWObject) -> [Float]{
+        var parameterOutput = [Float]()
         // handle properties that remain the same when static and when dynamic
-        input.insert(Float((object.physicsBody?.mass)!), atIndex: shapePropertyIndex.MASS.rawValue)
-        input.insert(Float((object.position.x))/metricScale, atIndex: shapePropertyIndex.PX.rawValue)
-        input.insert(Float((object.position.y))/metricScale, atIndex: shapePropertyIndex.PY.rawValue)
-        // handle properties that lose values when static 
-        if stopped {
+        parameterOutput.insert(Float(object.getMass()), atIndex: shapePropertyIndex.MASS.rawValue)
+        parameterOutput.insert(Float((object.getPos().x))/pixelToMetric, atIndex: shapePropertyIndex.PX.rawValue)
+        parameterOutput.insert(Float((object.getPos().y))/pixelToMetric, atIndex: shapePropertyIndex.PY.rawValue)
+        // handle properties that lose values when paused, because velocity goes to zero when paused
+        if pwPaused {
             if objectProperties[object] != nil {
-                for i in Range(start: 3, end: 10) {
-                    input.insert(Float(objectProperties[object]![i]), atIndex: i)
-                }
+                for i in 3 ..< 10 { parameterOutput.insert(Float(objectProperties[object]![i]), atIndex: i) }
             }
             else {
-                for i in Range(start: 3, end: 10) {
-                input.insert(0, atIndex: i)
-                }
+                for i in 3 ..< 10 { parameterOutput.insert(0, atIndex: i) }
             }
+        } else {
+            parameterOutput.insert(Float((object.getVelocity().dx))/pixelToMetric, atIndex: shapePropertyIndex.VX.rawValue)
+            parameterOutput.insert(Float((object.getVelocity().dy))/pixelToMetric, atIndex: shapePropertyIndex.VY.rawValue)
+            parameterOutput.insert(Float((object.getAngularVelocity()))/pixelToMetric, atIndex: shapePropertyIndex.ANG_V.rawValue)
+            for i in 6 ..< 10 { parameterOutput.insert(Float(objectProperties[object]![i]), atIndex: i) }
         }
-        else {
-            input.insert(Float((object.physicsBody?.velocity.dx)!)/metricScale, atIndex: shapePropertyIndex.VX.rawValue)
-            input.insert(Float((object.physicsBody?.velocity.dy)!)/metricScale, atIndex: shapePropertyIndex.VY.rawValue)
-            input.insert(Float((object.physicsBody?.angularVelocity)!)/metricScale, atIndex: shapePropertyIndex.ANG_V.rawValue)
-            for i in Range(start: 6, end: 10) {
-                input.insert(Float(objectProperties[object]![i]), atIndex: i)
-            }
-        }
-        return input
-    }
-    
-    // Checks to see if the passed in node is a valid
-    // shape object (meaning that it's either a ball or rectangle)
-    func isShapeObject(object: SKNode) -> Bool {
-        // DEVELOPER NOTES: CHANGE THIS IN THE FUTURE SO THAT IT
-        // ITERATES THROUGH A DATA STRUCTURE THAT CONTAINS ALL
-        // THE CORRECT OBJECTS! THIS CURRENTLY IS A HACKISH ADDITION BECAUSE
-        // EVERYTHING THAT WE'VE IMPLEMENTED SO FAR HAS NOT BEEN MODULARIZED
-        // TO CONTAIN AN OBJECT SHAPE CLASS.
-        if (object.name == nil) { return false }
-        if (object.name == movableNodeName) { return true }
-        return false
+        return parameterOutput
     }
     
     // Stores all object properties in the scene (velocity, position, and acceleration) to a data structure.
@@ -203,13 +171,15 @@ class GameScene: SKScene {
     // Returns a dictionary with keys as each shape in the scene and
     // the values as a float array with the shape properties as defined
     // in the shapePropertyIndex enumeration.
-    func saveAllObjectProperties() -> [SKSpriteNode: [Float]]
+    func saveAllObjectProperties() -> [PWObject: [Float]]
     {
-        var propertyDict = [SKSpriteNode: [Float]]()
+        var propertyDict = [PWObject: [Float]]()
         for object in self.children {
-            if (isShapeObject(object)) {
-                let shape = object as! SKSpriteNode
-                propertyDict[shape] = getParameters(shape)
+            if (!PWObject.isPWObject(object)) { continue; }
+            
+            let sprite = object as! PWObject
+            if (sprite.isSprite()) {
+                propertyDict[sprite] = getParameters(sprite)
             }
         }
         
@@ -222,55 +192,32 @@ class GameScene: SKScene {
     // DEVELOPER'S NOTE: MAKE SURE TO ADD FORCES TO THIS
     // WITH THE CURRENT IMPLMENETATION OF getParameters,
     // WE ARE MISSING FORCES/ACCELERATION
-    func restoreAllobjectProperties(inputDictionary: [SKSpriteNode: [Float]])
+    func restoreAllobjectProperties(inputDictionary: [PWObject: [Float]])
     {
         if (inputDictionary.count == 0) { return } // input contains nothing
         
-        for (object, properties) in inputDictionary {
-            if (isShapeObject(object)) {
-    
+        for (sprite, properties) in inputDictionary {
+            if (sprite.isSprite()) {
                 // Note: This format is based on the getObjectProperties function.
-                object.physicsBody?.mass = CGFloat(properties[0])
-                object.position.x = CGFloat(properties[1]*metricScale)
-                object.position.y = CGFloat(properties[2]*metricScale)
-                object.physicsBody?.velocity.dx = CGFloat(properties[3]*metricScale)
-                object.physicsBody?.velocity.dy = CGFloat(properties[4]*metricScale)
-                object.physicsBody?.angularVelocity = CGFloat(properties[5]*metricScale)
+                sprite.setMass (CGFloat(properties[0]))
+                sprite.setPos(CGFloat(properties[1]*pixelToMetric), y: CGFloat(properties[2]*pixelToMetric))
+                sprite.setVelocity(CGFloat(properties[3]*pixelToMetric), y: CGFloat(properties[4]*pixelToMetric))
+                sprite.setAngularVelocity(CGFloat(properties[5]*pixelToMetric))
 
             }
         }
     }
-
-    // Creates an SKSpriteNode object at the location marked by position using the image passed in.
-    func createObject(position: CGPoint, image: String) -> SKSpriteNode {
-        let size = CGSize(width: 40, height: 40)
-        var object = SKSpriteNode()
-        let objectTexture = SKTexture(imageNamed: image)
-        object = SKSpriteNode(texture: objectTexture)
-        object.size = size
-        
-        var newPosition = CGPoint()
-        newPosition.x = position.x + bg.position.x
-        newPosition.y = position.y + bg.position.y
-        
-        object.position = newPosition
-        object.name = movableNodeName
-        object.physicsBody = SKPhysicsBody(texture: objectTexture, size: size)
-        object.physicsBody?.mass = 1
-        object.physicsBody?.friction = 0.7
-        object.physicsBody?.linearDamping = 0
-        object.physicsBody?.restitution = 0.7
-        objectProperties[object] = getParameters(object)
-        return object
-    }
     
     // Checks to see if the location that is valid (i.e. if it's actually a point on the game scene plane itself)
-    // The button is not considered a valid point.
+    // The button is considered a valid point, so long as it is not another PWObject.
     func checkValidPoint(location: CGPoint) -> Bool {
-        if(nodeAtPoint(location).name == movableNodeName || nodeAtPoint(location) == button ) {
-            return false
-        }
-        return true
+        let node = nodeAtPoint(location);
+        return !PWObject.isPWObject(node)
+        
+//        if(nodeAtPoint(location).name == movableNodeName || nodeAtPoint(location) == button ) {
+//            return false
+//        }
+//        return true
     }
     
     // Checks to see if there is a node at the location
@@ -361,26 +308,29 @@ class GameScene: SKScene {
         // Otherwise, label is on when simulation is NOT running
         for node in self.children
         {
-            if (!isShapeObject(node)) { continue }
-            let sksprite = node as! SKSpriteNode
-            if (selectedShape == nil) { return }
-            if (sksprite == selectedShape) { continue }
+            if (!PWObject.isPWObject(node)) { continue; }
             
-            if (labelMap[sksprite] == nil) {
+            let sprite = node as! PWObject
+            if (!sprite.isSprite()) { continue }
+            
+            if (selectedSprite == nil) { return }
+            if (sprite == selectedSprite) { continue }
+            
+            if (labelMap[sprite] == nil) {
                 let newLabel = SKLabelNode.init(text: "name")
                 newLabel.fontColor = UIColor.blackColor();
                 newLabel.fontSize = 15.0
                 newLabel.fontName = "AvenirNext-Bold"
-                labelMap[sksprite] = newLabel;
+                labelMap[sprite] = newLabel;
                 self.addChild(newLabel);
             }
             
-            let label = labelMap[sksprite];
+            let label = labelMap[sprite];
             label?.hidden = false;
-            let dist = String(distBetweenNodes(selectedShape, node2: sksprite) / CGFloat(metricScale))
+            let dist = String(distBetweenNodes(selectedSprite, node2: sprite) / CGFloat(pixelToMetric))
             label?.text = truncateString(dist, decLen: 3)
-            let pos = sksprite.position;
-            label?.position = CGPoint.init(x: pos.x, y: pos.y + sksprite.size.height/2)
+            let pos = sprite.getPos();
+            label?.position = CGPoint.init(x: pos.x, y: pos.y + sprite.size.height/2)
         }
     }
     
@@ -390,18 +340,18 @@ class GameScene: SKScene {
     // decLen = 3; 3.1023915 would return 3.102
     //
     // If there are no decimals, then it just returns the string.
-    func truncateString(inputString: String, decLen: Int) -> String
-    {
+    func truncateString(inputString: String, decLen: Int) -> String {
         return String(format: "%.\(decLen)f", (inputString as NSString).floatValue)
     }
     
     func hideLabels()
     {
         for node in self.children{
-            if (!isShapeObject(node)) { continue }
-            let sksprite = node as! SKSpriteNode
+            let sprite = node as? PWObject
+            if (sprite == nil) { continue }
+            if (!sprite!.isSprite()) { continue }
             
-            let label = labelMap[sksprite];
+            let label = labelMap[sprite!];
             
             if (label != nil) {
                 label?.hidden = true;
@@ -442,59 +392,67 @@ class GameScene: SKScene {
 
 
     func createRamp(location:CGPoint){
-        let newObj = self.createObject(location, image: "ramp.png")
-        newObj.size = CGSize(width: 200, height: 200)
-        let objectTexture = SKTexture.init(imageNamed: "ramp.png")
-        newObj.physicsBody = SKPhysicsBody(texture: objectTexture, size: newObj.size)
-        self.addChild(newObj)
+//        let newObj = self.createObject(location, image: "ramp.png")
+//        newObj.size = CGSize(width: 200, height: 200)
+//        let objectTexture = SKTexture.init(imageNamed: "ramp.png")
+//        newObj.physicsBody = SKPhysicsBody(texture: objectTexture, size: newObj.size)
+        let ramp = PWObject.init(objectStringName: "ramp", position: location, isMovable: false, isSelectable: false)
+        self.addChild(ramp)
         
     }
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for touch: AnyObject in touches {
-            let location:CGPoint = touch.locationInNode(bg)
-            let floor:SKNode? = self.childNodeWithName("floor")
+            let location:CGPoint = touch.locationInNode(background)
             let touchedNode = self.nodeAtPoint(location)
-            // If the person selected a node, set it as the selected node.
-            if touchedNode is SKSpriteNode && touchedNode.name == movableNodeName {
+            
+            //////////////////////////////////
+            //////// CREATE OBJECT ///////////
+            //////////////////////////////////
+            // Make sure the point that is being touched is part of the game scene plane is part of the game
+            if(checkValidPoint(location) && pwPaused) {
+                if (gameVC.getGadgetFlag() == 4) {
+                    createRamp(location)
+                }
                 
-                // Applying the rope!!!
-                if (viewController.getGadgetFlag() != 0) { // Rope
-                    if (gadgetNode1 == nil) {
-                        gadgetNode1 = touchedNode as! SKSpriteNode
-                    } else if(gadgetNode2 == nil) {
-                        gadgetNode2 = touchedNode as! SKSpriteNode
-                        if (gadgetNode1 != gadgetNode2) {
-                            if (viewController.getGadgetFlag() == 1) { createRopeBetweenNodes(gadgetNode1, node2: gadgetNode2) }
-                            if (viewController.getGadgetFlag() == 2) { createSpringBetweenNodes(gadgetNode1, node2: gadgetNode2) }
-                            if (viewController.getGadgetFlag() == 3) { createRodBetweenNodes(gadgetNode1, node2: gadgetNode2) }
-                        }
-                        gadgetNode2 = nil;
-                        gadgetNode1 = nil;
-                    }
+                let objectType = shapeArray[gameVC.getObjectFlag()]
+                if (objectType == shapeType.BLACK) {
+                    selectedSprite = nil
                 } else {
-                    selectedShape = touchedNode as! SKSpriteNode
-                    viewController.setsInputBox(objectProperties[selectedShape]!)
+                    let spriteName = String(objectType).lowercaseString
+                    let newObj = PWObject.init(objectStringName: spriteName, position: location, isMovable: true, isSelectable: true)
+                    objectProperties[newObj] = getParameters(newObj)
+                    self.addChild(newObj)
+                    selectedSprite = newObj
+                    //self.addChild(self.createObject(location, image: img))
                 }
+                continue;
             }
-            if floor?.containsPoint(location) == false {
-                // Make sure the point that is being touched is part of the game scene plane is part of the game
-                if(checkValidPoint(location) && stopped) {
-                    if (viewController.getGadgetFlag() == 4) {
-                        createRamp(location)
+            
+            
+            //////////////////////////////////
+            //////// APPLY GADGETS ///////////
+            //////////////////////////////////
+            if (!PWObject.isPWObject(touchedNode)) { continue };
+            let sprite = touchedNode as! PWObject
+            if (gameVC.getGadgetFlag() != 0) { // Rope
+                if (gadgetNode1 == nil) {
+                    gadgetNode1 = sprite
+                } else if(gadgetNode2 == nil) {
+                    gadgetNode2 = sprite
+                    if (gadgetNode1 != gadgetNode2) {
+                        if (gameVC.getGadgetFlag() == 1) { createRopeBetweenNodes(gadgetNode1, node2: gadgetNode2) }
+                        if (gameVC.getGadgetFlag() == 2) { createSpringBetweenNodes(gadgetNode1, node2: gadgetNode2) }
+                        if (gameVC.getGadgetFlag() == 3) { createRodBetweenNodes(gadgetNode1, node2: gadgetNode2) }
                     }
-
-                    let objectType = shapeArray[viewController.getObjectFlag()]
-                    if (objectType == shapeType.BLACK) {
-                        selectedShape = nil
-                    } else {
-                        let img = String(objectType).lowercaseString + ".png"
-                        let newObj = self.createObject(location, image: img)
-                        self.addChild(newObj)
-                        //selectedShape = newObj
-                        //self.addChild(self.createObject(location, image: img))
-                    }
+                    gadgetNode2 = nil;
+                    gadgetNode1 = nil;
                 }
+            } else {
+                selectedSprite = sprite
+                gameVC.setsInputBox(objectProperties[selectedSprite]!)
             }
+            
+            
         }
     }
     
@@ -504,18 +462,19 @@ class GameScene: SKScene {
             hideLabels();
             // Removes the selectedShape if it's over the trash bin
             if trash.containsPoint(location) {
-                objectProperties.removeValueForKey(selectedShape)
-                selectedShape.removeFromParent()
-                selectedShape = nil
+                objectProperties.removeValueForKey(selectedSprite)
+                selectedSprite.removeFromParent()
+                selectedSprite = nil
             }
             // Removes all non-essential nodes from the gamescene
             if stop.containsPoint(location) {
                 for node in self.children {
                     node.removeFromParent()
-                    stopped = true
+                    pwPaused = true
                     button.texture = SKTexture(imageNamed: "play.png")
                 }
-                self.addChild(self.createFloor())
+                let floor = PWObject.createFloor(CGSize.init(width: background.size.width, height: 20))
+                self.addChild(floor)
                 self.addChild(self.createPausePlay())
                 self.addChild(self.createStop())
                 self.addChild(self.createTrash())
@@ -523,21 +482,16 @@ class GameScene: SKScene {
             }
             // Gives the pause play button the ability to pause and play a scene
             if button.containsPoint(location) {
-                // temp variable to signify start of program
-                if start == 0 {
-                    viewController.changeParameterBox()
-                    start = 1;
-                }
-                if (!stopped) {
+                if (!pwPaused) {
                     objectProperties = saveAllObjectProperties()
                 }
   
-                if (stopped) {
+                if (pwPaused) {
                     // Playing
                     //shape.physicsBody?.dynamic = true
                     self.physicsWorld.speed = 1
                 }
-                else if (!stopped) {
+                else if (!pwPaused) {
                     // Paused
                     //shape.physicsBody?.dynamic = false
                     self.physicsWorld.speed = 0
@@ -546,17 +500,17 @@ class GameScene: SKScene {
                 
                 // apply forces and  velocities to object as it can not be done before
                 // dynamic is set to true or the force and velocity value are set to 0
-                //restoreAllobjectProperties(objectProperties)
+                restoreAllobjectProperties(objectProperties)
                 button.physicsBody?.dynamic = false   // Keeps pause play button in place
                 
-                // Updates the value of the variable 'stopped'
-                if (stopped) {
+                // Updates the value of the variable 'pwPaused'
+                if (pwPaused) {
                     // being used to try and figure put the time component
                   //var timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: "runtime", userInfo: nil, repeats: true)
-                    stopped = false
+                    pwPaused = false
                     button.texture = SKTexture(imageNamed: "pause.png")
                 } else {
-                    stopped = true
+                    pwPaused = true
                     button.texture = SKTexture(imageNamed: "play.png")
                 }
             }
@@ -566,59 +520,53 @@ class GameScene: SKScene {
     
     //being used to try and figure out the time component
     func runtime() {
-        timeCounter += 1
-        var time = Int(viewController.getTime())
-        if timeCounter ==  time {
-            //for shape in self.children {
-                if (stopped) {
-                    self.physicsWorld.speed = 1
-                    }
-                else if (!stopped) {
-                  self.physicsWorld.speed = 0
-                }
-                button.physicsBody?.dynamic = false 
+        runtimeCounter += 1
+        let time = Int(gameVC.getTime())
+        if runtimeCounter ==  time {
+            if (pwPaused) { self.physicsWorld.speed = 1 }
+            else if (!pwPaused) { self.physicsWorld.speed = 0 }
+            
+            button.physicsBody?.dynamic = false 
         }
     }
+    
     /* Called before each frame is rendered */
     override func update(currentTime: CFTimeInterval) {        // continously update values of parameters for selected object
-        counter += 1
-        if (counter % 20 == 0) {
-            if selectedShape != nil && !stopped  {
-                viewController.setsStaticBox(getParameters(selectedShape))
+        updateFrameCounter += 1
+        if (updateFrameCounter % 20 == 0) {
+            if selectedSprite != nil && !pwPaused  {
+                gameVC.setsStaticBox(getParameters(selectedSprite))
             }
         }
 
-            // updates selected shapes values with input box values when stopped
-        if (selectedShape != nil && stopped) { //&& start == 0) {
-                var values = objectProperties[selectedShape]!
-                let input = viewController.getInput()
-                for i in Range(start: 0, end: 10) {
-                    if Float(input[i]) != nil {
-                     values[i] = Float(input[i])!
-                    }
+            // updates selected shapes values with input box values when pwPaused
+        if (selectedSprite != nil && pwPaused) {
+                var values = objectProperties[selectedSprite]!
+                let input = gameVC.getInput()
+                for i in 0 ..< 10 {
+                    if (Float(input[i]) != nil) { values[i] = Float(input[i])! }
                 }
-                objectProperties[selectedShape] = values
-                //restoreAllobjectProperties(objectProperties)
+                objectProperties[selectedSprite] = values
+//                restoreAllobjectProperties(objectProperties)
             }
         
-            if (start == 1) {
-                for object in self.children {
-                    if (isShapeObject(object)) {
-                        let shape = object as! SKSpriteNode
-                        shape.physicsBody?.applyForce(CGVector(dx: CGFloat(objectProperties[shape]![shapePropertyIndex.AX.rawValue]*metricScale) , dy: CGFloat(objectProperties[shape]![shapePropertyIndex.AY.rawValue]*metricScale)));
-                    }
-                }
+        for object in self.children {
+            if (!PWObject.isPWObject(object)) { continue };
+            let sprite = object as! PWObject
 
-            }
+            
+            let xComponent = CGFloat(objectProperties[sprite]![shapePropertyIndex.AX.rawValue]*pixelToMetric);
+            let yComponent = CGFloat(objectProperties[sprite]![shapePropertyIndex.AY.rawValue]*pixelToMetric);
+            sprite.applyForce(xComponent, y: yComponent)
+        }
+
         updateSprings();
     }
     
     
     override func didSimulatePhysics() {
         self.enumerateChildNodesWithName("ball", usingBlock: { (node: SKNode!, stop: UnsafeMutablePointer<ObjCBool>) -> Void in
-            if node.position.y < 0 {
-                node.removeFromParent()
-            }
+            if node.position.y < 0 { node.removeFromParent() }
         })
     }
     
@@ -627,9 +575,9 @@ class GameScene: SKScene {
         let winSize = self.size
         var retval = aNewPosition
         retval.x = CGFloat(min(retval.x, 0))
-        retval.x = CGFloat(max(retval.x, -(bg.size.width) + winSize.width))
+        retval.x = CGFloat(max(retval.x, -(background.size.width) + winSize.width))
         retval.y = CGFloat(min(retval.y, 0))
-        retval.y = CGFloat(max(retval.y, -(bg.size.height) + winSize.height))
+        retval.y = CGFloat(max(retval.y, -(background.size.height) + winSize.height))
         
         return retval
     }
@@ -637,21 +585,21 @@ class GameScene: SKScene {
     // Allows users to drag and drop selectedShapes and the background
     func panForTranslation(translation: CGPoint) {
         updateNodeLabels();
-        if selectedShape != nil {
-            let position = selectedShape.position
-            if selectedShape.name! == movableNodeName {
-                selectedShape.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
+        if selectedSprite != nil {
+            let position = selectedSprite.position
+            if selectedSprite.isMovable() {
+                selectedSprite.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
                 //changes values in the input box to the position it is dragged to
-                viewController.setsInputBox(getParameters(selectedShape))
+                gameVC.setsInputBox(getParameters(selectedSprite))
                 
                 // Connects selectedShape to its nearestNodes
                 //connectNodes(selectedShape)
             }
         }
         else {
-            let position = bg.position
+            let position = background.position
             let aNewPosition = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
-            bg.position = self.boundLayerPos(aNewPosition)
+            background.position = self.boundLayerPos(aNewPosition)
             moveObjects(translation)
         }
     }
@@ -664,17 +612,17 @@ class GameScene: SKScene {
                 let position = node.position
                 let aNewPosition = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
                 let boundedPosition = self.boundLayerPos(aNewPosition)
-                print(bg.position.y)
+                print(background.position.y)
                 if node.name == "floor" {
                     node.position = boundedPosition
                 } else {
                     // BUG: MOVES OBJECTS WHEN SCREEN IS SLAMMED AGAINST WALL
-                    if bg.position.x != 0.0 && bg.position.x != -2*self.size.width {
+                    if background.position.x != 0.0 && background.position.x != -2*self.size.width {
                         node.position.x = aNewPosition.x
                     } /*else {
                         node.position.x = position.x
                     }*/
-                    if bg.position.y != 0.0 && bg.position.y != -self.size.height {
+                    if background.position.y != 0.0 && background.position.y != -self.size.height {
                         node.position.y = aNewPosition.y
                     } /*else {
                         print(position.y)
@@ -691,7 +639,7 @@ class GameScene: SKScene {
         let positionInScene = touch?.locationInNode(self)
         let previousPosition = touch?.previousLocationInNode(self)
         let translation = CGPoint(x: positionInScene!.x - previousPosition!.x, y: positionInScene!.y - previousPosition!.y)
-        if stopped {
+        if pwPaused {
             panForTranslation(translation)
         }
     }
@@ -714,10 +662,10 @@ class GameScene: SKScene {
     
     // Connects the selectedNode with all nodes in its vicinity.
     func connectNodes(selectedNode: SKSpriteNode) {
-        let nearest = nearestNodes(selectedShape)
+        let nearest = nearestNodes(selectedSprite)
         for node in nearest {
             let midPoint = CGPoint(x: (selectedNode.position.x + node.position.x)/2, y: (selectedNode.position.y + node.position.y)/2)
-            let joinNodes = SKPhysicsJointFixed.jointWithBodyA(selectedShape.physicsBody!, bodyB: node.physicsBody!, anchor: midPoint)
+            let joinNodes = SKPhysicsJointFixed.jointWithBodyA(selectedSprite.physicsBody!, bodyB: node.physicsBody!, anchor: midPoint)
             self.physicsWorld.addJoint(joinNodes)
         }
     }

@@ -25,7 +25,7 @@ class PWObject: SKSpriteNode
     // This static dictionary contains the map from the string
     // representation of an object to the string file name of the
     // texture that will reprsent it. 
-    // Example: "ball" will refer to "ball.jpg" which will later
+    // Example: "ball" will refer to "ball.png" which will later
     // be used to actually apply the texture for the object.
     private static var objectTextureMap = [String: String]()
     
@@ -57,22 +57,23 @@ class PWObject: SKSpriteNode
     // This initializes the static variables if it hasn't been initialized yet.
     // This MUST be called when at least one instance of the PWObject
     // has been created.
-    private static func initStaticVariables()
+    static func initStaticVariables()
     {
-        if (!hasStaticBeenInit) { return }
+        if (hasStaticBeenInit) { return }
         hasStaticBeenInit = true;
         
-        objectTextureMap["circle"]      = "circle.jpg"
-        objectTextureMap["square"]      = "square.jpg"
-        objectTextureMap["triangle"]    = "triangle.jpg"
-        objectTextureMap["crate"]       = "crate.jpg"
-        objectTextureMap["baseball"]    = "baseball.jpg"
-        objectTextureMap["brickwall"]   = "brickwall.jpg"
-        objectTextureMap["airplane"]    = "airplane.jpg"
-        objectTextureMap["bike"]        = "bike.jpg"
-        objectTextureMap["car"]         = "car.jpg"
-        objectTextureMap["button"]      = "button.jpg"
-        objectTextureMap["floor"]       = "floor.jpg"
+        objectTextureMap["circle"]      = "circle.png"
+        objectTextureMap["square"]      = "square.png"
+        objectTextureMap["triangle"]    = "triangle.png"
+        objectTextureMap["crate"]       = "crate.png"
+        objectTextureMap["baseball"]    = "baseball.png"
+        objectTextureMap["brickwall"]   = "brickwall.png"
+        objectTextureMap["airplane"]    = "airplane.png"
+        objectTextureMap["bike"]        = "bike.png"
+        objectTextureMap["car"]         = "car.png"
+        objectTextureMap["button"]      = "button.png"
+        objectTextureMap["floor"]       = "floor.png"
+        objectTextureMap["ramp"]        = "ramp.png"
     }
     
     // Returns the string name of the image texture that represents
@@ -80,7 +81,8 @@ class PWObject: SKSpriteNode
     // dictionary.
     static func getObjectTextureName(objectName: String) -> String!
     {
-        if let val = objectTextureMap[objectName] {
+        let val = objectTextureMap[objectName]
+        if (val != nil) {
             return val
         } else {
             return nil
@@ -131,6 +133,12 @@ class PWObject: SKSpriteNode
         return self.selectable;
     }
     
+    // Checks if the PWObject is a sprite (i.e. any shape that will 
+    // contain physical properties).
+    func isSprite() -> Bool {
+        return self.movable;
+    }
+    
     
     // ##############################################################
     //
@@ -141,11 +149,23 @@ class PWObject: SKSpriteNode
     // ##############################################################
     
     // Object numerical properties
+    func setPos(position: CGPoint) { self.position = position }
+    func setPos(x: CGFloat, y: CGFloat) { self.position = CGPointMake(x, y) }
+    func getPos() -> CGPoint { return self.position; }
+    
     func setMass(mass: CGFloat) { self.physicsBody?.mass = mass }
     func getMass() -> CGFloat { return (self.physicsBody?.mass)! }
+    
     func setFriction(friction: CGFloat) { self.physicsBody?.friction = friction }
     func getFriction() -> CGFloat { return (self.physicsBody?.friction)! }
     
+    func setVelocity(velocity: CGVector) { self.physicsBody?.velocity = velocity }
+    func setVelocity(x: CGFloat, y: CGFloat) { self.physicsBody?.velocity = CGVectorMake(x, y) }
+    func getVelocity() -> CGVector { return (self.physicsBody?.velocity)! }
+    
+    func setAngularVelocity(angVel: CGFloat) { self.physicsBody?.angularVelocity = angVel }
+    func getAngularVelocity() -> CGFloat { return (self.physicsBody?.angularVelocity)! }
+
     
     // Returns the current acceleration of the object.
     func getAcceleration() -> CGFloat {
@@ -201,6 +221,7 @@ class PWObject: SKSpriteNode
     {
         self.physicsBody?.applyForce(CGVector.init(dx: x, dy: y))
     }
+    
     func applyForce(magnitude: CGFloat, direction: CGFloat) // Polar form
     {
         let x = magnitude * cos(direction)
@@ -225,7 +246,7 @@ class PWObject: SKSpriteNode
         let white = UIColor.init(white: 1.0, alpha: 1.0);
         super.init(texture: objectTexture, color: white, size: textureSize)
         
-        let size = CGSize(width: 60, height: 60)
+        let size = CGSize(width: 40, height: 40)
         
         self.movable = isMovable
         self.selectable = isSelectable
@@ -259,18 +280,25 @@ class PWObject: SKSpriteNode
         self.physicsBody?.friction = 0
         self.physicsBody?.linearDamping = 0
         self.physicsBody?.restitution = 0.7
+        self.physicsBody?.dynamic = isMovable;
     }
     
-    // Creates a brown floor given a specified position and size.
-    static func createFloor(position: CGPoint, size: CGSize) -> PWObject
-    {
-        let color = SKColor.brownColor()
-        let floor = self.init(objName: "floor", position: position, color: color, size:size, isMovable: false, isSelectable: false)
-        floor.anchorPoint = CGPointMake(0, 0)
-        floor.physicsBody = SKPhysicsBody(edgeLoopFromRect: floor.frame)
-        floor.physicsBody?.dynamic = false
-        floor.physicsBody?.friction = 0
-        return floor
+    // Creates a floor for the physics simulation.
+    static func createFloor(size: CGSize) -> PWObject {
+        PWObject.initStaticVariables(); // Mandatory call to populate static variables.
+        
+        let floor = self.init(objName: "floor", position: CGPointZero, color: UIColor.blackColor(), size: size, isMovable: false, isSelectable: false);
+        
+        return floor;
+    }
+    
+    // Checks if the Spritekit node is an PWObject. This works for any
+    // subclass of SKNode (SkSpriteNode, SKShapeNode, etc.)
+    static func isPWObject(node: SKNode) -> Bool {
+        let pwObj = node as? PWObject
+        
+        if (pwObj == nil) { return false}
+        return (pwObj!.isSprite());
     }
     
     

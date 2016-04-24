@@ -36,7 +36,7 @@ class GameViewController: UIViewController {
             skView.presentScene(currentGame)
         }
 
-        currentGame.viewController = self
+        currentGame.gameVC = self
     }
 
     override func shouldAutorotate() -> Bool {
