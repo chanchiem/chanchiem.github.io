@@ -15,9 +15,9 @@ class GameScene: SKScene {
     var gadgetNode1: PWObject! = nil;
     var gadgetNode2: PWObject! = nil;
     
-    var springglobal = [SKSpriteNode: [SKSpriteNode]]() // Spring that maps to two other nodes. PWOBJECT
+    var springglobal = [SKSpriteNode: [PWObject]]() // Spring that maps to two other nodes. PWOBJECT
     var initialHeight = [SKSpriteNode: CGFloat](); // PWOBJECT
-    var labelMap = [SKSpriteNode: SKLabelNode](); // Each sk spritenode will have a label associated with it. PWOBJECT
+    var labelMap = [PWObject: SKLabelNode](); // Each sk spritenode will have a label associated with it. PWOBJECT
     
     var pwPaused = true // Paused
     var button: SKSpriteNode! = nil
@@ -37,19 +37,6 @@ class GameScene: SKScene {
     // not applied to mass or values not associated with pixels
     var pixelToMetric = Float(100)
     
-    enum shapeType: String {
-        case CIRCLE = "circle.png"
-        case SQUARE = "square.png"
-        case TRIANGLE = "triangle.png"
-        case CRATE = "crate.png"
-        case BASEBALL = "baseball.png"
-        case BRICKWALL = "brickwall.png"
-        case AIRPLANE = "airplane.png"
-        case BIKE = "bike.png"
-        case CAR = "car.png"
-        case BLACK = "black.png"
-    }
-    
     // keeps track of time parameter
     var runtimeCounter = 0
     
@@ -68,7 +55,6 @@ class GameScene: SKScene {
         case FX     = 8
         case FY     = 9
     }
-    
     
     // The game view controller will be the strong owner of the gamescene
     // This reference holds the link of communication between the interface
@@ -111,7 +97,6 @@ class GameScene: SKScene {
         background.zPosition = -2
         return background
     }
-    
     
     
     // Creates a node that will act as a pause play button for the user.
@@ -231,21 +216,21 @@ class GameScene: SKScene {
         
     }
     
-    func createRopeBetweenNodes(node1: SKSpriteNode, node2: SKSpriteNode) {
-        let node1Mid = node1.position
-        let node2Mid = node2.position
+    func createRopeBetweenNodes(node1: PWObject, node2: PWObject) {
+        let node1Mid = node1.getPos()
+        let node2Mid = node2.getPos()
         let spring = SKPhysicsJointLimit.jointWithBodyA(node1.physicsBody!, bodyB: node2.physicsBody!, anchorA: node1Mid, anchorB: node2Mid)
         self.physicsWorld.addJoint(spring)
         
         self.addChild(Rope.init(parentScene: self, node: node1, node: node2, texture: "rope.png"))
     }
     
-    func createSpringBetweenNodes(node1: SKSpriteNode, node2: SKSpriteNode) {
-        let n1 = node1.position
-        let n2 = node2.position
+    func createSpringBetweenNodes(node1: PWObject, node2: PWObject) {
+        let n1 = node1.getPos()
+        let n2 = node2.getPos()
         let deltax = n1.x - n2.x
         let deltay = n1.y - n2.y
-        let distance = sqrt(deltax * deltax + deltay*deltay)
+        let distance = node1.distanceTo(node2)
         
         // Create the joint between the two objects
         let spring = SKPhysicsJointSpring.jointWithBodyA(node1.physicsBody!, bodyB: node2.physicsBody!, anchorA: n1, anchorB: n2)
@@ -255,12 +240,11 @@ class GameScene: SKScene {
         
         // Actually create a spring image with physics properties.
         let springobj = SKSpriteNode(imageNamed: "spring.png")
-        
         let nodes = [node1, node2];
         springglobal[springobj] = nodes;
         
-        let angle = atan2f(Float(deltay), Float(deltax))
-        springobj.zRotation = CGFloat(angle + 1.57) // 1.57 because image is naturally vertical
+        let angle = node1.angleTo(node2)
+        springobj.zRotation = angle + 1.57 // 1.57 because image is naturally vertical
         initialHeight[springobj] = springobj.size.height;
         springobj.yScale = distance/springobj.size.height;
         let xOffset = deltax / 2
@@ -272,17 +256,7 @@ class GameScene: SKScene {
         self.addChild(springobj);
     }
     
-    func distBetweenNodes(node1: SKSpriteNode, node2: SKSpriteNode) -> CGFloat
-    {
-        let n1 = node1.position
-        let n2 = node2.position
-        let deltax = n1.x - n2.x
-        let deltay = n1.y - n2.y
-        let distance = sqrt(deltax * deltax + deltay*deltay)
-        
-        return distance;
-    }
-    
+    // Scales the springs between objects according to their distances.
     func updateSprings()
     {
         for (spring, nodes) in springglobal {
@@ -291,11 +265,11 @@ class GameScene: SKScene {
             
             let deltax = springnode1.position.x - springnode2.position.x
             let deltay = springnode1.position.y - springnode2.position.y
-            let distance = sqrt(deltax * deltax + deltay*deltay)
+            let distance = springnode1.distanceTo(springnode2)
             spring.yScale = distance/initialHeight[spring]!;
             let xOffset = deltax / 2
             let yOffset = deltay / 2
-            let angle = atan2f(Float(deltay), Float(deltax))
+            let angle = springnode1.angleTo(springnode2)
             spring.zRotation = CGFloat(angle + 1.57) // 1.57 because image is naturally vertical
             spring.position = CGPoint.init(x: springnode1.position.x - xOffset, y: springnode1.position.y - yOffset)
         }
@@ -309,11 +283,8 @@ class GameScene: SKScene {
         for node in self.children
         {
             if (!PWObject.isPWObject(node)) { continue; }
-            
-            let sprite = node as! PWObject
-            if (!sprite.isSprite()) { continue }
-            
             if (selectedSprite == nil) { return }
+            let sprite = node as! PWObject
             if (sprite == selectedSprite) { continue }
             
             if (labelMap[sprite] == nil) {
@@ -327,7 +298,7 @@ class GameScene: SKScene {
             
             let label = labelMap[sprite];
             label?.hidden = false;
-            let dist = String(distBetweenNodes(selectedSprite, node2: sprite) / CGFloat(pixelToMetric))
+            let dist = String(selectedSprite.distanceTo(sprite) / CGFloat(pixelToMetric))
             label?.text = truncateString(dist, decLen: 3)
             let pos = sprite.getPos();
             label?.position = CGPoint.init(x: pos.x, y: pos.y + sprite.size.height/2)
@@ -347,33 +318,28 @@ class GameScene: SKScene {
     func hideLabels()
     {
         for node in self.children{
-            let sprite = node as? PWObject
-            if (sprite == nil) { continue }
-            if (!sprite!.isSprite()) { continue }
+            if (!PWObject.isPWObject(node)) { continue }
+            let sprite = node as! PWObject
+            let label = labelMap[sprite];
             
-            let label = labelMap[sprite!];
-            
-            if (label != nil) {
-                label?.hidden = true;
-            }
+            if (label != nil) { label?.hidden = true; }
         }
-        return;
     }
     
     
-    func createRodBetweenNodes(node1: SKSpriteNode, node2: SKSpriteNode) {
-        let n1 = node1.position
-        let n2 = node2.position
-        
+    func createRodBetweenNodes(node1: PWObject, node2: PWObject) {
+        let n1 = node1.getPos()
+        let n2 = node2.getPos()
         let deltax = n1.x - n2.x
         let deltay = n1.y - n2.y
-        let distance = sqrt(deltax * deltax + deltay*deltay)
+        let distance = node1.distanceTo(node2);
+        let angle = node1.angleTo(node2)
+        
         let dimension = CGSizeMake(distance, 4)
         let rod = SKShapeNode(rectOfSize: dimension)
         rod.physicsBody = SKPhysicsBody.init(rectangleOfSize: dimension)
         rod.physicsBody?.dynamic = false;
         
-        let angle = atan2f(Float(deltay), Float(deltax))
         rod.zRotation = CGFloat(angle)
         let xOffset = deltax / 2
         let yOffset = deltay / 2

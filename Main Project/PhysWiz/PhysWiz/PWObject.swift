@@ -14,6 +14,26 @@ import Foundation
 import SpriteKit
 
 
+// String to its object type representation
+// This is what will be passed in when we want to create
+// a new object. Each enumeration defines the types of objects
+// that the user can create in the GameScene.
+enum shapeType: String {
+    case CIRCLE     = "circle"
+    case SQUARE     = "square"
+    case TRIANGLE   = "triangle"
+    case CRATE      = "crate"
+    case BASEBALL   = "baseball"
+    case BRICKWALL  = "brickwall"
+    case AIRPLANE   = "airplane"
+    case BIKE       = "bike"
+    case CAR        = "car"
+    case BUTTON     = "button"
+    case FLOOR      = "floor"
+    case BLACK      = "black.png"
+}
+
+
 class PWObject: SKSpriteNode
 {
     var skObj: SKSpriteNode?
@@ -35,23 +55,6 @@ class PWObject: SKSpriteNode
     private var selectable: Bool    = true
     private var metricScale         = 100   // Factor to convert pixel units to metric units
     private var isDegrees           = true  // Checks to see if calculations should be made in rads or degs.
-    
-    // String to its object type representation
-    // This is what will be passed in when we want to create
-    // a new object.
-    enum shapeType: String {
-        case CIRCLE     = "circle"
-        case SQUARE     = "square"
-        case TRIANGLE   = "triangle"
-        case CRATE      = "crate"
-        case BASEBALL   = "baseball"
-        case BRICKWALL  = "brickwall"
-        case AIRPLANE   = "airplane"
-        case BIKE       = "bike"
-        case CAR        = "car"
-        case BUTTON     = "button"
-        case FLOOR      = "floor"
-    }
     
     
     // This initializes the static variables if it hasn't been initialized yet.
@@ -228,6 +231,41 @@ class PWObject: SKSpriteNode
         let y = magnitude * sin(direction)
         let vec = CGVector(dx: x, dy: y)
         self.physicsBody?.applyForce(vec)
+    }
+    
+    // ##############################################################
+    //
+    //  Descriptior functions: 
+    //  Functions that aid in finding information about other sprites
+    //  relative to this one.
+    //
+    // ##############################################################
+    
+    // Finds the nonscaled distance between two sprite nodes. It is 
+    // nonscaled in the sense that it returns the absolute distance
+    // in terms of pixels rather than the scaled metric.
+    func distanceTo(sprite: PWObject) -> CGFloat {
+        assert(PWObject.isPWObject(sprite));
+        
+        let n1 = self.position
+        let n2 = sprite.position
+        let deltax = n1.x - n2.x
+        let deltay = n1.y - n2.y
+        let distance = sqrt(deltax * deltax + deltay*deltay)
+        
+        return distance;
+    }
+    
+    // Returns the angle from this object to sprite relative to
+    // the horizontal x axis.
+    func angleTo(sprite: PWObject) -> CGFloat {
+        let n1 = self.getPos();
+        let n2 = sprite.getPos();
+        let deltax = n1.x - n2.x
+        let deltay = n1.y - n2.y
+        
+        let angle = atan2f(Float(deltay), Float(deltax))
+        return CGFloat(angle);
     }
     
     
