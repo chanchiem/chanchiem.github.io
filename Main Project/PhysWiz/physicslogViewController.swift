@@ -9,11 +9,23 @@
 import Foundation
 import UIKit
 import Darwin
-class physicslogViewController: UIViewController {
+class physicslogViewController: UIViewController, UITextFieldDelegate {
+    var currentTextField: UITextField?
     var parameternames = ["Mass", "Px", "Py","Vx", "Vy", "Av", "Ax", "Ay", "Fx", "Fy"]
     @IBOutlet var physicsLog: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        // set up text fields 
+        Mass.delegate = self;
+        Px.delegate = self;
+        Py.delegate = self;
+        Vx.delegate = self;
+        Vy.delegate = self;
+        Ax.delegate = self;
+        Ay.delegate = self;
+        Fx.delegate = self;
+        Fy.delegate = self;
+        Av.delegate = self;
         
     }
     
@@ -31,7 +43,11 @@ class physicslogViewController: UIViewController {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 
     }
-    
+    // tell which text field is being edited
+    func textFieldDidBeginEditing(textField: UITextField) {
+        currentTextField = textField
+        
+    }
     
     // The input box contains all the text fields for the user to input information.
     // The type of information being passed is declared below the inputbox declaration.
@@ -207,6 +223,72 @@ class physicslogViewController: UIViewController {
         Fy.backgroundColor = UIColor.whiteColor()
         
     }
+    // keypad
+    @IBOutlet weak var KeyPad: UIView!
+    @IBAction func one(sender: AnyObject) {
+        if currentTextField != nil {
+            currentTextField?.text = (currentTextField?.text)! + "1"
+        }
+    }
+    @IBAction func two(sender: AnyObject) {
+        if currentTextField != nil {
+            currentTextField?.text = (currentTextField?.text)! + "2"
+        }
+    }
+    @IBAction func three(sender: AnyObject) {
+        if currentTextField != nil {
+            currentTextField?.text = (currentTextField?.text)! + "3"
+        }
+    }
+    @IBAction func four(sender: AnyObject) {
+        if currentTextField != nil {
+            currentTextField?.text = (currentTextField?.text)! + "4"
+        }
+    }
+    @IBAction func five(sender: AnyObject) {
+        if currentTextField != nil {
+            currentTextField?.text = (currentTextField?.text)! + "5"
+        }
+    }
+    @IBAction func six(sender: AnyObject) {
+        if currentTextField != nil {
+            currentTextField?.text = (currentTextField?.text)! + "6"
+        }
+    }
+    @IBAction func seven(sender: AnyObject) {
+        if currentTextField != nil {
+            currentTextField?.text = (currentTextField?.text)! + "7"
+        }
+    }
+    @IBAction func eight(sender: AnyObject) {
+        if currentTextField != nil {
+            currentTextField?.text = (currentTextField?.text)! + "8"
+        }
+    }
+    @IBAction func nine(sender: AnyObject) {
+        if currentTextField != nil {
+            currentTextField?.text = (currentTextField?.text)! + "9"
+        }
+    }
+    @IBAction func zero(sender: AnyObject) {
+        if currentTextField != nil {
+            currentTextField?.text = (currentTextField?.text)! + "0"
+        }
+    }
+    @IBAction func decimal(sender: AnyObject) {
+        if currentTextField != nil {
+            currentTextField?.text = (currentTextField?.text)! + "."
+        }
+    }
+    @IBAction func clear(sender: AnyObject) {
+        if currentTextField != nil {
+            currentTextField?.text = ""
+        }
+    }
+    
+    
+    
+    
     // Truncates the string so that it shows only the given
     // amount of numbers after the first decimal.
     // For example:
