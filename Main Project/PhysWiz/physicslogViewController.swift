@@ -9,13 +9,15 @@
 import Foundation
 import UIKit
 import Darwin
-class physicslogViewController: UIViewController, UITextFieldDelegate {
+class physicslogViewController: UIViewController, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
+    
     var currentTextField: UITextField?
+    var objects = ["none", "test"]
     var parameternames = ["Mass", "Px", "Py","Vx", "Vy", "Av", "Ax", "Ay", "Fx", "Fy"]
     @IBOutlet var physicsLog: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
-        // set up text fields 
+        // make input box text fields delegates of physicslog view controller so that we could find which is currently being edited
         Mass.delegate = self;
         Px.delegate = self;
         Py.delegate = self;
@@ -26,26 +28,36 @@ class physicslogViewController: UIViewController, UITextFieldDelegate {
         Fx.delegate = self;
         Fy.delegate = self;
         Av.delegate = self;
-        
+        // set up object picker
+        self.objectSelector!.dataSource = self;
+        self.objectSelector!.delegate = self;
     }
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
-    
-    @IBOutlet weak var test: UIButton!
-    
-    @IBAction func test(sender: AnyObject) {
-        print("test")
-    }
-    
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
 
     }
-    // tell which text field is being edited
+    
+    // save the text field that is being edited
     func textFieldDidBeginEditing(textField: UITextField) {
         currentTextField = textField
+        currentTextField?.inputView = nil
+    }
+    // picker set up functions used to add objects to the picker
+    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
+        return 1
+    }
+    
+    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return objects.count
+    }
+    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return objects[row]
+    }
+    func addObjectToPicker(objectType: String) {
+        objects.append(objectType)
         
     }
     
@@ -285,6 +297,11 @@ class physicslogViewController: UIViewController, UITextFieldDelegate {
             currentTextField?.text = ""
         }
     }
+    // Object Picker
+    @IBOutlet weak var objectSelector: UIPickerView!
+
+
+    
     
     
     

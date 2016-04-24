@@ -36,6 +36,7 @@ class GameScene: SKScene {
     // used to scale all parameters from pixels to other metric system
     // not applied to mass or values not associated with pixels
     var pixelToMetric = Float(100)
+
     
     // keeps track of time parameter
     var runtimeCounter = 0
@@ -387,6 +388,7 @@ class GameScene: SKScene {
                     let spriteName = String(objectType).lowercaseString
                     let newObj = PWObject.init(objectStringName: spriteName, position: location, isMovable: true, isSelectable: true)
                     objectProperties[newObj] = getParameters(newObj)
+                    
                     self.addChild(newObj)
                     selectedSprite = newObj
                     //self.addChild(self.createObject(location, image: img))

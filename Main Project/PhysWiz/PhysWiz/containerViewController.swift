@@ -16,6 +16,7 @@ class containerViewController: UIViewController {
     @IBOutlet weak var objectMenu: UIBarButtonItem!
     @IBOutlet weak var gadgetMenu: UIBarButtonItem!
     
+    @IBOutlet weak var NavigationBar: UINavigationItem!
     @IBOutlet weak var physicsLogButton: UIBarButtonItem!
     
     override func viewDidLoad() {
