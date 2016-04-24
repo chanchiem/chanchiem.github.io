@@ -36,7 +36,8 @@ class GameScene: SKScene {
     // used to scale all parameters from pixels to other metric system
     // not applied to mass or values not associated with pixels
     var pixelToMetric = Float(100)
-    
+    // gives each object an unique number ID 
+    var ObjectIDCounter = 0
     enum shapeType: String {
         case CIRCLE = "circle.png"
         case SQUARE = "square.png"
@@ -421,6 +422,7 @@ class GameScene: SKScene {
                     let spriteName = String(objectType).lowercaseString
                     let newObj = PWObject.init(objectStringName: spriteName, position: location, isMovable: true, isSelectable: true)
                     objectProperties[newObj] = getParameters(newObj)
+                    
                     self.addChild(newObj)
                     selectedSprite = newObj
                     //self.addChild(self.createObject(location, image: img))

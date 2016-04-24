@@ -97,9 +97,6 @@ class GameViewController: UIViewController {
     
 
     @IBOutlet weak var Time: UITextField!
-    
-   
-    
     func getTime() -> String {
         return self.Time.text!
     }
@@ -116,13 +113,5 @@ class GameViewController: UIViewController {
         physicsLog.setsInputBox(input, state: "editable")
     }
     
-
-    // changes parameter box from input to static
-    func changeParameterBox() {
-
-    }
-    
-    
-    
-    
+   
 }
