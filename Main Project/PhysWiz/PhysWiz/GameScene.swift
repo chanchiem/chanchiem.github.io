@@ -202,17 +202,16 @@ class GameScene: SKScene {
     // Checks to see if the location that is valid (i.e. if it's actually a point on the game scene plane itself)
     // The button is considered a valid point, so long as it is not another PWObject.
     func checkValidPoint(location: CGPoint) -> Bool {
-        let node = nodeAtPoint(location);
-        return !PWObject.isPWObject(node)
+        let nodes = nodesAtPoint(location);
+        for node in nodes {
+            if(PWObject.isPWObject(node)) { return false }
+        }
         
-//        if(nodeAtPoint(location).name == movableNodeName || nodeAtPoint(location) == button ) {
-//            return false
-//        }
-//        return true
+        return true
     }
     
     // Checks to see if there is a node at the location
-    // Returns the shape if it's true, otherwise return 
+    // Returns the sprite if it's true, otherwise return
     // the false.
     func checkLocforNode(location: CGPoint) -> SKNode! {
         if(nodeAtPoint(location) == self) {
