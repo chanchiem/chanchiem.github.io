@@ -31,7 +31,7 @@ import Darwin
         Fx.delegate = self;
         Fy.delegate = self;
         Av.delegate = self;
-        ParameterInputBox.delegate = self;
+        EndParameterInputBox.delegate = self;
         // Move all the option boxes to the same spot in so that toggling is simply done with hide and unhide 
         self.activeLogView = self.mainLogView
         self.EndSetter.transform = CGAffineTransformMakeTranslation(0, -200)
@@ -311,7 +311,24 @@ import Darwin
     @IBOutlet weak var mainLogView: UIView!
     @IBOutlet weak var objectSelector: UITableView!
     let cellIdentifier = "cellIdentifier"
-    var selectionTableData = ["1", "2"]
+    var selectionTableData = [String]()
+    func addObjectToList(ID: Int) {
+       selectionTableData.append(String(ID))
+       objectSelector.reloadData()
+    }
+    func removeObjectFromList(ID: Int) {
+        for i in Range(0 ..< selectionTableData.count) {
+            if (selectionTableData[i] == (String(ID))) {
+                selectionTableData.removeAtIndex(i)
+                objectSelector.reloadData()
+                break
+            }
+        }
+    }
+    func removeAllFromList() {
+        selectionTableData = [String]()
+        objectSelector.reloadData()
+    }
     // UITableViewDataSource methods
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
         return 1
@@ -322,13 +339,14 @@ import Darwin
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = tableView.dequeueReusableCellWithIdentifier(self.cellIdentifier) as UITableViewCell!
-        cell.textLabel?.text = self.selectionTableData[indexPath.row]
+        var cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "Cell")
+        cell.textLabel?.text = selectionTableData[indexPath.row] as! String
         return cell
     }
     
     // UITableViewDelegate methods
     func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+        parentVC.changeSelectedObject(Int(selectionTableData[indexPath.row])!)
 
     }
     // ##############################################################
@@ -336,13 +354,20 @@ import Darwin
     // ##############################################################
     @IBOutlet weak var EndSetter: UIView!
     @IBOutlet weak var TimeButton: UIButton!
-    @IBOutlet weak var DistanceButton: UIButton!
+    @IBOutlet weak var EndParameterButton: UIButton!
     @IBOutlet weak var EventButton: UIButton!
     @IBOutlet weak var ChosenEndView: UIView!
     @IBOutlet weak var EndViewTitle: UILabel!
     @IBOutlet weak var EndViewBackButton: UIButton!
-    @IBOutlet weak var ParameterInputBox: UITextField!
-    @IBOutlet weak var ParameterLabel: UILabel!
+    @IBOutlet weak var EndParameterInputBox: UITextField!
+    
+    @IBOutlet weak var StopWhenLabel: UILabel!
+    @IBOutlet weak var ForObjectLabel: UILabel!
+    @IBOutlet weak var EndObjectListBox: UIScrollView!
+    @IBOutlet weak var EndObjectList: UITableView!
+    @IBOutlet weak var ParameterEqualsTo: UILabel!
+    @IBOutlet weak var EndParameterListBox: UIScrollView!
+    @IBOutlet weak var EndParameterList: UITableView!
     var EndType = ""
     func changeToEndSetter() {
         activeLogView!.hidden = true
@@ -358,24 +383,42 @@ import Darwin
     }
     // the inputed value to end at
     func getEndData() -> String {
-        return ParameterInputBox.text!
+        return EndParameterInputBox.text!
     }
     // the object that the end value is associated with
     func getEndobject() -> String {
         return ""
         
     }
+    // Set up endssetter View for Entering Time
     @IBAction func timeSet(sender: AnyObject) {
        EndType = "Time"
        EndViewTitle.text = "Time"
-       ParameterLabel.text = "End-Time:"
+       ParameterEqualsTo.text = "End-Time:"
        activeLogView!.hidden = true
+       StopWhenLabel.hidden = true
+       ForObjectLabel.hidden = true
+       EndParameterListBox.hidden = true
+       EndObjectListBox.hidden = true
        ChosenEndView.hidden = false
        activeLogView = ChosenEndView
     }
     
-    @IBAction func distanceSet(sender: AnyObject) {
+    @IBAction func EndParameterSet(sender: AnyObject) {
+        EndViewTitle.text = "End-Parameter"
+        EndType = "End-Parameter"
+        ParameterEqualsTo.text = getEndType() + "Equals To:"
+        ForObjectLabel.text = "For" + getEndobject()
+        ForObjectLabel.hidden = false
+        StopWhenLabel.hidden = false
+        ForObjectLabel.hidden = false
+        EndParameterListBox.hidden = false
+        EndObjectListBox.hidden = false
+        ChosenEndView.hidden = false
+        activeLogView!.hidden = true
+        activeLogView = ChosenEndView
     }
+  
     @IBAction func eventSet(sender: AnyObject) {
     }
 

@@ -119,6 +119,18 @@ class containerViewController: UIViewController {
     func setsStaticBox(input: [Float]) {
         return PhysicsLogVC.setsInputBox(input, state: "static")
     }
+    func addObjectToList(ID: Int) {
+        PhysicsLogVC.addObjectToList(ID)
+    }
+    func removeObjectFromList(ID: Int) {
+        PhysicsLogVC.removeObjectFromList(ID)
+    }
+    func removeAllFromList() {
+        PhysicsLogVC.removeAllFromList()
+    }
+    func changeSelectedObject(ID: Int) {
+       GameVC.changeSelectedObject(ID)
+    }
     func getTime() -> String {
             return GameVC.getTime()
         }

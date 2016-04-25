@@ -19,6 +19,10 @@ class GameScene: SKScene {
     var initialHeight = [SKSpriteNode: CGFloat](); // PWOBJECT
     var labelMap = [PWObject: SKLabelNode](); // Each sk spritenode will have a label associated with it. PWOBJECT
     
+    // Maps each object's ID to the object itself.
+    var objIdToSprite = [Int: PWObject]();
+    
+    
     var pwPaused = true // Paused
     var button: SKSpriteNode! = nil
     var stop: SKSpriteNode! = nil
@@ -102,8 +106,7 @@ class GameScene: SKScene {
         background.zPosition = -2
         return background
     }
-    
-    
+
     // Creates a node that will act as a pause play button for the user.
     func createPausePlay() -> SKSpriteNode {
         button = SKSpriteNode(imageNamed: "play.png")
@@ -383,6 +386,7 @@ class GameScene: SKScene {
         }
         
         selectedSprite = sprite!;
+        containerVC.setsInputBox(objectProperties[selectedSprite]!)
         selectedSprite.setSelected();
         
     }
@@ -410,9 +414,10 @@ class GameScene: SKScene {
                     objectProperties[newObj] = getParameters(newObj)
                     self.ObjectIDCounter += 1
                     newObj.setID(self.ObjectIDCounter);
+                    containerVC.addObjectToList(newObj.getID())
+                    objIdToSprite[newObj.getID()] = newObj;
                     self.addChild(newObj)
                     self.selectSprite(newObj)
-                    containerVC.setsInputBox(objectProperties[newObj]!)
                 }
                 continue;
             }
@@ -445,6 +450,12 @@ class GameScene: SKScene {
         }
     }
     
+    func getObjFromID(ID: Int) -> PWObject {
+        let obj = objIdToSprite[ID] as PWObject!
+        
+        return obj;
+    }
+    
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for touch: AnyObject in touches {
             let location = touch.locationInNode(self)
@@ -453,6 +464,7 @@ class GameScene: SKScene {
             if trash.containsPoint(location) {
                 objectProperties.removeValueForKey(selectedSprite)
                 selectedSprite.removeFromParent()
+                containerVC.removeObjectFromList(selectedSprite.getID())
                 self.selectSprite(nil);
             }
             // Removes all non-essential nodes from the gamescene
@@ -462,6 +474,7 @@ class GameScene: SKScene {
                     pwPaused = true
                     button.texture = SKTexture(imageNamed: "play.png")
                 }
+                containerVC.removeAllFromList()
                 let floor = PWObject.createFloor(CGSize.init(width: background.size.width, height: 20))
                 self.addChild(floor)
                 self.addChild(self.createPausePlay())

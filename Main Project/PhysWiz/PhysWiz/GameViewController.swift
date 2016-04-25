@@ -36,7 +36,7 @@ class GameViewController: UIViewController {
     override func shouldAutorotate() -> Bool {
         return true
     }
-
+    
     override func supportedInterfaceOrientations() -> UIInterfaceOrientationMask {
         return .Landscape
     }
@@ -48,6 +48,11 @@ class GameViewController: UIViewController {
     }
     override func prefersStatusBarHidden() -> Bool {
         return true
+    }
+    
+    func changeSelectedObject(ID: Int) {
+        let objFromID = currentGame.getObjFromID(ID);
+        currentGame.selectSprite(objFromID);
     }
     // ##############################################################
     //  End Setting (Time, event, distance)
