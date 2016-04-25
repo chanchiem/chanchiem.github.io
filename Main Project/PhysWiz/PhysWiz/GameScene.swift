@@ -36,8 +36,6 @@ class GameScene: SKScene {
     // used to scale all parameters from pixels to other metric system
     // not applied to mass or values not associated with pixels
     var pixelToMetric = Float(100)
-    
-    var endTime = 10;
 
     
     // keeps track of time parameter
@@ -108,7 +106,6 @@ class GameScene: SKScene {
         button.position = CGPoint(x: self.size.width - self.size.width/15, y: self.size.height - self.size.height/10)
         button.size = CGSize(width: 50, height: 50)
         button.name = "button"
-//        button.physicsBody?.dynamic = false;
         return button
     }
     
@@ -342,6 +339,7 @@ class GameScene: SKScene {
         let dimension = CGSizeMake(distance, 4)
         let rod = SKShapeNode(rectOfSize: dimension)
         rod.physicsBody = SKPhysicsBody.init(rectangleOfSize: dimension)
+        rod.physicsBody?.dynamic = false;
         
         rod.zRotation = CGFloat(angle)
         let xOffset = deltax / 2
@@ -379,7 +377,10 @@ class GameScene: SKScene {
             //////////////////////////////////
             // Make sure the point that is being touched is part of the game scene plane is part of the game
             if(checkValidPoint(location) && pwPaused) {
-                if (gameVC.getGadgetFlag() == 4) { createRamp(location) }
+                if (gameVC.getGadgetFlag() == 4) {
+                    createRamp(location)
+                }
+                
                 let objectType = shapeArray[gameVC.getObjectFlag()]
                 if (objectType == shapeType.BLACK) {
                     selectedSprite = nil
@@ -388,10 +389,8 @@ class GameScene: SKScene {
                     let newObj = PWObject.init(objectStringName: spriteName, position: location, isMovable: true, isSelectable: true)
                     objectProperties[newObj] = getParameters(newObj)
                     
-                    
                     self.addChild(newObj)
                     selectedSprite = newObj
-                    gameVC.setsInputBox(objectProperties[newObj]!)
                     //self.addChild(self.createObject(location, image: img))
                 }
                 continue;
@@ -451,20 +450,34 @@ class GameScene: SKScene {
             }
             // Gives the pause play button the ability to pause and play a scene
             if button.containsPoint(location) {
-                if (!pwPaused) { objectProperties = saveAllObjectProperties() }
+                if (!pwPaused) {
+                    objectProperties = saveAllObjectProperties()
+                }
+  
+                if (pwPaused) {
+                    // Playing
+                    //shape.physicsBody?.dynamic = true
+                    self.physicsWorld.speed = 1
+                }
+                else if (!pwPaused) {
+                    // Paused
+                    //shape.physicsBody?.dynamic = false
+                    self.physicsWorld.speed = 0
+
+                }
                 
-                // Applies changes made by the user to sprite parameters
+                // apply forces and  velocities to object as it can not be done before
+                // dynamic is set to true or the force and velocity value are set to 0
                 restoreAllobjectProperties(objectProperties)
+                button.physicsBody?.dynamic = false   // Keeps pause play button in place
                 
-                // Pause / Resume the world
+                // Updates the value of the variable 'pwPaused'
                 if (pwPaused) {
                     // being used to try and figure put the time component
                   //var timer = NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: "runtime", userInfo: nil, repeats: true)
-                    self.physicsWorld.speed = 1
                     pwPaused = false
                     button.texture = SKTexture(imageNamed: "pause.png")
                 } else {
-                    self.physicsWorld.speed = 0
                     pwPaused = true
                     button.texture = SKTexture(imageNamed: "play.png")
                 }
@@ -472,7 +485,6 @@ class GameScene: SKScene {
             
         }
     }
-    
     
     //being used to try and figure out the time component
     func runtime() {
@@ -503,7 +515,7 @@ class GameScene: SKScene {
                     if (Float(input[i]) != nil) { values[i] = Float(input[i])! }
                 }
                 objectProperties[selectedSprite] = values
-                restoreAllobjectProperties(objectProperties)
+//                restoreAllobjectProperties(objectProperties)
             }
         
         for object in self.children {
