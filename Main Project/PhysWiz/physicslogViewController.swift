@@ -14,6 +14,7 @@ import Darwin
     var currentTextField: UITextField?
     var objects = ["none", "test"]
     var parameterNames = ["Mass", "Px", "Py","Vx", "Vy", "Av", "Ax", "Ay", "Fx", "Fy"]
+    var endSetterParameterNames = ["Distance", "Height","Velocity x", "Velocity y", "Angular Velocity", "Acceleration x", "Acceleration y" ]
     var parentVC = containerViewController()
     @IBOutlet var physicsLog: UIView!
     override func viewDidLoad() {
@@ -306,7 +307,7 @@ import Darwin
     }
     
     // ##############################################################
-    //  Main View - has Object Selection Table and log
+    //  Table Settings for mainView and for Endsetter
     // ##############################################################
     @IBOutlet weak var mainLogView: UIView!
     @IBOutlet weak var objectSelector: UITableView!
@@ -315,12 +316,14 @@ import Darwin
     func addObjectToList(ID: Int) {
        selectionTableData.append(String(ID))
        objectSelector.reloadData()
+       EndObjectList.reloadData()
     }
     func removeObjectFromList(ID: Int) {
         for i in Range(0 ..< selectionTableData.count) {
             if (selectionTableData[i] == (String(ID))) {
                 selectionTableData.removeAtIndex(i)
                 objectSelector.reloadData()
+                EndObjectList.reloadData()
                 break
             }
         }
@@ -328,6 +331,7 @@ import Darwin
     func removeAllFromList() {
         selectionTableData = [String]()
         objectSelector.reloadData()
+        EndObjectList.reloadData()
     }
     // UITableViewDataSource methods
     func numberOfSectionsInTableView(tableView: UITableView) -> Int {
@@ -335,18 +339,44 @@ import Darwin
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        // return count of parameter names list
+        if (tableView == EndParameterList) {
+          return endSetterParameterNames.count
+        }
+        // return count list of objects in the scene
         return selectionTableData.count
     }
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        var cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "Cell")
-        cell.textLabel?.text = selectionTableData[indexPath.row] as! String
+        let cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "Cell")
+        // populate parameter names table
+        if (tableView == EndParameterList) {
+             cell.textLabel?.text = endSetterParameterNames[indexPath.row] as String
+        }
+        // populate tables with
+        else {
+        cell.textLabel?.text = selectionTableData[indexPath.row] as String
+        }
+        
         return cell
     }
     
     // UITableViewDelegate methods
-    func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
+    func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        
+        if tableView == objectSelector {
         parentVC.changeSelectedObject(Int(selectionTableData[indexPath.row])!)
+        }
+        // deals with object table selection for endsetter
+        if tableView == EndObjectList {
+           EndObject = selectionTableData[indexPath.row]
+               ForObjectLabel.text = "For " + getEndobject()
+        }
+        // deals with parameter table selection for endsetter
+        if tableView == EndParameterList {
+            EndType = endSetterParameterNames[indexPath.row]
+             ParameterEqualsTo.text = getEndType() + " ="
+        }
 
     }
     // ##############################################################
@@ -369,6 +399,7 @@ import Darwin
     @IBOutlet weak var EndParameterListBox: UIScrollView!
     @IBOutlet weak var EndParameterList: UITableView!
     var EndType = ""
+    var EndObject = ""
     func changeToEndSetter() {
         activeLogView!.hidden = true
         EndSetter.hidden = false
@@ -387,8 +418,12 @@ import Darwin
     }
     // the object that the end value is associated with
     func getEndobject() -> String {
-        return ""
+        return EndObject
+    }
+    func getEndSetter() -> [String] {
+        var endSettings = [String]()
         
+        return endSettings
     }
     // Set up endssetter View for Entering Time
     @IBAction func timeSet(sender: AnyObject) {
@@ -407,8 +442,6 @@ import Darwin
     @IBAction func EndParameterSet(sender: AnyObject) {
         EndViewTitle.text = "End-Parameter"
         EndType = "End-Parameter"
-        ParameterEqualsTo.text = getEndType() + "Equals To:"
-        ForObjectLabel.text = "For" + getEndobject()
         ForObjectLabel.hidden = false
         StopWhenLabel.hidden = false
         ForObjectLabel.hidden = false

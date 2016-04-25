@@ -22,26 +22,11 @@
                   shouldBeEnabled = "Yes"
                   ignoreCount = "0"
                   continueAfterRunningActions = "No"
-                  symbolName = "PhysWiz.GameViewController.currentGame.getter : Swift.ImplicitlyUnwrappedOptional&lt;PhysWiz.GameScene&gt;"
-                  moduleName = "PhysWiz"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/yosvanilopez/Desktop/Phys%20Wiz/chanchiem.github.io/Main%20Project/PhysWiz/PhysWiz/GameViewController.swift"
-                  timestampString = "483296267.533206"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "0"
-                  endingLineNumber = "0"
-                  offsetFromSymbolStart = "18">
-               </Location>
-               <Location
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
                   symbolName = "PhysWiz.GameViewController.currentGame.setter : Swift.ImplicitlyUnwrappedOptional&lt;PhysWiz.GameScene&gt;"
                   moduleName = "PhysWiz"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/yosvanilopez/Desktop/Phys%20Wiz/chanchiem.github.io/Main%20Project/PhysWiz/PhysWiz/GameViewController.swift"
-                  timestampString = "483296267.533625"
+                  timestampString = "483312357.936576"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "0"
@@ -56,7 +41,7 @@
                   moduleName = "PhysWiz"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/yosvanilopez/Desktop/Phys%20Wiz/chanchiem.github.io/Main%20Project/PhysWiz/PhysWiz/GameViewController.swift"
-                  timestampString = "483296267.533998"
+                  timestampString = "483312357.936705"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "0"
@@ -71,7 +56,7 @@
                   moduleName = "PhysWiz"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/yosvanilopez/Desktop/Phys%20Wiz/chanchiem.github.io/Main%20Project/PhysWiz/PhysWiz/GameViewController.swift"
-                  timestampString = "483296267.534257"
+                  timestampString = "483312357.936872"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "16"
@@ -86,7 +71,7 @@
                   moduleName = "PhysWiz"
                   usesParentBreakpointCondition = "Yes"
                   urlString = "file:///Users/yosvanilopez/Desktop/Phys%20Wiz/chanchiem.github.io/Main%20Project/PhysWiz/PhysWiz/GameViewController.swift"
-                  timestampString = "483296267.534632"
+                  timestampString = "483312357.937037"
                   startingColumnNumber = "9223372036854775807"
                   endingColumnNumber = "9223372036854775807"
                   startingLineNumber = "16"
@@ -103,12 +88,28 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "physicslogViewController.swift"
-            timestampString = "483306871.773043"
+            timestampString = "483315048.466257"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "372"
-            endingLineNumber = "372"
-            landmarkName = "changeToEndSetter()"
+            startingLineNumber = "411"
+            endingLineNumber = "411"
+            landmarkName = "physicslogViewController"
+            landmarkType = "3">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "physicslogViewController.swift"
+            timestampString = "483315048.466257"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "423"
+            endingLineNumber = "423"
+            landmarkName = "getEndobject()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -119,13 +120,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "physicslogViewController.swift"
-            timestampString = "483306871.773043"
+            timestampString = "483315048.466257"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "384"
-            endingLineNumber = "384"
-            landmarkName = "physicslogViewController"
-            landmarkType = "3">
+            startingLineNumber = "381"
+            endingLineNumber = "381"
+            landmarkName = "tableView(_:didSelectRowAtIndexPath:)"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>
