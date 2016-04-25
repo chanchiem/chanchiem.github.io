@@ -69,7 +69,7 @@
                                 <rect key="frame" x="0.0" y="700" width="600" height="200"/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
-                                    <segue destination="fPQ-S9-gZ9" kind="embed" identifier="toPhysicsLog" id="PeU-Dd-TqK"/>
+                                    <segue destination="fPQ-S9-gZ9" kind="embed" id="PeU-Dd-TqK"/>
                                 </connections>
                             </containerView>
                             <containerView opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="jW7-Xe-uZu">
@@ -267,11 +267,7 @@
                                     </mask>
                                 </variation>
                             </view>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eGr-56-BwD">
-                                <rect key="frame" x="959" y="-7" width="57" height="30"/>
-                                <state key="normal" title="Settings"/>
-                            </button>
-                            <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yyp-7e-3tV">
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yyp-7e-3tV">
                                 <rect key="frame" x="517" y="444" width="453" height="171"/>
                                 <subviews>
                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="CqY-vA-Xjd">
@@ -449,31 +445,8 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.83733822599999996" green="0.83733822599999996" blue="0.83733822599999996" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
-                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RJz-o1-puM">
-                                <rect key="frame" x="510" y="20" width="450" height="163"/>
-                                <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Objects" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w6h-Wx-n8Q">
-                                        <rect key="frame" x="52" y="0.0" width="143" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QRy-Kf-w6a">
-                                        <rect key="frame" x="29" y="19" width="222" height="128"/>
-                                        <subviews>
-                                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="none" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="0zh-nK-MYZ">
-                                                <rect key="frame" x="-9" y="0.0" width="240" height="128"/>
-                                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                                <color key="separatorColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                                <sections/>
-                                            </tableView>
-                                        </subviews>
-                                    </scrollView>
-                                </subviews>
-                                <color key="backgroundColor" red="0.83733822599999996" green="0.83733822599999996" blue="0.83733822599999996" alpha="1" colorSpace="calibratedRGB"/>
-                            </view>
-                            <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EhO-zf-4oT">
-                                <rect key="frame" x="505" y="221" width="443" height="169"/>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="EhO-zf-4oT">
+                                <rect key="frame" x="517" y="235" width="443" height="169"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qXk-Q6-z5B">
                                         <rect key="frame" x="15" y="74" width="73" height="46"/>
@@ -493,6 +466,33 @@
                                 </subviews>
                                 <color key="backgroundColor" red="0.83733822599999996" green="0.83733822599999996" blue="0.83733822599999996" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
+                            <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="RJz-o1-puM">
+                                <rect key="frame" x="510" y="20" width="450" height="155"/>
+                                <subviews>
+                                    <pickerView contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="4T4-5T-3h4">
+                                        <rect key="frame" x="27" y="46" width="192" height="90"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                        <connections>
+                                            <outlet property="dataSource" destination="GWf-sF-3lX" id="kiP-oP-jQ8"/>
+                                            <outlet property="delegate" destination="GWf-sF-3lX" id="1cc-Ee-e7B"/>
+                                        </connections>
+                                    </pickerView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Objects" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="w6h-Wx-n8Q">
+                                        <rect key="frame" x="52" y="17" width="143" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" bouncesZoom="NO" translatesAutoresizingMaskIntoConstraints="NO" id="QRy-Kf-w6a">
+                                        <rect key="frame" x="249" y="17" width="175" height="128"/>
+                                    </scrollView>
+                                </subviews>
+                                <color key="backgroundColor" red="0.83733822599999996" green="0.83733822599999996" blue="0.83733822599999996" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eGr-56-BwD">
+                                <rect key="frame" x="959" y="-7" width="57" height="30"/>
+                                <state key="normal" title="Settings"/>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" red="0.9379142992424242" green="0.9379142992424242" blue="0.9379142992424242" alpha="1" colorSpace="calibratedRGB"/>
                         <variation key="default">
@@ -507,7 +507,6 @@
                         <outlet property="Av" destination="j94-0H-MU0" id="wUk-ZY-wcF"/>
                         <outlet property="Ax" destination="0CG-g6-Olw" id="KFd-c5-cbf"/>
                         <outlet property="Ay" destination="sHk-1J-B8F" id="40Z-7J-N8U"/>
-                        <outlet property="EndSetter" destination="EhO-zf-4oT" id="4dD-m2-4Ne"/>
                         <outlet property="Fx" destination="Y4m-Qy-yqV" id="do1-jT-dg9"/>
                         <outlet property="Fy" destination="7zK-7d-vaZ" id="TAM-i5-YDH"/>
                         <outlet property="InputBox" destination="3gf-js-iHe" id="p5A-Zf-6Bs"/>
@@ -524,8 +523,7 @@
                         <outlet property="forceType" destination="AjY-gf-SuK" id="nPM-Fh-Ssn"/>
                         <outlet property="forceXLabel" destination="yyM-cY-9JS" id="B27-y7-2Xv"/>
                         <outlet property="forceYLabel" destination="B0F-7L-kSn" id="w9H-Qk-S7m"/>
-                        <outlet property="mainLogView" destination="RJz-o1-puM" id="RHP-ci-KxL"/>
-                        <outlet property="objectSelector" destination="0zh-nK-MYZ" id="bEA-4t-X3E"/>
+                        <outlet property="objectSelector" destination="4T4-5T-3h4" id="tMC-Zp-tUH"/>
                         <outlet property="physicsLog" destination="GWf-sF-3lX" id="TGd-Tv-WZD"/>
                         <outlet property="velocityType" destination="CqY-vA-Xjd" id="UBq-HH-baW"/>
                         <outlet property="velocityXLabel" destination="6Cf-1Y-Rgx" id="rb2-YI-JOj"/>
@@ -612,9 +610,6 @@
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Za-SL-kyK">
                                         <rect key="frame" x="502" y="6" width="30" height="30"/>
                                         <state key="normal" title="End"/>
-                                        <connections>
-                                            <action selector="callSetterBox:" destination="BV1-FR-VrT" eventType="touchDown" id="YW9-7S-Qz5"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                             </view>
@@ -629,7 +624,6 @@
                     <freeformSimulatedSizeMetrics key="simulatedDestinationMetrics"/>
                     <size key="freeformSize" width="1024" height="700"/>
                     <connections>
-                        <outlet property="EndSetter" destination="9Za-SL-kyK" id="VQu-GC-MIa"/>
                         <outlet property="Time" destination="6Ve-VT-Dxz" id="bZ6-Jj-iC0"/>
                     </connections>
                 </viewController>

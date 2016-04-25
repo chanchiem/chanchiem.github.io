@@ -28,7 +28,7 @@ class GameScene: SKScene {
     
     var toggledSprite = shapeType.CIRCLE;
     var shapeArray = [shapeType]();
-    var containerVC: containerViewController!
+    var gameVC: GameViewController!
     // The selected object for parameters
     var selectedSprite: PWObject! = nil
     var objectProperties: [PWObject : [Float]]!
@@ -38,8 +38,6 @@ class GameScene: SKScene {
     var pixelToMetric = Float(100)
     
     var endTime = 10;
-    // gives each object an unique number ID
-    var ObjectIDCounter = 0
 
     
     // keeps track of time parameter
@@ -381,22 +379,19 @@ class GameScene: SKScene {
             //////////////////////////////////
             // Make sure the point that is being touched is part of the game scene plane is part of the game
             if(checkValidPoint(location) && pwPaused) {
-                if (containerVC.getGadgetFlag() == 4) {
-                    createRamp(location)
-                }
-                
-                let objectType = shapeArray[containerVC.getObjectFlag()]
+                if (gameVC.getGadgetFlag() == 4) { createRamp(location) }
+                let objectType = shapeArray[gameVC.getObjectFlag()]
                 if (objectType == shapeType.BLACK) {
                     selectedSprite = nil
                 } else {
                     let spriteName = String(objectType).lowercaseString
                     let newObj = PWObject.init(objectStringName: spriteName, position: location, isMovable: true, isSelectable: true)
                     objectProperties[newObj] = getParameters(newObj)
-                    // jeff assign ID to objects in PWObjects
-                    self.ObjectIDCounter += 1
+                    
+                    
                     self.addChild(newObj)
                     selectedSprite = newObj
-                    containerVC.setsInputBox(objectProperties[newObj]!)
+                    gameVC.setsInputBox(objectProperties[newObj]!)
                     //self.addChild(self.createObject(location, image: img))
                 }
                 continue;
@@ -408,22 +403,22 @@ class GameScene: SKScene {
             //////////////////////////////////
             if (!PWObject.isPWObject(touchedNode)) { continue };
             let sprite = touchedNode as! PWObject
-            if (containerVC.getGadgetFlag() != 0) { // Rope
+            if (gameVC.getGadgetFlag() != 0) { // Rope
                 if (gadgetNode1 == nil) {
                     gadgetNode1 = sprite
                 } else if(gadgetNode2 == nil) {
                     gadgetNode2 = sprite
                     if (gadgetNode1 != gadgetNode2) {
-                        if (containerVC.getGadgetFlag() == 1) { createRopeBetweenNodes(gadgetNode1, node2: gadgetNode2) }
-                        if (containerVC.getGadgetFlag() == 2) { createSpringBetweenNodes(gadgetNode1, node2: gadgetNode2) }
-                        if (containerVC.getGadgetFlag() == 3) { createRodBetweenNodes(gadgetNode1, node2: gadgetNode2) }
+                        if (gameVC.getGadgetFlag() == 1) { createRopeBetweenNodes(gadgetNode1, node2: gadgetNode2) }
+                        if (gameVC.getGadgetFlag() == 2) { createSpringBetweenNodes(gadgetNode1, node2: gadgetNode2) }
+                        if (gameVC.getGadgetFlag() == 3) { createRodBetweenNodes(gadgetNode1, node2: gadgetNode2) }
                     }
                     gadgetNode2 = nil;
                     gadgetNode1 = nil;
                 }
             } else {
                 selectedSprite = sprite
-               containerVC.setsInputBox(objectProperties[selectedSprite]!)
+                gameVC.setsInputBox(objectProperties[selectedSprite]!)
             }
             
             
@@ -472,7 +467,6 @@ class GameScene: SKScene {
                     self.physicsWorld.speed = 0
                     pwPaused = true
                     button.texture = SKTexture(imageNamed: "play.png")
-                    containerVC.setsInputBox(objectProperties[selectedSprite]!)
                 }
             }
             
@@ -483,7 +477,7 @@ class GameScene: SKScene {
     //being used to try and figure out the time component
     func runtime() {
         runtimeCounter += 1
-        let time = Int(containerVC.getTime())
+        let time = Int(gameVC.getTime())
         if runtimeCounter ==  time {
             if (pwPaused) { self.physicsWorld.speed = 1 }
             else if (!pwPaused) { self.physicsWorld.speed = 0 }
@@ -497,14 +491,14 @@ class GameScene: SKScene {
         updateFrameCounter += 1
         if (updateFrameCounter % 20 == 0) {
             if selectedSprite != nil && !pwPaused  {
-                containerVC.setsStaticBox(getParameters(selectedSprite))
+                gameVC.setsStaticBox(getParameters(selectedSprite))
             }
         }
 
             // updates selected shapes values with input box values when pwPaused
         if (selectedSprite != nil && pwPaused) {
                 var values = objectProperties[selectedSprite]!
-                let input = containerVC.getInput()
+                let input = gameVC.getInput()
                 for i in 0 ..< 10 {
                     if (Float(input[i]) != nil) { values[i] = Float(input[i])! }
                 }
@@ -552,7 +546,7 @@ class GameScene: SKScene {
             if selectedSprite.isMovable() {
                 selectedSprite.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
                 //changes values in the input box to the position it is dragged to
-                containerVC.setsInputBox(getParameters(selectedSprite))
+                gameVC.setsInputBox(getParameters(selectedSprite))
                 
                 // Connects selectedShape to its nearestNodes
                 //connectNodes(selectedShape)
