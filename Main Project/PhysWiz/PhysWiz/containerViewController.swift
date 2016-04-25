@@ -119,5 +119,8 @@ class containerViewController: UIViewController {
     func getTime() -> String {
             return GameVC.getTime()
         }
+    func changeToEndSetter() {
+        PhysicsLogVC.changeToEndSetter()
+    }
 
 }

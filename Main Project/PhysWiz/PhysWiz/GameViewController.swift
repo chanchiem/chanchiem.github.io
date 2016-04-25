@@ -46,12 +46,19 @@ class GameViewController: UIViewController {
         // Release any cached data, images, etc that aren't in use.
        
     }
-    
-
     override func prefersStatusBarHidden() -> Bool {
         return true
     }
-
+    // ##############################################################
+    //  End Setting (Time, event, distance)
+    // ##############################################################
+    @IBOutlet weak var EndSetter: UIButton!
+    
+    @IBAction func callSetterBox(sender: AnyObject) {
+        self.parentVC.changeToEndSetter()
+    }
+    
+    
     @IBOutlet weak var Time: UITextField!
     func getTime() -> String {
         return self.Time.text!

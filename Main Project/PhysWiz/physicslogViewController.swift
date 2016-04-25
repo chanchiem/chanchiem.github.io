@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 import Darwin
-class physicslogViewController: UIViewController, UITextFieldDelegate, UIPickerViewDataSource, UIPickerViewDelegate {
+ class physicslogViewController: UIViewController, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate  {
     
     var currentTextField: UITextField?
     var objects = ["none", "test"]
@@ -18,6 +18,8 @@ class physicslogViewController: UIViewController, UITextFieldDelegate, UIPickerV
     @IBOutlet var physicsLog: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
+        // Register the UITableViewCell class with the tableView
+        self.objectSelector?.registerClass(UITableViewCell.self, forCellReuseIdentifier: self.cellIdentifier)
         // make input box text fields delegates of physicslog view controller so that we could find which is currently being edited
         Mass.delegate = self;
         Px.delegate = self;
@@ -29,9 +31,8 @@ class physicslogViewController: UIViewController, UITextFieldDelegate, UIPickerV
         Fx.delegate = self;
         Fy.delegate = self;
         Av.delegate = self;
-        // set up object picker
-        self.objectSelector!.dataSource = self;
-        self.objectSelector!.delegate = self;
+        // Move all the option boxes to the same spot in so that toggling is simply done with hide and unhide 
+        self.EndSetter.transform = CGAffineTransformMakeTranslation(0, -200)
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -47,21 +48,7 @@ class physicslogViewController: UIViewController, UITextFieldDelegate, UIPickerV
         currentTextField = textField
         currentTextField?.inputView = nil
     }
-    // picker set up functions used to add objects to the picker
-    func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
-        return 1
-    }
-    
-    func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
-        return objects.count
-    }
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return objects[row]
-    }
-    func addObjectToPicker(objectType: String) {
-        objects.append(objectType)
-        
-    }
+
     
     // The input box contains all the text fields for the user to input information.
     // The type of information being passed is declared below the inputbox declaration.
@@ -237,7 +224,9 @@ class physicslogViewController: UIViewController, UITextFieldDelegate, UIPickerV
         Fy.backgroundColor = UIColor.whiteColor()
         
     }
-    // keypad
+    // ##############################################################
+    //  Number Pad
+    // ##############################################################
     @IBOutlet weak var KeyPad: UIView!
     @IBAction func one(sender: AnyObject) {
         if currentTextField != nil {
@@ -299,15 +288,48 @@ class physicslogViewController: UIViewController, UITextFieldDelegate, UIPickerV
             currentTextField?.text = ""
         }
     }
-    // Object Picker
-    @IBOutlet weak var objectSelector: UIPickerView!
+    
+    // ##############################################################
+    //  Main View - has Object Selection Table and log
+    // ##############################################################
+    @IBOutlet weak var mainLogView: UIView!
+    @IBOutlet weak var objectSelector: UITableView!
+    let cellIdentifier = "cellIdentifier"
+    var selectionTableData = ["1", "2"]
+    // UITableViewDataSource methods
+    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return selectionTableData.count
+    }
+    
+    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        var cell = tableView.dequeueReusableCellWithIdentifier(self.cellIdentifier) as UITableViewCell!
+        cell.textLabel?.text = self.selectionTableData[indexPath.row]
+        return cell
+    }
+    
+    // UITableViewDelegate methods
+    func tableView(tableView: UITableView!, didSelectRowAtIndexPath indexPath: NSIndexPath!) {
 
+    }
+    // ##############################################################
+    //  Simulation End setter
+    // ##############################################################
+    @IBOutlet weak var EndSetter: UIView!
+    func changeToEndSetter() {
+        mainLogView.hidden = true
+        EndSetter.hidden = false
+    }
+    
+    
+    
+    // ##############################################################
+    //  Helper Functions
+    // ##############################################################
 
-    
-    
-    
-    
-    
     // Truncates the string so that it shows only the given
     // amount of numbers after the first decimal.
     // For example:
