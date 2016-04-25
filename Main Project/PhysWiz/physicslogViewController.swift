@@ -10,17 +10,17 @@ import Foundation
 import UIKit
 import Darwin
  class physicslogViewController: UIViewController, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate  {
-    
+    var activeLogView: UIView?
     var currentTextField: UITextField?
     var objects = ["none", "test"]
-    var parameternames = ["Mass", "Px", "Py","Vx", "Vy", "Av", "Ax", "Ay", "Fx", "Fy"]
+    var parameterNames = ["Mass", "Px", "Py","Vx", "Vy", "Av", "Ax", "Ay", "Fx", "Fy"]
     var parentVC = containerViewController()
     @IBOutlet var physicsLog: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
         // Register the UITableViewCell class with the tableView
         self.objectSelector?.registerClass(UITableViewCell.self, forCellReuseIdentifier: self.cellIdentifier)
-        // make input box text fields delegates of physicslog view controller so that we could find which is currently being edited
+        // make input box text fields delegates of physicslog view controller so that we could find which is currently being edited (all the text boxes to be edited by num pad must be added here)
         Mass.delegate = self;
         Px.delegate = self;
         Py.delegate = self;
@@ -31,8 +31,13 @@ import Darwin
         Fx.delegate = self;
         Fy.delegate = self;
         Av.delegate = self;
+        ParameterInputBox.delegate = self;
         // Move all the option boxes to the same spot in so that toggling is simply done with hide and unhide 
+        self.activeLogView = self.mainLogView
         self.EndSetter.transform = CGAffineTransformMakeTranslation(0, -200)
+        self.SettingsBox.transform = CGAffineTransformMakeTranslation(0, -400)
+         self.ChosenEndView.transform = CGAffineTransformMakeTranslation(0, -600)
+        
     }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -70,6 +75,15 @@ import Darwin
     @IBOutlet weak var OutputValues: UILabel!
     
     
+    // ##############################################################
+    //  Settings View
+    // ##############################################################
+    @IBOutlet weak var SettingsBox: UIView!
+    @IBAction func SettingsButton(sender: AnyObject) {
+        activeLogView?.hidden = true
+        SettingsBox.hidden = false
+        activeLogView = SettingsBox
+    }
     // changes velocities types tells whether velocity input is cartesian (off) or polar/vectorial (on)
     @IBOutlet weak var velocityType: UISwitch!
     @IBOutlet weak var velocityXLabel: UILabel!
@@ -116,7 +130,9 @@ import Darwin
             forceYLabel.text = "Fy"
         }
     }
-    
+    // ##############################################################
+    //  InputBox
+    // ##############################################################
     
     // Gets the input from all the TextFields inside the inputBox.
     func getInput() -> [String] {
@@ -319,13 +335,50 @@ import Darwin
     //  Simulation End setter
     // ##############################################################
     @IBOutlet weak var EndSetter: UIView!
+    @IBOutlet weak var TimeButton: UIButton!
+    @IBOutlet weak var DistanceButton: UIButton!
+    @IBOutlet weak var EventButton: UIButton!
+    @IBOutlet weak var ChosenEndView: UIView!
+    @IBOutlet weak var EndViewTitle: UILabel!
+    @IBOutlet weak var EndViewBackButton: UIButton!
+    @IBOutlet weak var ParameterInputBox: UITextField!
+    @IBOutlet weak var ParameterLabel: UILabel!
+    var EndType = ""
     func changeToEndSetter() {
-        mainLogView.hidden = true
+        activeLogView!.hidden = true
         EndSetter.hidden = false
+        activeLogView = EndSetter
+    }
+    @IBAction func ReturnToEndSetter(sender: AnyObject) {
+        changeToEndSetter()
+    }
+    // the parameter we are ending for
+    func getEndType() -> String {
+        return EndType
+    }
+    // the inputed value to end at
+    func getEndData() -> String {
+        return ParameterInputBox.text!
+    }
+    // the object that the end value is associated with
+    func getEndobject() -> String {
+        return ""
+        
+    }
+    @IBAction func timeSet(sender: AnyObject) {
+       EndType = "Time"
+       EndViewTitle.text = "Time"
+       ParameterLabel.text = "End-Time:"
+       activeLogView!.hidden = true
+       ChosenEndView.hidden = false
+       activeLogView = ChosenEndView
     }
     
-    
-    
+    @IBAction func distanceSet(sender: AnyObject) {
+    }
+    @IBAction func eventSet(sender: AnyObject) {
+    }
+
     // ##############################################################
     //  Helper Functions
     // ##############################################################

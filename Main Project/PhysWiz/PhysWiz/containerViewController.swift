@@ -76,7 +76,10 @@ class containerViewController: UIViewController {
         PhysicsLogVC.parentVC = self
         }
     }
-    
+    // return from selecting table object
+    @IBAction func unwindSegue(segue: UIStoryboardSegue) {
+        // do stuff
+    }
     // Finds the index on the table that the user selected
     func setObjectFlag(index: Int) {
         //set other flag to null

@@ -270,9 +270,12 @@
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eGr-56-BwD">
                                 <rect key="frame" x="959" y="-7" width="57" height="30"/>
                                 <state key="normal" title="Settings"/>
+                                <connections>
+                                    <action selector="SettingsButton:" destination="fPQ-S9-gZ9" eventType="touchDown" id="csp-s7-oYg"/>
+                                </connections>
                             </button>
                             <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="yyp-7e-3tV">
-                                <rect key="frame" x="517" y="444" width="453" height="171"/>
+                                <rect key="frame" x="505" y="424" width="453" height="171"/>
                                 <subviews>
                                     <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="CqY-vA-Xjd">
                                         <rect key="frame" x="140" y="42" width="51" height="31"/>
@@ -479,18 +482,84 @@
                                         <rect key="frame" x="15" y="74" width="73" height="46"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="28"/>
                                         <state key="normal" title="Time"/>
+                                        <connections>
+                                            <action selector="timeSet:" destination="fPQ-S9-gZ9" eventType="touchDown" id="1eC-Ym-h92"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wh1-GN-4MX">
                                         <rect key="frame" x="155" y="74" width="109" height="46"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="28"/>
                                         <state key="normal" title="Distance"/>
+                                        <connections>
+                                            <action selector="distanceSet:" destination="fPQ-S9-gZ9" eventType="touchDown" id="85J-mK-3He"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UNV-od-mmY">
                                         <rect key="frame" x="323" y="74" width="70" height="46"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="28"/>
                                         <state key="normal" title="Event"/>
+                                        <connections>
+                                            <action selector="eventSet:" destination="fPQ-S9-gZ9" eventType="touchDown" id="9Px-ik-MFr"/>
+                                        </connections>
                                     </button>
                                 </subviews>
+                                <color key="backgroundColor" red="0.83733822599999996" green="0.83733822599999996" blue="0.83733822599999996" alpha="1" colorSpace="calibratedRGB"/>
+                            </view>
+                            <view hidden="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="3HD-5X-8QY">
+                                <rect key="frame" x="505" y="618" width="453" height="169"/>
+                                <subviews>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="parameter" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="sNv-r6-e9P">
+                                        <rect key="frame" x="194" y="52" width="79" height="21"/>
+                                        <animations/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="mNs-yP-X9S">
+                                        <rect key="frame" x="401" y="8" width="34" height="30"/>
+                                        <animations/>
+                                        <state key="normal" title="Back"/>
+                                        <connections>
+                                            <action selector="ReturnToEndSetter:" destination="fPQ-S9-gZ9" eventType="touchDown" id="vdU-c1-IQ6"/>
+                                        </connections>
+                                    </button>
+                                    <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="Yke-Qb-COX">
+                                        <rect key="frame" x="185" y="81" width="97" height="30"/>
+                                        <animations/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <textInputTraits key="textInputTraits"/>
+                                    </textField>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Title" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="o47-Fb-OMO">
+                                        <rect key="frame" x="141" y="-5" width="171" height="36"/>
+                                        <animations/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="fRe-y7-Ifc">
+                                        <rect key="frame" x="8" y="52" width="146" height="115"/>
+                                        <animations/>
+                                    </scrollView>
+                                    <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="YaT-VS-tvf">
+                                        <rect key="frame" x="317" y="52" width="123" height="117"/>
+                                        <animations/>
+                                    </scrollView>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="For" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="haK-yq-y9M">
+                                        <rect key="frame" x="367" y="35" width="26" height="21"/>
+                                        <animations/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Stop When" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="E80-0a-GnZ">
+                                        <rect key="frame" x="39" y="34" width="85" height="21"/>
+                                        <animations/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
+                                </subviews>
+                                <animations/>
                                 <color key="backgroundColor" red="0.83733822599999996" green="0.83733822599999996" blue="0.83733822599999996" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                         </subviews>
@@ -507,15 +576,24 @@
                         <outlet property="Av" destination="j94-0H-MU0" id="wUk-ZY-wcF"/>
                         <outlet property="Ax" destination="0CG-g6-Olw" id="KFd-c5-cbf"/>
                         <outlet property="Ay" destination="sHk-1J-B8F" id="40Z-7J-N8U"/>
+                        <outlet property="ChosenEndView" destination="3HD-5X-8QY" id="xyS-Zf-jve"/>
+                        <outlet property="DistanceButton" destination="wh1-GN-4MX" id="JfV-K4-JTM"/>
                         <outlet property="EndSetter" destination="EhO-zf-4oT" id="4dD-m2-4Ne"/>
+                        <outlet property="EndViewBackButton" destination="mNs-yP-X9S" id="duP-bp-QjY"/>
+                        <outlet property="EndViewTitle" destination="o47-Fb-OMO" id="ISp-2Z-ZYk"/>
+                        <outlet property="EventButton" destination="UNV-od-mmY" id="kmJ-ax-6a5"/>
                         <outlet property="Fx" destination="Y4m-Qy-yqV" id="do1-jT-dg9"/>
                         <outlet property="Fy" destination="7zK-7d-vaZ" id="TAM-i5-YDH"/>
                         <outlet property="InputBox" destination="3gf-js-iHe" id="p5A-Zf-6Bs"/>
                         <outlet property="KeyPad" destination="Uf8-o9-JrE" id="89k-4A-7g4"/>
                         <outlet property="Mass" destination="bDm-AI-z5b" id="HUZ-l9-eMn"/>
                         <outlet property="OutputValues" destination="xlG-n4-IjE" id="V7R-Xr-TII"/>
+                        <outlet property="ParameterInputBox" destination="Yke-Qb-COX" id="Om8-yc-C7H"/>
+                        <outlet property="ParameterLabel" destination="sNv-r6-e9P" id="Wmw-cq-QpD"/>
                         <outlet property="Px" destination="SAj-CO-JnA" id="qBl-Qx-T5j"/>
                         <outlet property="Py" destination="3Wv-pP-Dpf" id="Dt2-ia-sL2"/>
+                        <outlet property="SettingsBox" destination="yyp-7e-3tV" id="K8h-1j-BLE"/>
+                        <outlet property="TimeButton" destination="qXk-Q6-z5B" id="HLc-hg-4wb"/>
                         <outlet property="Vx" destination="dxd-0f-9B3" id="ckF-YE-aZj"/>
                         <outlet property="Vy" destination="tl4-fr-azw" id="vPo-Ay-KJ0"/>
                         <outlet property="accelerationType" destination="Co5-0K-9xW" id="9aN-hv-reA"/>
