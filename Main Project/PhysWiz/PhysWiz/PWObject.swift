@@ -57,7 +57,6 @@ class PWObject: SKSpriteNode
     private var movable: Bool       = true
     private var selectable: Bool    = true
     private var metricScale         = 100   // Factor to convert pixel units to metric units
-    private var isDegrees           = true  // Checks to see if calculations should be made in rads or degs.
     private var objectID            = -1    // Unique ID Assigned to each sprite.
     private var selected            = true  // Flag that determines if the object is selected by the scene.
     private var glowNode: SKShapeNode?      // The node representing the glow of this object.
@@ -268,6 +267,7 @@ class PWObject: SKSpriteNode
         self.physicsBody?.applyForce(vec)
     }
     
+    
     // ##############################################################
     //
     //  Descriptor functions:
@@ -303,6 +303,16 @@ class PWObject: SKSpriteNode
         return CGFloat(angle);
     }
     
+    
+    // ##############################################################
+    //
+    //  Creation functions:
+    //  Functions that directly connect or in any way interact with another
+    //  sprite through the physics body.
+    //
+    // ##############################################################
+    
+    /// Currently doesn't contain any functions.
     
     // ##############################################################
     //
