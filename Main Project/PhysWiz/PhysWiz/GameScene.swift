@@ -36,7 +36,6 @@ class GameScene: SKScene {
     // used to scale all parameters from pixels to other metric system
     // not applied to mass or values not associated with pixels
     var pixelToMetric = Float(100)
-<<<<<<< HEAD
     // gives each object an unique number ID
     var ObjectIDCounter = 0
     enum shapeType: String {
@@ -51,9 +50,7 @@ class GameScene: SKScene {
         case CAR = "car.png"
         case BLACK = "black.png"
     }
-=======
 
->>>>>>> origin/master
     
     // keeps track of time parameter
     var runtimeCounter = 0
