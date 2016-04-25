@@ -9,8 +9,6 @@
 import SpriteKit
 import Foundation
 
-private let movableNodeName = "movable"
-
 class GameScene: SKScene {
     var gadgetNode1: PWObject! = nil;
     var gadgetNode2: PWObject! = nil;
@@ -22,13 +20,14 @@ class GameScene: SKScene {
     // Maps each object's ID to the object itself.
     var objIdToSprite = [Int: PWObject]();
     
-    
     var pwPaused = true // Paused
     var button: SKSpriteNode! = nil
     var stop: SKSpriteNode! = nil
     var trash: SKSpriteNode! = nil
     
     var background: SKSpriteNode! = nil
+    let cam = SKCameraNode()
+    var camPos = CGPoint()
     
     var toggledSprite = shapeType.CIRCLE;
     var shapeArray = [shapeType]();
@@ -71,10 +70,19 @@ class GameScene: SKScene {
     override func didMoveToView(view: SKView) {
         // make gravity equal to 981 pixels
         self.physicsWorld.gravity = CGVectorMake(0.0, -6.54);
+        
+        let gestureRecognizer = UIPinchGestureRecognizer(target: self, action: "handlePinch:")
+        self.view!.addGestureRecognizer(gestureRecognizer)
+        
+        self.addChild(self.cam)
+        self.camera = cam
+        self.camera?.position = CGPoint(x: self.size.width/2, y: self.size.height/2)
+        camPos = self.camera!.position
+        
         /* Setup your scene here */
-        self.addChild(self.createPausePlay())
-        self.addChild(self.createStop())
-        self.addChild(self.createTrash())
+        cam.addChild(self.createPausePlay())
+        cam.addChild(self.createStop())
+        cam.addChild(self.createTrash())
         self.addChild(self.createBG())
         self.addChild(PWObject.createFloor(CGSize.init(width: background.size.width, height: 20))) // Floor
         self.physicsWorld.speed = 0
@@ -101,8 +109,8 @@ class GameScene: SKScene {
         background = SKSpriteNode(imageNamed: "bg")
         background.anchorPoint = CGPointZero
         background.name = "background"
-        background.size.height = self.size.height * 2
-        background.size.width = self.size.width * 3
+        background.size.height = self.size.height * 20
+        background.size.width = self.size.width * 30
         background.zPosition = -2
         return background
     }
@@ -110,17 +118,18 @@ class GameScene: SKScene {
     // Creates a node that will act as a pause play button for the user.
     func createPausePlay() -> SKSpriteNode {
         button = SKSpriteNode(imageNamed: "play.png")
-        button.position = CGPoint(x: self.size.width - self.size.width/15, y: self.size.height - self.size.height/10)
+        button.position.x += self.camera!.position.x/1.1
+        button.position.y += self.camera!.position.y/1.4
         button.size = CGSize(width: 50, height: 50)
         button.name = "button"
-//        button.physicsBody?.dynamic = false;
         return button
     }
     
     // Creates a trash bin on the lower right hand side of the screen
     func createTrash() -> SKSpriteNode {
         trash = SKSpriteNode(imageNamed: "trash.png")
-        trash.position = CGPoint(x: self.size.width - self.size.width/15, y: self.size.height/10)
+        trash.position.x += self.camera!.position.x/1.1
+        trash.position.y -= self.camera!.position.y/1.2
         trash.zPosition = -1
         trash.size = CGSize(width: 60, height: 60)
         trash.name = "trash"
@@ -130,7 +139,8 @@ class GameScene: SKScene {
     // Creates a node that will act as a stop button for the user.
     func createStop() -> SKSpriteNode {
         stop = SKSpriteNode(imageNamed: "stop.png")
-        stop.position = CGPoint(x: self.size.width - self.size.width/8, y: self.size.height - self.size.height/10)
+        stop.position.x += self.camera!.position.x/1.3
+        stop.position.y += self.camera!.position.y/1.4
         stop.size = CGSize(width: 50, height: 50)
         stop.name = "stop"
         return stop
@@ -207,6 +217,7 @@ class GameScene: SKScene {
     func checkValidPoint(location: CGPoint) -> Bool {
         let nodes = nodesAtPoint(location);
         for node in nodes {
+            if(node.name == "button") { return false }
             if(PWObject.isPWObject(node)) { return false }
         }
         
@@ -459,31 +470,31 @@ class GameScene: SKScene {
     override func touchesEnded(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for touch: AnyObject in touches {
             let location = touch.locationInNode(self)
+            let cameraNodeLocation = cam.convertPoint(location, fromNode: self)
             hideLabels();
             // Removes the selectedShape if it's over the trash bin
-            if trash.containsPoint(location) {
+            if trash.containsPoint(cameraNodeLocation) {
                 objectProperties.removeValueForKey(selectedSprite)
                 selectedSprite.removeFromParent()
                 containerVC.removeObjectFromList(selectedSprite.getID())
                 self.selectSprite(nil);
             }
             // Removes all non-essential nodes from the gamescene
-            if stop.containsPoint(location) {
+            if stop.containsPoint(cameraNodeLocation) {
                 for node in self.children {
-                    node.removeFromParent()
+                    if (node != cam) {
+                        node.removeFromParent()
+                    }
                     pwPaused = true
                     button.texture = SKTexture(imageNamed: "play.png")
                 }
                 containerVC.removeAllFromList()
                 let floor = PWObject.createFloor(CGSize.init(width: background.size.width, height: 20))
                 self.addChild(floor)
-                self.addChild(self.createPausePlay())
-                self.addChild(self.createStop())
-                self.addChild(self.createTrash())
                 self.addChild(self.createBG())
             }
             // Gives the pause play button the ability to pause and play a scene
-            if button.containsPoint(location) {
+            if button.containsPoint(cameraNodeLocation) {
                 if (!pwPaused) { objectProperties = saveAllObjectProperties() }
                 
                 // Applies changes made by the user to sprite parameters
@@ -551,6 +562,9 @@ class GameScene: SKScene {
         }
 
         updateSprings();
+        if selectedSprite != nil && !pwPaused {
+            self.camera!.position = boundedCamMovement(selectedSprite.position)
+        }
     }
     
     
@@ -587,11 +601,37 @@ class GameScene: SKScene {
             }
         }
         else {
-            let position = background.position
-            let aNewPosition = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
-            background.position = self.boundLayerPos(aNewPosition)
+            //let position = background.position
+            //let aNewPosition = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
+            //background.position = self.boundLayerPos(aNewPosition)
+            //
             moveObjects(translation)
+            
+            let newPosition = CGPoint(x: self.camera!.position.x - translation.x, y: self.camera!.position.y - translation.y)
+            self.camera!.position = boundedCamMovement(newPosition)
         }
+    }
+    
+    func boundedCamMovement(newPosition: CGPoint) -> CGPoint {
+        
+        var retval = newPosition
+        
+        let lower_bg_x = background.position.x
+        let upper_bg_x = background.position.x + background.size.width
+        let lower_bg_y = background.position.y
+        let upper_bg_y = background.position.y + background.size.height
+        
+        let lower_cam_x = newPosition.x - (self.size.width * (self.camera?.xScale)!)/2
+        let upper_cam_x = newPosition.x + (self.size.width * (self.camera?.xScale)!)/2
+        let lower_cam_y = newPosition.y - (self.size.height * (self.camera?.yScale)!)/2
+        let upper_cam_y = newPosition.y + (self.size.height * (self.camera?.yScale)!)/2
+        
+        if (lower_cam_x < lower_bg_x) { retval.x = lower_bg_x + (self.size.width * (self.camera?.xScale)!)/2 }
+        if (upper_cam_x > upper_bg_x) { retval.x = upper_bg_x - (self.size.width * (self.camera?.xScale)!)/2 }
+        if (lower_cam_y < lower_bg_y) { retval.y = lower_bg_y + (self.size.height * (self.camera?.yScale)!)/2 }
+        if (upper_cam_y > upper_bg_y) { retval.y = upper_bg_y - (self.size.height * (self.camera?.yScale)!)/2 }
+        
+        return retval
     }
     
     // Moves the objects that are on the screen by the amount that the background is being moved
@@ -659,4 +699,56 @@ class GameScene: SKScene {
             self.physicsWorld.addJoint(joinNodes)
         }
     }
+    
+    func handlePinch(recognizer: UIPinchGestureRecognizer) {
+        if recognizer.state == .Changed {
+            let xdim = CGFloat(self.size.width * (self.camera?.xScale)!);
+            let ydim = CGFloat(self.size.height * (self.camera?.yScale)!);
+            
+            
+            var hasChanged = false;
+            if (xdim < background.size.width && ydim < background.size.height) {
+                let lower_bg_x = background.position.x
+                let upper_bg_x = background.position.x + background.size.width
+                let lower_bg_y = background.position.y
+                let upper_bg_y = background.position.y + background.size.height
+                
+                let lower_cam_x = (self.camera?.position.x)! - (self.size.width * (self.camera?.xScale)!)/2
+                let upper_cam_x = (self.camera?.position.x)! + (self.size.width * (self.camera?.xScale)!)/2
+                let lower_cam_y = (self.camera?.position.y)! - (self.size.height * (self.camera?.yScale)!)/2
+                let upper_cam_y = (self.camera?.position.y)! + (self.size.height * (self.camera?.yScale)!)/2
+                
+                if (lower_cam_x <= lower_bg_x && recognizer.scale >= 1) { return }
+                if (upper_cam_x >= upper_bg_x && recognizer.scale >= 1) { return }
+                if (lower_cam_y <= lower_bg_y && recognizer.scale >= 1) { return }
+                if (upper_cam_y >= upper_bg_y && recognizer.scale >= 1) { return }
+                
+                let next_lower_cam_x = (self.camera?.position.x)! - (self.size.width * (self.camera!.xScale + recognizer.scale)/2)/2
+                let next_upper_cam_x = (self.camera?.position.x)! + (self.size.width * self.camera!.xScale * recognizer.scale)/2
+                let next_lower_cam_y = (self.camera?.position.y)! - (self.size.height * (self.camera!.yScale + recognizer.scale)/2)/2
+                let next_upper_cam_y = (self.camera?.position.y)! + (self.size.height * self.camera!.yScale * recognizer.scale)/2
+                
+                if (next_lower_cam_x < lower_bg_x) {
+                    self.camera?.position.x = lower_bg_x + (self.size.width * (self.camera?.xScale)!)/2
+                    hasChanged = true;
+                }
+                if (next_lower_cam_y < lower_bg_y) {
+                    self.camera?.position.y = lower_bg_y + (self.size.height * (self.camera?.yScale)!)/2
+                    hasChanged = true;
+                }
+                if (next_upper_cam_x > upper_bg_x) {
+                    self.camera?.position.x = upper_bg_x - (self.size.width * (self.camera?.xScale)!)/2
+                    hasChanged = true;
+                }
+                if (next_upper_cam_y > upper_bg_y) {
+                    self.camera?.position.y = upper_bg_y - (self.size.height * (self.camera?.yScale)!)/2
+                    hasChanged = true;
+                }
+                
+                if (!hasChanged) { self.camera?.setScale(recognizer.scale) }
+                self.camera?.position = boundedCamMovement(self.camera!.position)
+            }
+        }
+    }
+    
 }
