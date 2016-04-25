@@ -369,8 +369,25 @@ class GameScene: SKScene {
 //        newObj.physicsBody = SKPhysicsBody(texture: objectTexture, size: newObj.size)
         let ramp = PWObject.init(objectStringName: "ramp", position: location, isMovable: false, isSelectable: false)
         self.addChild(ramp)
+    }
+    
+    
+    // Selects a sprite in the game scene.
+    func selectSprite(sprite: PWObject?) {
+        let prevSprite = selectedSprite;
+        if (prevSprite != nil) { prevSprite.setUnselected() }
+        
+        // Passed in sprite is nil so nothing is selected now.
+        if (sprite == nil) {
+            selectedSprite = nil
+            return;
+        }
+        
+        selectedSprite = sprite!;
+        selectedSprite.setSelected();
         
     }
+    
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for touch: AnyObject in touches {
             let location:CGPoint = touch.locationInNode(background)
@@ -387,17 +404,16 @@ class GameScene: SKScene {
                 
                 let objectType = shapeArray[containerVC.getObjectFlag()]
                 if (objectType == shapeType.BLACK) {
-                    selectedSprite = nil
+                    self.selectSprite(nil);
                 } else {
                     let spriteName = String(objectType).lowercaseString
                     let newObj = PWObject.init(objectStringName: spriteName, position: location, isMovable: true, isSelectable: true)
                     objectProperties[newObj] = getParameters(newObj)
-                    // jeff assign ID to objects in PWObjects
                     self.ObjectIDCounter += 1
+                    newObj.setID(self.ObjectIDCounter);
                     self.addChild(newObj)
-                    selectedSprite = newObj
+                    self.selectSprite(newObj)
                     containerVC.setsInputBox(objectProperties[newObj]!)
-                    //self.addChild(self.createObject(location, image: img))
                 }
                 continue;
             }
@@ -422,7 +438,7 @@ class GameScene: SKScene {
                     gadgetNode1 = nil;
                 }
             } else {
-                selectedSprite = sprite
+                self.selectSprite(sprite);
                containerVC.setsInputBox(objectProperties[selectedSprite]!)
             }
             
@@ -438,7 +454,7 @@ class GameScene: SKScene {
             if trash.containsPoint(location) {
                 objectProperties.removeValueForKey(selectedSprite)
                 selectedSprite.removeFromParent()
-                selectedSprite = nil
+                self.selectSprite(nil);
             }
             // Removes all non-essential nodes from the gamescene
             if stop.containsPoint(location) {

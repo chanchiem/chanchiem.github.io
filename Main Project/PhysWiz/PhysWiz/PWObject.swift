@@ -49,12 +49,18 @@ class PWObject: SKSpriteNode
     // be used to actually apply the texture for the object.
     private static var objectTextureMap = [String: String]()
     
+    // Color of the highlights around selected nodes.
+    private static var standardHighlightColor = UIColor.blueColor()
+    
     // Flag that will determine if this object can be moved by the
     // game scene.
     private var movable: Bool       = true
     private var selectable: Bool    = true
     private var metricScale         = 100   // Factor to convert pixel units to metric units
     private var isDegrees           = true  // Checks to see if calculations should be made in rads or degs.
+    private var objectID            = -1    // Unique ID Assigned to each sprite.
+    private var selected            = true  // Flag that determines if the object is selected by the scene.
+    private var glowNode: SKShapeNode?      // The node representing the glow of this object.
     
     
     // This initializes the static variables if it hasn't been initialized yet.
@@ -140,6 +146,35 @@ class PWObject: SKSpriteNode
     // contain physical properties).
     func isSprite() -> Bool {
         return self.movable;
+    }
+    
+    // Returns the unique object ID
+    func getID() -> Int {
+        return self.objectID;
+    }
+    
+    // Sets the unique object ID
+    func setID(id: Int) {
+        self.objectID = id;
+    }
+    
+    // Signifies that this object is selected in the game scene.
+    func setSelected() {
+        self.highlight(PWObject.standardHighlightColor)
+        self.selected = true;
+    }
+    
+    // Unselects the object in the game scene.
+    // Also unhighlights it.
+    func setUnselected() {
+        self.unhighlight()
+        self.selected = false;
+    }
+    
+    // Checks if this object's flag is currently represented as selected.
+    // Also highlights it.
+    func isSelected() -> Bool {
+        return self.selected;
     }
     
     
@@ -235,7 +270,7 @@ class PWObject: SKSpriteNode
     
     // ##############################################################
     //
-    //  Descriptior functions: 
+    //  Descriptor functions:
     //  Functions that aid in finding information about other sprites
     //  relative to this one.
     //
@@ -266,6 +301,34 @@ class PWObject: SKSpriteNode
         
         let angle = atan2f(Float(deltay), Float(deltax))
         return CGFloat(angle);
+    }
+    
+    
+    // ##############################################################
+    //
+    //  Aesthetic functions:
+    //  Functions that change the visual effects of PWObjects.
+    //  Basically anything that does not affect the physics and still
+    //  performs visual/audio actions.
+    //
+    // ##############################################################
+    
+    // Highlights the node. Currently used when being selected.
+    func highlight(color: UIColor) {
+        let glow = SKShapeNode.init(rectOfSize: self.size)
+        glow.position = CGPoint(x: 0, y: 0)
+        glow.fillColor = color;
+        glow.alpha = 0.5
+        glow.blendMode = SKBlendMode.Subtract
+        
+        self.glowNode = glow
+        self.addChild(glow);
+    }
+    
+    // Unhighlights the node.
+    func unhighlight() {
+        if (glowNode == nil) { return }
+        glowNode!.removeFromParent()
     }
     
     
