@@ -370,6 +370,7 @@ class PWObject: SKSpriteNode
         self.physicsBody?.friction = 0
         self.physicsBody?.linearDamping = 0
         self.physicsBody?.restitution = 0.7
+        self.physicsBody?.contactTestBitMask = PhysicsCategory.All;
     }
     
     // Initialize object without texture, only color.
@@ -399,6 +400,8 @@ class PWObject: SKSpriteNode
         PWObject.initStaticVariables(); // Mandatory call to populate static variables.
         
         let floor = self.init(objName: "floor", position: CGPointZero, color: UIColor.blackColor(), size: size, isMovable: false, isSelectable: false);
+        // We don't want the floor to announe when something hits it.
+        floor.physicsBody?.contactTestBitMask = PhysicsCategory.None;
         
         return floor;
     }

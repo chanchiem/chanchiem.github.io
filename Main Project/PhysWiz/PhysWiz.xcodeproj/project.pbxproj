@@ -18,6 +18,9 @@
 		28A64D2D1CC411F300694D32 /* containerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A64D2C1CC411F300694D32 /* containerViewController.swift */; };
 		28BD20851CBCB6B100D54416 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BD20841CBCB6B100D54416 /* TableViewController.swift */; };
 		28EF64001CBC4D9C00AF5765 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28EF63FF1CBC4D9C00AF5765 /* SWRevealViewController.m */; };
+		9F4F9ACF1CCFC1C300B011FB /* EventOrganizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F4F9ACE1CCFC1C300B011FB /* EventOrganizer.swift */; };
+		9F4F9AD11CCFC2ED00B011FB /* EventOrganizerContactDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F4F9AD01CCFC2ED00B011FB /* EventOrganizerContactDelegate.swift */; };
+		9F4F9AD31CCFC3F100B011FB /* Event.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F4F9AD21CCFC3F100B011FB /* Event.swift */; };
 		9FBFD4821CBF5D5B0024505D /* Rope.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9FBFD4811CBF5D5B0024505D /* Rope.swift */; };
 		9FCD8FCD1CC2CC2E001393CE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9FCD8FCC1CC2CC2E001393CE /* Assets.xcassets */; };
 /* End PBXBuildFile section */
@@ -38,6 +41,9 @@
 		28EF63FD1CBC4D8E00AF5765 /* SWRevealViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
 		28EF63FE1CBC4D9B00AF5765 /* PhysWiz-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PhysWiz-Bridging-Header.h"; sourceTree = "<group>"; };
 		28EF63FF1CBC4D9C00AF5765 /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
+		9F4F9ACE1CCFC1C300B011FB /* EventOrganizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventOrganizer.swift; sourceTree = "<group>"; };
+		9F4F9AD01CCFC2ED00B011FB /* EventOrganizerContactDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventOrganizerContactDelegate.swift; sourceTree = "<group>"; };
+		9F4F9AD21CCFC3F100B011FB /* Event.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Event.swift; sourceTree = "<group>"; };
 		9FBFD4811CBF5D5B0024505D /* Rope.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Rope.swift; sourceTree = "<group>"; };
 		9FCD8FCC1CC2CC2E001393CE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -85,6 +91,9 @@
 				1A99C2761CA098950021F14B /* Main.storyboard */,
 				1A99C27B1CA098950021F14B /* LaunchScreen.storyboard */,
 				1A99C27E1CA098950021F14B /* Info.plist */,
+				9F4F9ACE1CCFC1C300B011FB /* EventOrganizer.swift */,
+				9F4F9AD21CCFC3F100B011FB /* Event.swift */,
+				9F4F9AD01CCFC2ED00B011FB /* EventOrganizerContactDelegate.swift */,
 				28EF64011CBC4DA700AF5765 /* SWRevealViewController */,
 			);
 			path = PhysWiz;
@@ -173,8 +182,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9F4F9ACF1CCFC1C300B011FB /* EventOrganizer.swift in Sources */,
+				9F4F9AD11CCFC2ED00B011FB /* EventOrganizerContactDelegate.swift in Sources */,
 				1A99C2731CA098950021F14B /* GameScene.swift in Sources */,
 				1A99C2751CA098950021F14B /* GameViewController.swift in Sources */,
+				9F4F9AD31CCFC3F100B011FB /* Event.swift in Sources */,
 				1A99C26F1CA098950021F14B /* AppDelegate.swift in Sources */,
 				1A938E7C1CBC9D7B00690BA3 /* PWObject.swift in Sources */,
 				9FBFD4821CBF5D5B0024505D /* Rope.swift in Sources */,
