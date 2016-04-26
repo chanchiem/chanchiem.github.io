@@ -397,7 +397,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
 //        newObj.size = CGSize(width: 200, height: 200)
 //        let objectTexture = SKTexture.init(imageNamed: "ramp.png")
 //        newObj.physicsBody = SKPhysicsBody(texture: objectTexture, size: newObj.size)
-        let ramp = PWObject.init(objectStringName: "ramp", position: location, isMovable: false, isSelectable: false)
+        let ramp = PWStaticObject.init(objectStringName: "ramp", position: location, isMovable: false, isSelectable: false)
         self.addChild(ramp)
     }
     
