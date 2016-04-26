@@ -9,7 +9,15 @@
 import SpriteKit
 import Foundation
 
-class GameScene: SKScene {
+// Contact bitmasks.
+struct PhysicsCategory {
+    static let None              : UInt32 = 0
+    static let All               : UInt32 = UInt32.max
+    static let Sprites           : UInt32 = 0b1       // 1
+    static let StaticObjects     : UInt32 = 0b10      // 2
+}
+
+class GameScene: SKScene , SKPhysicsContactDelegate{
     var gadgetNode1: PWObject! = nil;
     var gadgetNode2: PWObject! = nil;
     
@@ -40,13 +48,15 @@ class GameScene: SKScene {
     // not applied to mass or values not associated with pixels
     var pixelToMetric = Float(100)
     
-    var endTime = 10;
     // gives each object an unique number ID
     var ObjectIDCounter = 0
 
     
     // keeps track of time parameter
     var runtimeCounter = 0
+    
+    // Event Organizers and contact delegates!
+    var eventorganizer: EventOrganizer! = nil;
     
     // This enumeration defines the standard indices for each of the shape properties.
     // To use, you will have to obtain the raw value of the enumeration:
@@ -102,7 +112,14 @@ class GameScene: SKScene {
         shapeArray.append(shapeType.BLACK)
         
         PWObject.initStaticVariables();
+        
+        ////////////////////////////////////////////////////////////
+        //////////////// Initialize Event Organizers ///////////////
+        ////////////////////////////////////////////////////////////
+        eventorganizer = EventOrganizer.init(gamescene: self); // Sets contact delegate inside.
     }
+    
+    
     
     // Creates a background for the gamescene
     func createBG() -> SKSpriteNode {
