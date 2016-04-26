@@ -15,6 +15,7 @@ import Darwin
     var objects = ["none", "test"]
     var parameterNames = ["Mass", "Px", "Py","Vx", "Vy", "Av", "Ax", "Ay", "Fx", "Fy"]
     var endSetterParameterNames = ["Distance", "Height","Velocity x", "Velocity y", "Angular Velocity", "Acceleration x", "Acceleration y" ]
+    var objectIDMap = [Int: String](); // Each object name will have an ID associated with it
     var parentVC = containerViewController()
     @IBOutlet var physicsLog: UIView!
     override func viewDidLoad() {
@@ -300,11 +301,27 @@ import Darwin
             currentTextField?.text = (currentTextField?.text)! + "."
         }
     }
+    @IBAction func negative(sender: AnyObject) {
+        if currentTextField != nil {
+            currentTextField?.text = (currentTextField?.text)! + "-"
+        }
+    }
     @IBAction func clear(sender: AnyObject) {
         if currentTextField != nil {
             currentTextField?.text = ""
         }
     }
+    // ##############################################################
+    //  MainView
+    // ##############################################################
+    func changeToMainView() {
+        activeLogView!.hidden = true
+        mainLogView.hidden = false
+        activeLogView = mainLogView
+    }
+    
+    
+    
     
     // ##############################################################
     //  Table Settings for mainView and for Endsetter
@@ -314,14 +331,18 @@ import Darwin
     let cellIdentifier = "cellIdentifier"
     var selectionTableData = [String]()
     func addObjectToList(ID: Int) {
-       selectionTableData.append(String(ID))
+       let objectName = "object " + String(ID)
+       selectionTableData.append(objectName)
+       objectIDMap[ID] = objectName
        objectSelector.reloadData()
        EndObjectList.reloadData()
     }
     func removeObjectFromList(ID: Int) {
         for i in Range(0 ..< selectionTableData.count) {
-            if (selectionTableData[i] == (String(ID))) {
+            let objectName = objectIDMap[ID]
+            if (selectionTableData[i] == objectName) {
                 selectionTableData.removeAtIndex(i)
+                objectIDMap[ID] = nil;
                 objectSelector.reloadData()
                 EndObjectList.reloadData()
                 break
@@ -330,6 +351,7 @@ import Darwin
     }
     func removeAllFromList() {
         selectionTableData = [String]()
+        objectIDMap.removeAll()
         objectSelector.reloadData()
         EndObjectList.reloadData()
     }
@@ -365,7 +387,12 @@ import Darwin
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
         if tableView == objectSelector {
-        parentVC.changeSelectedObject(Int(selectionTableData[indexPath.row])!)
+            for ID in objectIDMap.keys {
+                if objectIDMap[ID] == selectionTableData[indexPath.row] {
+                    parentVC.changeSelectedObject(ID)
+                }
+     
+            }
         }
         // deals with object table selection for endsetter
         if tableView == EndObjectList {
@@ -421,7 +448,7 @@ import Darwin
         return EndObject
     }
     func getEndSetter() -> [String] {
-        var endSettings = [String]()
+        let endSettings = [String]()
         
         return endSettings
     }

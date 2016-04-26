@@ -137,5 +137,8 @@ class containerViewController: UIViewController {
     func changeToEndSetter() {
         PhysicsLogVC.changeToEndSetter()
     }
+    func changeToMainView(){
+        PhysicsLogVC.changeToMainView()
+    }
 
 }

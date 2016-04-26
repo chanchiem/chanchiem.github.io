@@ -412,10 +412,11 @@ class GameScene: SKScene {
             //////////////////////////////////
             // Make sure the point that is being touched is part of the game scene plane is part of the game
             if(checkValidPoint(location) && pwPaused) {
+                // When clicking outside a In the scene return to main scene
+                containerVC.changeToMainView()
                 if (containerVC.getGadgetFlag() == 4) {
                     createRamp(location)
                 }
-                
                 let objectType = shapeArray[containerVC.getObjectFlag()]
                 if (objectType == shapeType.BLACK) {
                     self.selectSprite(nil);
