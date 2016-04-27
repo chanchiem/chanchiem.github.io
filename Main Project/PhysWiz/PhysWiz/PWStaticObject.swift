@@ -13,29 +13,9 @@
 import Foundation
 import SpriteKit
 
-
-// String to its object type representation
-// This is what will be passed in when we want to create
-// a new object. Each enumeration defines the types of objects
-// that the user can create in the GameScene.
-enum StaticObjectType: String {
-    case RAMP     = "ramp.png"
-    case PLATFORM   = "platform.png"
-    case WALL      = "wall.png"
-    case PULLEY    = "pulley.png"
-}
-
-
-class PWStaticObject: SKSpriteNode
+class PWStaticObject: SKShapeNode
 {
-    var skObj: SKSpriteNode?
-    
-    // This static dictionary contains the map from the string
-    // representation of an object to the string file name of the
-    // texture that will reprsent it.
-    // Example: "ball" will refer to "ball.png" which will later
-    // be used to actually apply the texture for the object.
-    private static var objectTextureMap = [String: String]()
+    var skObj: SKShapeNode?
     
     // Color of the highlights around selected nodes.
     private static var standardHighlightColor = UIColor.blueColor()
@@ -49,17 +29,7 @@ class PWStaticObject: SKSpriteNode
     private var selected            = true  // Flag that determines if the object is selected by the scene.
     private var glowNode: SKShapeNode?      // The node representing the glow of this object.
 
-    
-    // Checks if the object name exists as a PWObject.
-    // Returns true if it does, otherwise it returns false.
-    static func doesObjectExist(objectName: String) -> Bool
-    {
-        if (objectTextureMap[objectName]) != nil {
-            return true
-        } else {
-            return false
-        }
-    }
+
     
     // ##############################################################
     //
@@ -131,7 +101,12 @@ class PWStaticObject: SKSpriteNode
         return self.selected;
     }
     
-    
+    static func isPWStaticObject(node: SKNode) -> Bool {
+        let pwObj = node as? PWStaticObject
+        
+        if (pwObj == nil) { return false}
+        return (pwObj!.isSprite());
+    }
     // ##############################################################
     //
     //  Parameter functions belong here! Implement all the functions
@@ -144,16 +119,42 @@ class PWStaticObject: SKSpriteNode
     func setPos(position: CGPoint) { self.position = position }
     func setPos(x: CGFloat, y: CGFloat) { self.position = CGPointMake(x, y) }
     func getPos() -> CGPoint { return self.position; }
-    
     func setFriction(friction: CGFloat) { self.physicsBody?.friction = friction }
     func getFriction() -> CGFloat { return (self.physicsBody?.friction)! }
     
-    func setHeight(height: CGFloat) {
-        self.yScale = height
+    // edit properties of individual objects dimensision tells which is being edited x or y
+    func editRamp(scale: CGFloat, angle: CGFloat, dimension: String) {
+        let polygonPath = CGPathCreateMutable()
+        CGPathMoveToPoint(polygonPath, nil, 0, 0)
+        if dimension == "x" {
+        CGPathAddLineToPoint(polygonPath, nil, scale, 0)
+        CGPathAddLineToPoint(polygonPath, nil, 0, scale/CGFloat(Darwin.tan(Float(angle))))
+        }
+        if dimension == "y" {
+            CGPathAddLineToPoint(polygonPath, nil, scale*CGFloat(Darwin.tan(Float(angle))), 0)
+            CGPathAddLineToPoint(polygonPath, nil, 0, scale)
+        }
+        CGPathAddLineToPoint(polygonPath, nil, 0 , 0)
+        self.path = polygonPath
+        self.strokeColor = UIColor.blackColor()
+        self.fillColor = UIColor.blackColor()
+        self.physicsBody = SKPhysicsBody(polygonFromPath: polygonPath)
+
     }
-    func setWidth(width: CGFloat) {
-        self.xScale = width
+    func editPlatform(length: CGFloat) {
+        let polygonPath = CGPathCreateMutable()
+        CGPathMoveToPoint(polygonPath, nil, 0, 0)
+        CGPathAddLineToPoint(polygonPath, nil, length, 0)
+        CGPathAddLineToPoint(polygonPath, nil, length, 5)
+        CGPathAddLineToPoint(polygonPath, nil, 0, 5)
+        CGPathAddLineToPoint(polygonPath, nil, 0 , 0)
+        self.path = polygonPath
+        self.strokeColor = UIColor.blackColor()
+        self.fillColor = UIColor.blackColor()
+        self.physicsBody = SKPhysicsBody(polygonFromPath: polygonPath)
+        
     }
+
     // ##############################################################
     //
     //  Descriptor functions:
@@ -191,7 +192,8 @@ class PWStaticObject: SKSpriteNode
     
     // Highlights the node. Currently used when being selected.
     func highlight(color: UIColor) {
-        let glow = SKShapeNode.init(rectOfSize: self.size)
+        let size = CGSize(width: 40, height: 40)
+        let glow = SKShapeNode.init(rectOfSize: size)
         glow.position = CGPoint(x: 0, y: 0)
         glow.fillColor = color;
         glow.alpha = 0.5
@@ -207,29 +209,73 @@ class PWStaticObject: SKSpriteNode
         glowNode!.removeFromParent()
     }
     
-    
+  
     // ##############################################################
     
     // Initializes the sprite object. This is what we will use to create
     // PWObjects set at specific coordinates.
-    required init(objectStringName: String, position: CGPoint, isMovable: Bool, isSelectable: Bool) {
+    convenience init(objectStringName: String, position: CGPoint, isMovable: Bool, isSelectable: Bool, scale: CGFloat) {
+        self.init()
         
-        let objTextureName = objectStringName + "png"
-        let objectTexture = SKTexture.init(imageNamed: objTextureName)
-        let textureSize = objectTexture.size()
-        let white = UIColor.init(white: 1.0, alpha: 1.0);
-        super.init(texture: objectTexture, color: white, size: textureSize)
-        let size = CGSize(width: 40, height: 40)
+        // Create path for drawing a triangle
+        let polygonPath = CGPathCreateMutable()
+        CGPathMoveToPoint(polygonPath, nil, 0, 0)
+        if (objectStringName == "Ramp") {
+            CGPathAddLineToPoint(polygonPath, nil, 100, 0)
+            CGPathAddLineToPoint(polygonPath, nil, 0, 100)
+            CGPathAddLineToPoint(polygonPath, nil, 0 , 0)
+            self.init(path: polygonPath)
+            self.strokeColor = UIColor.blackColor()
+            self.fillColor = UIColor.blackColor()
+            self.physicsBody = SKPhysicsBody(polygonFromPath: polygonPath)
+        }
+        // create rectangle path flatform
+        if (objectStringName == "Platform") {
+            CGPathAddLineToPoint(polygonPath, nil, 100, 0)
+            CGPathAddLineToPoint(polygonPath, nil, 100, 5)
+            CGPathAddLineToPoint(polygonPath, nil, 0, 5)
+            CGPathAddLineToPoint(polygonPath, nil, 0 , 0)
+            self.init(path: polygonPath)
+            self.strokeColor = UIColor.blackColor()
+            self.fillColor = UIColor.blackColor()
+            self.physicsBody = SKPhysicsBody(polygonFromPath: polygonPath)
+        }
+        if (objectStringName == "Wall") {
+            CGPathAddLineToPoint(polygonPath, nil, 100, 0)
+            CGPathAddLineToPoint(polygonPath, nil, 100, 500)
+            CGPathAddLineToPoint(polygonPath, nil, 0, 500)
+            CGPathAddLineToPoint(polygonPath, nil, 0 , 0)
+            self.init(path: polygonPath)
+            self.strokeColor = UIColor.blackColor()
+            self.fillColor = UIColor.blackColor()
+            self.physicsBody = SKPhysicsBody(polygonFromPath: polygonPath)
+        }
+        if (objectStringName == "Round") {
+                CGPathMoveToPoint(polygonPath, nil, 100, 0)
+                CGPathAddArc(polygonPath, nil, CGFloat(100), CGFloat(100), CGFloat(100),CGFloat(-M_PI_2), CGFloat(M_PI_2*3), false);
+                self.init(path: polygonPath)
+                self.strokeColor = UIColor.blackColor()
+                self.physicsBody = SKPhysicsBody(edgeLoopFromPath: polygonPath)
+            }
+        if (objectStringName == "Pulley") {
+            CGPathMoveToPoint(polygonPath, nil, 20, 0)
+            CGPathAddArc(polygonPath, nil, CGFloat(20), CGFloat(20), CGFloat(20), CGFloat(-M_PI_2), CGFloat(M_PI_2*3), false);
+            self.init(path: polygonPath)
+            self.strokeColor = UIColor.blackColor()
+            self.fillColor = UIColor.grayColor()
+            self.physicsBody = SKPhysicsBody(polygonFromPath: polygonPath)
+        }
+       
+       
         self.movable = isMovable
         self.selectable = isSelectable
-        self.size = size
         self.position = position
         self.name = objectStringName
-        self.physicsBody = SKPhysicsBody(texture: objectTexture, size: size)
         self.physicsBody?.mass = 1
         self.physicsBody?.friction = 0
         self.physicsBody?.linearDamping = 0
         self.physicsBody?.restitution = 0.0
+        self.physicsBody?.dynamic = false
         self.physicsBody?.contactTestBitMask = PhysicsCategory.All;
     }
 

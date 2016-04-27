@@ -42,6 +42,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     var containerVC: containerViewController!
     // The selected object for parameters
     var selectedSprite: PWObject! = nil
+    var selectedGadget: PWStaticObject! = nil
     var objectProperties: [PWObject : [Float]]!
     var updateFrameCounter = 0
     // used to scale all parameters from pixels to other metric system
@@ -236,6 +237,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         for node in nodes {
             if(node.name == "button") { return false }
             if(PWObject.isPWObject(node)) { return false }
+            if(PWStaticObject.isPWStaticObject(node) && node.name != "Round") { return false }
         }
         
         return true
@@ -314,12 +316,13 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     // Updates relative distance labels when an object is being dragged.
     func updateNodeLabels()
     {
+        // I moved the selected sprite check out of the loop as its not necessary to check every time
+        if (selectedSprite == nil) { return }
         
         // Otherwise, label is on when simulation is NOT running
         for node in self.children
         {
             if (!PWObject.isPWObject(node)) { continue; }
-            if (selectedSprite == nil) { return }
             let sprite = node as! PWObject
             if (sprite == selectedSprite) { continue }
             
@@ -390,18 +393,37 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         self.physicsWorld.addJoint(rodJoint1)
         self.physicsWorld.addJoint(rodJoint2)
     }
+    // ##############################################################
+    //  Create Static Objects
+    // ##############################################################
 
-
+    // create ramp static gadget
     func createRamp(location:CGPoint){
-//        let newObj = self.createObject(location, image: "ramp.png")
-//        newObj.size = CGSize(width: 200, height: 200)
-//        let objectTexture = SKTexture.init(imageNamed: "ramp.png")
-//        newObj.physicsBody = SKPhysicsBody(texture: objectTexture, size: newObj.size)
-        let ramp = PWStaticObject.init(objectStringName: "ramp", position: location, isMovable: false, isSelectable: false)
+        let ramp = PWStaticObject.init(objectStringName: "Ramp", position: location, isMovable: true, isSelectable: true, scale: 20)
         self.addChild(ramp)
+
     }
-    
-    
+    // creates platform static gadget
+    func createPlatform(location:CGPoint){
+        let Platform = PWStaticObject.init(objectStringName: "Platform", position: location, isMovable: true, isSelectable: true, scale: 20)
+        self.addChild(Platform)
+    }
+    // creates wall static gadget
+    func createWall(location:CGPoint){
+        let Wall = PWStaticObject.init(objectStringName: "Wall", position: location, isMovable: true, isSelectable: true, scale: 20)
+        self.addChild(Wall)
+    }
+    // creates round static gadget
+    func createRound(location:CGPoint){
+        let Round = PWStaticObject.init(objectStringName: "Round", position: location, isMovable: true, isSelectable: true, scale: 20)
+        self.addChild(Round)
+    }
+    // creates Pulley static gadget
+    func createPulley(location:CGPoint){
+        let Pulley = PWStaticObject.init(objectStringName: "Pulley", position: location, isMovable: true, isSelectable: true, scale: 20)
+        self.addChild(Pulley)
+    }
+    // ##############################################################
     // Selects a sprite in the game scene.
     func selectSprite(sprite: PWObject?) {
         let prevSprite = selectedSprite;
@@ -434,6 +456,19 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 if (containerVC.getGadgetFlag() == 4) {
                     createRamp(location)
                 }
+                else if (containerVC.getGadgetFlag() == 5) {
+                    createPlatform(location)
+                }
+                else if (containerVC.getGadgetFlag() == 6) {
+                    createWall(location)
+                }
+                else if (containerVC.getGadgetFlag() == 7) {
+                    createRound(location)
+                }
+                else if (containerVC.getGadgetFlag() == 8) {
+                    createPulley(location)
+                }
+                
                 let objectType = shapeArray[containerVC.getObjectFlag()]
                 if (objectType == shapeType.BLACK) {
                     self.selectSprite(nil);
@@ -529,7 +564,9 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                     self.physicsWorld.speed = 0
                     pwPaused = true
                     button.texture = SKTexture(imageNamed: "play.png")
+                    if selectedSprite != nil {
                     containerVC.setsInputBox(objectProperties[selectedSprite]!)
+                    }
                 }
             }
             
