@@ -36,6 +36,7 @@ class Event: NSObject {
     
     // Has the event already been executed?
     func hasHappened() -> Bool { return !self.alive; }
+    func setHappened() { self.alive = false; }
     
     ////////////////////////////////////////////////////////////
     //////////////// Collision Parameters //////////////////////
@@ -52,6 +53,8 @@ class Event: NSObject {
         self.sprite1 = sprite1;
         self.sprite2 = sprite2;
     }
+    
+    func isCollisionEvent() -> Bool { return self.isCollision }
     
     
     ////////////////////////////////////////////////////////////

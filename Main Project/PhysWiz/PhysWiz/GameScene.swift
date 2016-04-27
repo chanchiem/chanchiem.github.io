@@ -652,6 +652,12 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         return retval
     }
     
+    
+    // This function is called if there exists an event and also
+    func collisionEventTriggered(sprite1: PWObject, sprite2: PWObject) {
+        print(String(sprite1.getID()) + " has collided with " + String(sprite2.getID));
+    }
+    
     // Moves the objects that are on the screen by the amount that the background is being moved
     func moveObjects(translation: CGPoint) {
         let movableObjects = ["movable", "floor"]

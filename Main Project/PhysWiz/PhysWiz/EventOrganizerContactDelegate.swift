@@ -14,15 +14,27 @@ import UIKit
 import SpriteKit
 
 class EventOrganizerContactDelegate: NSObject, SKPhysicsContactDelegate {
-    var timeEvents      = [Event](); // Anything that handles time
-    var posEvents       = [Event](); // Anything that handles position, acceleration, velocity
-    var collisionEvents = [Event](); // Handles Collision Events;
+//    var timeEvents      = [Event](); // Anything that handles time
+//    var posEvents       = [Event](); // Anything that handles position, acceleration, velocity
+//    var collisionEvents = [Event](); // Handles Collision Events;
+    var eventOrganizer: EventOrganizer! = nil;
 
     func didBeginContact(contact: SKPhysicsContact) {
-        let body1 = contact.bodyA;
-        let body2 = contact.bodyB;
+        let node1 = contact.bodyA.node!;
+        let node2 = contact.bodyB.node!;
         
-//        print((body1.node?.name)! + " collided with " + (body2.node?.name)!);
+        // For now, only sprites can collide with each other.
+        if (!PWObject.isPWObject(node1) || !PWObject.isPWObject(node2)) { return; }
+        let sprite1 = node1 as! PWObject
+        let sprite2 = node2 as! PWObject
+        
+        // Check to see if it's c
+        eventOrganizer.triggerAndCheckCollision(sprite1, sprite2: sprite2);
+    }
+    
+    
+    required init(eo: EventOrganizer) {
+        eventOrganizer = eo;
     }
     
 }
