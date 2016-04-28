@@ -170,114 +170,72 @@
                                     </textField>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Mass" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p8L-6L-N6D" userLabel="Top Label">
                                         <rect key="frame" x="68" y="7" width="42" height="22"/>
-<<<<<<< HEAD
                                         <animations/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
-=======
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
->>>>>>> origin/master
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Px" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HnM-T6-8Aq">
-<<<<<<< HEAD
                                         <rect key="frame" x="5" y="35" width="43" height="21"/>
                                         <animations/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
-=======
-                                        <rect key="frame" x="5" y="35" width="19" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
->>>>>>> origin/master
+
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Py" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6wf-MO-EHd">
-<<<<<<< HEAD
                                         <rect key="frame" x="115" y="35" width="42" height="21"/>
                                         <animations/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
-=======
-                                        <rect key="frame" x="115" y="35" width="20" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
->>>>>>> origin/master
+
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Vx" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Cf-1Y-Rgx">
-<<<<<<< HEAD
                                         <rect key="frame" x="5" y="60" width="43" height="21"/>
                                         <animations/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
-=======
-                                        <rect key="frame" x="5" y="60" width="20" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
->>>>>>> origin/master
+
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Vy" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="USS-ny-MT7">
-<<<<<<< HEAD
                                         <rect key="frame" x="115" y="60" width="42" height="21"/>
                                         <animations/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
-=======
-                                        <rect key="frame" x="115" y="60" width="20" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
->>>>>>> origin/master
+
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Ax" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GrL-bh-ztA">
-<<<<<<< HEAD
                                         <rect key="frame" x="5" y="85" width="43" height="21"/>
                                         <animations/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
-=======
-                                        <rect key="frame" x="5" y="85" width="20" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
->>>>>>> origin/master
+
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Ay" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H1N-ed-y6W">
-<<<<<<< HEAD
                                         <rect key="frame" x="115" y="85" width="42" height="21"/>
                                         <animations/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
-=======
-                                        <rect key="frame" x="115" y="85" width="19" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Fx" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yyM-cY-9JS">
-                                        <rect key="frame" x="5" y="110" width="18" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
->>>>>>> origin/master
+
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Fy" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B0F-7L-kSn">
-<<<<<<< HEAD
                                         <rect key="frame" x="115" y="110" width="42" height="21"/>
                                         <animations/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
-=======
-                                        <rect key="frame" x="115" y="110" width="19" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
->>>>>>> origin/master
+
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Av" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="onc-U7-v6m">
-<<<<<<< HEAD
                                         <rect key="frame" x="5" y="135" width="43" height="21"/>
                                         <animations/>
                                         <fontDescription key="fontDescription" type="system" pointSize="13"/>
-=======
-                                        <rect key="frame" x="5" y="135" width="19" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
->>>>>>> origin/master
+
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -416,11 +374,9 @@
                                                                 </label>
                                                             </subviews>
                                                         </tableViewCellContentView>
-<<<<<<< HEAD
                                                         <animations/>
                                                         <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
-=======
->>>>>>> origin/master
+
                                                     </tableViewCell>
                                                 </prototypes>
                                                 <sections/>
