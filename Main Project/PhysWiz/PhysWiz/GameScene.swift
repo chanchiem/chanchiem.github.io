@@ -36,6 +36,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     var background: SKSpriteNode! = nil
     let cam = SKCameraNode()
     var camPos = CGPoint()
+    var PWObjects = [PWObject]()
     
     var toggledSprite = shapeType.CIRCLE;
     var shapeArray = [shapeType]();
@@ -98,6 +99,27 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         self.physicsWorld.speed = 0
         objectProperties = [PWObject: [Float]]()
         physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: 0, y: 0, width: background.size.width, height: background.size.height))
+        
+        if let savedSprites = loadSprites() {
+            for obj in savedSprites {
+                var values = [Float]()
+                values.append(Float(obj.getMass()))
+                values.append(Float(obj.getPos().x)/pixelToMetric)
+                values.append(Float(obj.getPos().y)/pixelToMetric)
+                values.append(Float(obj.getVelocity().dx)/pixelToMetric)
+                values.append(Float(obj.getVelocity().dy)/pixelToMetric)
+                values.append(Float(obj.getAngularVelocity()))
+                values.append(Float(0.0))
+                values.append(Float(0.0))
+                values.append(Float(0.0))
+                values.append(Float(0.0))
+                objectProperties[obj] = values
+                PWObjects += [obj]
+                print(obj)
+                print(values)
+                self.addChild(obj)
+            }
+        }
         
         // INIT Shape arrays to call later in flag function
         shapeArray.append(shapeType.CIRCLE)
@@ -440,13 +462,15 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 } else {
                     let spriteName = String(objectType).lowercaseString
                     let newObj = PWObject.init(objectStringName: spriteName, position: location, isMovable: true, isSelectable: true)
-                    objectProperties[newObj] = getParameters(newObj)
+                    objectProperties[newObj] = getParameters(newObj) /**********************************************/
                     self.ObjectIDCounter += 1
                     newObj.setID(self.ObjectIDCounter);
                     containerVC.addObjectToList(newObj.getID())
                     objIdToSprite[newObj.getID()] = newObj;
                     self.addChild(newObj)
                     self.selectSprite(newObj)
+                    PWObjects += [newObj]
+                    saveSprites()
                 }
                 continue;
             }
@@ -492,7 +516,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             hideLabels();
             // Removes the selectedShape if it's over the trash bin
             if trash.containsPoint(cameraNodeLocation) {
-                objectProperties.removeValueForKey(selectedSprite)
+                objectProperties.removeValueForKey(selectedSprite) /**********************************************/
                 selectedSprite.removeFromParent()
                 containerVC.removeObjectFromList(selectedSprite.getID())
                 self.selectSprite(nil);
@@ -505,6 +529,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                     }
                     pwPaused = true
                     button.texture = SKTexture(imageNamed: "play.png")
+                    PWObjects.removeAll()
+                    saveSprites()
                 }
                 containerVC.removeAllFromList()
                 let floor = PWObject.createFloor(CGSize.init(width: background.size.width, height: 20))
@@ -513,10 +539,10 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             }
             // Gives the pause play button the ability to pause and play a scene
             if button.containsPoint(cameraNodeLocation) {
-                if (!pwPaused) { objectProperties = saveAllObjectProperties() }
+                if (!pwPaused) { objectProperties = saveAllObjectProperties() } /**********************************************/
                 
                 // Applies changes made by the user to sprite parameters
-                restoreAllobjectProperties(objectProperties)
+                restoreAllobjectProperties(objectProperties) /**********************************************/
                 
                 // Pause / Resume the world
                 if (pwPaused) {
@@ -529,7 +555,9 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                     self.physicsWorld.speed = 0
                     pwPaused = true
                     button.texture = SKTexture(imageNamed: "play.png")
-                    containerVC.setsInputBox(objectProperties[selectedSprite]!)
+                    if selectedSprite != nil {
+                        containerVC.setsInputBox(objectProperties[selectedSprite]!)
+                    }
                 }
             }
             
@@ -565,8 +593,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 for i in 0 ..< 10 {
                     if (Float(input[i]) != nil) { values[i] = Float(input[i])! }
                 }
-                objectProperties[selectedSprite] = values
-                restoreAllobjectProperties(objectProperties)
+                objectProperties[selectedSprite] = values /**********************************************/
+                restoreAllobjectProperties(objectProperties) /**********************************************/
             }
         
         for object in self.children {
@@ -613,6 +641,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 selectedSprite.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
                 //changes values in the input box to the position it is dragged to
                 containerVC.setsInputBox(getParameters(selectedSprite))
+                PWObjects[PWObjects.indexOf(selectedSprite)!].setPos(selectedSprite.position)
+                saveSprites()
                 
                 // Connects selectedShape to its nearestNodes
                 //connectNodes(selectedShape)
@@ -623,7 +653,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             //let aNewPosition = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
             //background.position = self.boundLayerPos(aNewPosition)
             //
-            moveObjects(translation)
+            //moveObjects(translation)
             
             let newPosition = CGPoint(x: self.camera!.position.x - translation.x, y: self.camera!.position.y - translation.y)
             self.camera!.position = boundedCamMovement(newPosition)
@@ -664,18 +694,12 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 if node.name == "floor" {
                     node.position = boundedPosition
                 } else {
-                    // BUG: MOVES OBJECTS WHEN SCREEN IS SLAMMED AGAINST WALL
                     if background.position.x != 0.0 && background.position.x != -2*self.size.width {
                         node.position.x = aNewPosition.x
-                    } /*else {
-                        node.position.x = position.x
-                    }*/
+                    }
                     if background.position.y != 0.0 && background.position.y != -self.size.height {
                         node.position.y = aNewPosition.y
-                    } /*else {
-                        print(position.y)
-                        node.position.y = position.y
-                    }*/
+                    }
                 }
             }
         }
@@ -769,4 +793,17 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         }
     }
     
+    // Saves the sprites that are currently in the scene
+    func saveSprites() {
+        print("saving")
+        let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(PWObjects, toFile: PWObject.ArchiveURL.path!)
+        if !isSuccessfulSave {
+            print("Failed to save sprites.")
+        }
+    }
+    
+    // Loads the sprites from hardware memory
+    func loadSprites() -> [PWObject]? {
+        return NSKeyedUnarchiver.unarchiveObjectWithFile(PWObject.ArchiveURL.path!) as? [PWObject]
+    }
 }

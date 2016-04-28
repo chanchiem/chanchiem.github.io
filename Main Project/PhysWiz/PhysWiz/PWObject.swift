@@ -6,8 +6,8 @@
 //  Copyright © 2016 Intuition. All rights reserved.
 //
 // Class that represents each actual sprite object in the scene.
-// This will contain acceleration, velocity, force, and other 
-// important object properties that will facilitate in 
+// This will contain acceleration, velocity, force, and other
+// important object properties that will facilitate in
 // solving the physics problems.
 
 import Foundation
@@ -44,7 +44,7 @@ class PWObject: SKSpriteNode
     
     // This static dictionary contains the map from the string
     // representation of an object to the string file name of the
-    // texture that will reprsent it. 
+    // texture that will reprsent it.
     // Example: "ball" will refer to "ball.png" which will later
     // be used to actually apply the texture for the object.
     private static var objectTextureMap = [String: String]()
@@ -54,12 +54,18 @@ class PWObject: SKSpriteNode
     
     // Flag that will determine if this object can be moved by the
     // game scene.
-    private var movable: Bool       = true
-    private var selectable: Bool    = true
     private var metricScale         = 100   // Factor to convert pixel units to metric units
     private var objectID            = -1    // Unique ID Assigned to each sprite.
     private var selected            = true  // Flag that determines if the object is selected by the scene.
     private var glowNode: SKShapeNode?      // The node representing the glow of this object.
+    
+    var objectStringName: String
+    var objectPosition: CGPoint
+    var movable: Bool       = true
+    var selectable: Bool    = true
+    
+    static let DocumentsDirectory = NSFileManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
+    static let ArchiveURL = DocumentsDirectory.URLByAppendingPathComponent("PWSprites")
     
     
     // This initializes the static variables if it hasn't been initialized yet.
@@ -141,7 +147,7 @@ class PWObject: SKSpriteNode
         return self.selectable;
     }
     
-    // Checks if the PWObject is a sprite (i.e. any shape that will 
+    // Checks if the PWObject is a sprite (i.e. any shape that will
     // contain physical properties).
     func isSprite() -> Bool {
         return self.movable;
@@ -186,12 +192,28 @@ class PWObject: SKSpriteNode
     // ##############################################################
     
     // Object numerical properties
-    func setPos(position: CGPoint) { self.position = position }
-    func setPos(x: CGFloat, y: CGFloat) { self.position = CGPointMake(x, y) }
+    func setPos(position: CGPoint)
+    {
+        self.position = position
+        objectPosition = position
+    }
+    
+    func setPos(x: CGFloat, y: CGFloat)
+    {
+        self.position = CGPointMake(x, y)
+        objectPosition = CGPointMake(x, y)
+    }
+    
     func getPos() -> CGPoint { return self.position; }
     
     func setMass(mass: CGFloat) { self.physicsBody?.mass = mass }
-    func getMass() -> CGFloat { return (self.physicsBody?.mass)! }
+    func getMass() -> CGFloat
+    {
+        if self.physicsBody?.mass == nil {
+            return 1.0
+        }
+        return (self.physicsBody?.mass)!
+    }
     
     func setFriction(friction: CGFloat) { self.physicsBody?.friction = friction }
     func getFriction() -> CGFloat { return (self.physicsBody?.friction)! }
@@ -202,7 +224,7 @@ class PWObject: SKSpriteNode
     
     func setAngularVelocity(angVel: CGFloat) { self.physicsBody?.angularVelocity = angVel }
     func getAngularVelocity() -> CGFloat { return (self.physicsBody?.angularVelocity)! }
-
+    
     
     // Returns the current acceleration of the object.
     func getAcceleration() -> CGFloat {
@@ -276,7 +298,7 @@ class PWObject: SKSpriteNode
     //
     // ##############################################################
     
-    // Finds the nonscaled distance between two sprite nodes. It is 
+    // Finds the nonscaled distance between two sprite nodes. It is
     // nonscaled in the sense that it returns the absolute distance
     // in terms of pixels rather than the scaled metric.
     func distanceTo(sprite: PWObject) -> CGFloat {
@@ -352,6 +374,11 @@ class PWObject: SKSpriteNode
         let objTextureName = PWObject.getObjectTextureName(objectStringName)
         assert(objTextureName != nil, "Error: Initialization of PWObject couldn't find the object passed.")
         
+        self.objectStringName = objectStringName
+        self.objectPosition = position
+        self.movable = isMovable
+        self.selectable = isSelectable
+        
         let objectTexture = SKTexture.init(imageNamed: objTextureName!)
         let textureSize = objectTexture.size()
         let white = UIColor.init(white: 1.0, alpha: 1.0);
@@ -415,12 +442,31 @@ class PWObject: SKSpriteNode
         return (pwObj!.isSprite());
     }
     
+    // Saves data into hardware
+    override func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(objectStringName, forKey: "objectStringName")
+        aCoder.encodeCGPoint(objectPosition, forKey: "objectPosition")
+        aCoder.encodeBool(movable, forKey: "movable")
+        aCoder.encodeBool(selectable, forKey: "selectable")
+        aCoder.encodeCGVector(self.getVelocity(), forKey: "velocity")
+        aCoder.encodeObject(self.getMass(), forKey: "objMass")
+        aCoder.encodeObject(self.getAngularVelocity(), forKey: "angularVelocity")
+    }
     
-    
-    // Don't know why this is needed. Swift semantics...
+    // Obtains saved data from hardware
     required convenience init?(coder aDecoder: NSCoder) {
-        self.init(coder: aDecoder);
-//        fatalError("init(coder:) has not been implemented")
+        let objectStringName = aDecoder.decodeObjectForKey("objectStringName") as! String
+        let objectPosition = aDecoder.decodeCGPointForKey("objectPosition")
+        let movable = aDecoder.decodeBoolForKey("movable")
+        let selectable = aDecoder.decodeBoolForKey("selectable")
+        let velocity = aDecoder.decodeCGVectorForKey("velocity")
+        
+        let objMass = aDecoder.decodeObjectForKey("objMass") as! CGFloat
+        let angularVelocity = aDecoder.decodeObjectForKey("angularVelocity") as! CGFloat
+        self.init(objectStringName: objectStringName, position: objectPosition, isMovable: movable, isSelectable: selectable)
+        self.setVelocity(velocity);
+        self.setMass(objMass)
+        self.setAngularVelocity(angularVelocity)
     }
     
 }
