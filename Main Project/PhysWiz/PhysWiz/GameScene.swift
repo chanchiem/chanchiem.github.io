@@ -18,8 +18,8 @@ struct PhysicsCategory {
 }
 
 class GameScene: SKScene , SKPhysicsContactDelegate{
-    var gadgetNode1: PWObject! = nil;
-    var gadgetNode2: PWObject! = nil;
+    var gadgetNode1: SKNode! = nil;
+    var gadgetNode2: SKNode! = nil;
     
     var springglobal = [SKSpriteNode: [PWObject]]() // Spring that maps to two other nodes. PWOBJECT
     var initialHeight = [SKSpriteNode: CGFloat](); // PWOBJECT
@@ -44,6 +44,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     var selectedSprite: PWObject! = nil
     var selectedGadget: PWStaticObject! = nil
     var objectProperties: [PWObject : [Float]]!
+    var gadgetProperties: [PWStaticObject : [Float]]!
     var updateFrameCounter = 0
     // used to scale all parameters from pixels to other metric system
     // not applied to mass or values not associated with pixels
@@ -254,9 +255,9 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         
     }
     
-    func createRopeBetweenNodes(node1: PWObject, node2: PWObject) {
-        let node1Mid = node1.getPos()
-        let node2Mid = node2.getPos()
+    func createRopeBetweenNodes(node1: SKNode, node2: SKNode) {
+        let node1Mid = node1.position
+        let node2Mid = node2.position
         let spring = SKPhysicsJointLimit.jointWithBodyA(node1.physicsBody!, bodyB: node2.physicsBody!, anchorA: node1Mid, anchorB: node2Mid)
         self.physicsWorld.addJoint(spring)
         
@@ -399,48 +400,80 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
 
     // create ramp static gadget
     func createRamp(location:CGPoint){
-        let ramp = PWStaticObject.init(objectStringName: "Ramp", position: location, isMovable: true, isSelectable: true, scale: 20)
-        self.addChild(ramp)
+        let Ramp = PWStaticObject.init(objectStringName: "Ramp", position: location, isMovable: true, isSelectable: true, scale: 20)
+        self.addChild(Ramp)
+        selectGadget(Ramp)
 
     }
     // creates platform static gadget
     func createPlatform(location:CGPoint){
         let Platform = PWStaticObject.init(objectStringName: "Platform", position: location, isMovable: true, isSelectable: true, scale: 20)
         self.addChild(Platform)
+        selectGadget(Platform)
     }
     // creates wall static gadget
     func createWall(location:CGPoint){
         let Wall = PWStaticObject.init(objectStringName: "Wall", position: location, isMovable: true, isSelectable: true, scale: 20)
         self.addChild(Wall)
+        selectGadget(Wall)
     }
     // creates round static gadget
     func createRound(location:CGPoint){
         let Round = PWStaticObject.init(objectStringName: "Round", position: location, isMovable: true, isSelectable: true, scale: 20)
         self.addChild(Round)
+        selectGadget(Round)
     }
     // creates Pulley static gadget
     func createPulley(location:CGPoint){
         let Pulley = PWStaticObject.init(objectStringName: "Pulley", position: location, isMovable: true, isSelectable: true, scale: 20)
         self.addChild(Pulley)
+        selectGadget(Pulley)
     }
     // ##############################################################
     // Selects a sprite in the game scene.
+    // ##############################################################
     func selectSprite(sprite: PWObject?) {
         let prevSprite = selectedSprite;
         if (prevSprite != nil) { prevSprite.setUnselected() }
-        
         // Passed in sprite is nil so nothing is selected now.
         if (sprite == nil) {
             selectedSprite = nil
-            return;
+            return
         }
-        
-        selectedSprite = sprite!;
+        deselectGadget()
+        selectedSprite = sprite
         containerVC.setsInputBox(objectProperties[selectedSprite]!)
         selectedSprite.setSelected();
         
     }
+    func selectGadget(sprite: PWStaticObject?) {
+        let prevGadget = selectedGadget
+        if (prevGadget != nil) { prevGadget!.setUnselected() }
+        // Passed in sprite is nil so nothing is selected now.
+        if (sprite == nil) {
+            selectedGadget = nil
+            return
+        }
+        deselectSprite()
+        selectedGadget = sprite;
+        //containerVC.setsInputBox(gadgetProperties[selectedGadget]!)
+        selectedGadget.setSelected();
+        
+    }
     
+    func deselectGadget() {
+        if selectedGadget != nil {
+        selectedGadget.setUnselected()
+        selectedGadget = nil
+        }
+    }
+    func deselectSprite() {
+        if selectedSprite != nil {
+        selectedSprite.setUnselected()
+        selectedSprite = nil
+        }
+    }
+    // ##############################################################
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for touch: AnyObject in touches {
             let location:CGPoint = touch.locationInNode(background)
@@ -490,24 +523,38 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             //////////////////////////////////
             //////// APPLY GADGETS ///////////
             //////////////////////////////////
-            if (!PWObject.isPWObject(touchedNode)) { continue };
-            let sprite = touchedNode as! PWObject
+            let sprite: SKNode
+            if (PWObject.isPWObject(touchedNode)) {
+                sprite = touchedNode as! PWObject
+            }
+             else if (PWStaticObject.isPWStaticObject(touchedNode)) {
+                sprite = touchedNode as! PWStaticObject
+            }
+            else {continue}
+            
             if (containerVC.getGadgetFlag() != 0) { // Rope
                 if (gadgetNode1 == nil) {
                     gadgetNode1 = sprite
                 } else if(gadgetNode2 == nil) {
-                    gadgetNode2 = sprite
+                    gadgetNode2 = sprite 
                     if (gadgetNode1 != gadgetNode2) {
                         if (containerVC.getGadgetFlag() == 1) { createRopeBetweenNodes(gadgetNode1, node2: gadgetNode2) }
-                        if (containerVC.getGadgetFlag() == 2) { createSpringBetweenNodes(gadgetNode1, node2: gadgetNode2) }
-                        if (containerVC.getGadgetFlag() == 3) { createRodBetweenNodes(gadgetNode1, node2: gadgetNode2) }
+                        //if (containerVC.getGadgetFlag() == 2) { createSpringBetweenNodes(gadgetNode1, node2: gadgetNode2) }
+                        //if (containerVC.getGadgetFlag() == 3) { createRodBetweenNodes(gadgetNode1, node2: gadgetNode2) }
                     }
                     gadgetNode2 = nil;
                     gadgetNode1 = nil;
                 }
             } else {
-                self.selectSprite(sprite);
-               containerVC.setsInputBox(objectProperties[selectedSprite]!)
+                if (PWObject.isPWObject(touchedNode))  {
+                self.selectSprite((sprite as! PWObject));
+                containerVC.setsInputBox(objectProperties[selectedSprite]!)
+                }
+                else {
+                self.selectGadget((sprite as! PWStaticObject));
+                // containerVC.setsInputBox(objectProperties[selectedSprite]!) implement gadget version 
+                }
+
             }
             
             
@@ -526,11 +573,19 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             let cameraNodeLocation = cam.convertPoint(location, fromNode: self)
             hideLabels();
             // Removes the selectedShape if it's over the trash bin
-            if trash.containsPoint(cameraNodeLocation) {
+            if trash.containsPoint(cameraNodeLocation){
+                if selectedSprite != nil {
                 objectProperties.removeValueForKey(selectedSprite)
                 selectedSprite.removeFromParent()
                 containerVC.removeObjectFromList(selectedSprite.getID())
                 self.selectSprite(nil);
+                }
+                else if selectedGadget != nil {
+                // gadgetProperties.removeValueForKey(selectedGadget) need to populate gadget properties
+                selectedGadget.removeFromParent()
+                //containerVC.removeGadgetFromList(selectedGadgetgetID())  implent this
+                self.selectSprite(nil);
+                }
             }
             // Removes all non-essential nodes from the gamescene
             if stop.containsPoint(cameraNodeLocation) {
@@ -605,17 +660,14 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 objectProperties[selectedSprite] = values
                 restoreAllobjectProperties(objectProperties)
             }
-        
+        // apply accelerations to objects (constant force)
         for object in self.children {
             if (!PWObject.isPWObject(object)) { continue };
             let sprite = object as! PWObject
-
-            
             let xComponent = CGFloat(objectProperties[sprite]![shapePropertyIndex.AX.rawValue]*pixelToMetric);
             let yComponent = CGFloat(objectProperties[sprite]![shapePropertyIndex.AY.rawValue]*pixelToMetric);
             sprite.applyForce(xComponent, y: yComponent)
         }
-
         updateSprings();
         if selectedSprite != nil && !pwPaused {
             self.camera!.position = boundedCamMovement(selectedSprite.position)
@@ -643,7 +695,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
 
     // Allows users to drag and drop selectedShapes and the background
     func panForTranslation(translation: CGPoint) {
-        updateNodeLabels();
+        updateNodeLabels()
         if selectedSprite != nil {
             let position = selectedSprite.position
             if selectedSprite.isMovable() {
@@ -654,6 +706,15 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 // Connects selectedShape to its nearestNodes
                 //connectNodes(selectedShape)
             }
+        }
+            else if selectedGadget != nil {
+                    let position = selectedGadget.position
+                    if selectedGadget.isMovable() {
+                        selectedGadget.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
+                        //changes values in the input box to the position it is dragged to
+                        
+                        //containerVC.setsInputBox(getParameters(selectedSprite)) implement for gadgets
+                    }
         }
         else {
             //let position = background.position
