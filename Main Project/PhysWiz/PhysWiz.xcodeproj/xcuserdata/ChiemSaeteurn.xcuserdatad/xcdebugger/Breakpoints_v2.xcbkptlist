@@ -15,7 +15,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "438"
             endingLineNumber = "438"
-            landmarkName = "touchesBegan(_:withEvent:)"
+            landmarkName = "selectSprite(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -31,7 +31,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "446"
             endingLineNumber = "446"
-            landmarkName = "touchesBegan(_:withEvent:)"
+            landmarkName = "selectSprite(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -290,7 +290,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "517"
             endingLineNumber = "517"
-            landmarkName = "touchesEnded(_:withEvent:)"
+            landmarkName = "touchesBegan(_:withEvent:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -306,7 +306,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "514"
             endingLineNumber = "514"
-            landmarkName = "touchesEnded(_:withEvent:)"
+            landmarkName = "touchesBegan(_:withEvent:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -418,7 +418,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "406"
             endingLineNumber = "406"
-            landmarkName = "selectSprite(_:)"
+            landmarkName = "createRamp(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -434,7 +434,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "445"
             endingLineNumber = "445"
-            landmarkName = "touchesBegan(_:withEvent:)"
+            landmarkName = "selectSprite(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -450,7 +450,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "444"
             endingLineNumber = "444"
-            landmarkName = "touchesBegan(_:withEvent:)"
+            landmarkName = "selectSprite(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -466,8 +466,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "235"
             endingLineNumber = "235"
-            landmarkName = "checkValidPoint(_:)"
-            landmarkType = "5">
+            landmarkName = "GameScene"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -546,8 +546,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "71"
             endingLineNumber = "71"
-            landmarkName = "init(gamescene:)"
-            landmarkType = "5">
+            landmarkName = "EventOrganizer"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -674,7 +674,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "657"
             endingLineNumber = "657"
-            landmarkName = "collisionEventTriggered(_:sprite2:)"
+            landmarkName = "update(_:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

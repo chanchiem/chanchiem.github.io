@@ -13,7 +13,7 @@ class TableViewController: UITableViewController {
     @IBOutlet var gadgetMenu: UITableView!
     
     var shapes = ["circle.png", "square.png", "triangle.png", "crate.png", "baseball.png", "brickwall.png", "airplane.png", "bike.png", "car.png", "black.png"]
-    var gadgets = ["black.png", "rope.png", "spring.png", "rod.png", "ramp.png", "ramp.png", "ramp.png", "ramp.png", "ramp.png"]
+    var gadgets = ["black.png", "rope.png", "spring.png", "rod.png", "ramp.png", "platform.png", "vertical_line.png", "circle_gadget.png", "pulley.png"]
     struct gadgetIndex {
         let blank = 0
         let rope = 1
