@@ -51,6 +51,11 @@ class EventOrganizer: NSObject {
         self.event = event!
     }
     
+//    func createTimeEvent(time: CGFloat)
+//    {
+//        let event = Event.createTime(<#T##sprite: PWObject##PWObject#>, time: <#T##CGFloat#>)
+//    }
+    
     // Resets the current event.
     func resetEvent() -> Event! {
         if (event == nil) { return nil; }
