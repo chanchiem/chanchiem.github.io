@@ -220,8 +220,13 @@ import Darwin
      
         }
         else if gadgetType == "Pulley" {
-         
-       
+            values.append(Mass.text!) //scale
+            values.append(Px.text!) // position x
+            values.append(Py.text!) // position y
+            values.append(Vx.text!) // radius
+            values.append(Vy.text!) // width
+            values.append(Ax.text!) // rotate
+            values.append(Ay.text!) // friction
         }
        return values
  
@@ -545,13 +550,15 @@ import Darwin
         }
         // deals with object table selection for endsetter
         if tableView == EndObjectList {
+            
            EndObject = selectionTableData[indexPath.row]
-               ForObjectLabel.text = "For " + getEndobject()
+            ForObjectLabel.text = "For " + getEndobject()
         }
         // deals with parameter table selection for endsetter
         if tableView == EndParameterList {
-            EndType = endSetterParameterNames[indexPath.row]
-             ParameterEqualsTo.text = getEndType() + " ="
+            EndParameter = endSetterParameterNames[indexPath.row]
+             ParameterEqualsTo.text = EndParameter + " ="
+            
         }
 
     }
@@ -574,8 +581,11 @@ import Darwin
     @IBOutlet weak var ParameterEqualsTo: UILabel!
     @IBOutlet weak var EndParameterListBox: UIScrollView!
     @IBOutlet weak var EndParameterList: UITableView!
+    var endSettings: [String] = ["", "", "", ""]
     var EndType = ""
+    var EndParameter = ""
     var EndObject = ""
+    var EndObject2 = ""
     func changeToEndSetter() {
         activeLogView!.hidden = true
         EndSetter.hidden = false
@@ -596,9 +606,29 @@ import Darwin
     func getEndobject() -> String {
         return EndObject
     }
+    //returns the end event that is currently set
     func getEndSetter() -> [String] {
-        let endSettings = [String]()
-        
+        if EndType == "Time" {
+            endSettings[0] = "Time"
+            endSettings[1] = EndParameterInputBox.text!
+            endSettings[2] = ""
+            endSettings[3] = ""
+            
+        }
+        if EndType == "End-Parameter" {
+            endSettings[0] = EndParameter
+            endSettings[1] = EndParameterInputBox.text!
+            endSettings[2] = EndObject
+            endSettings[3] = ""
+            
+        }
+        if EndType == "Event" {
+            endSettings[0] = EndParameter
+            endSettings[1] = EndParameterInputBox.text!
+            endSettings[2] = EndObject
+            endSettings[3] = EndObject2
+        }
+
         return endSettings
     }
     // Set up endssetter View for Entering Time
@@ -629,6 +659,16 @@ import Darwin
     }
   
     @IBAction func eventSet(sender: AnyObject) {
+        EndViewTitle.text = "Event"
+        EndType = "Event"
+        ForObjectLabel.hidden = false
+        StopWhenLabel.hidden = false
+        ForObjectLabel.hidden = false
+        EndParameterListBox.hidden = false
+        EndObjectListBox.hidden = false
+        ChosenEndView.hidden = false
+        activeLogView!.hidden = true
+        activeLogView = ChosenEndView
     }
 
     // ##############################################################

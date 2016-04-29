@@ -259,7 +259,11 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                     gadget.editRound(CGFloat(properties[0]), location: location, radius: CGFloat(properties[3]), other: CGFloat(properties[4]), other2: CGFloat(properties[5]), friction: CGFloat(properties[6]))
                     
                 }
-                
+                else if gadget.name == "Pulley" {
+                    let location = CGPoint(x: CGFloat(properties[1]), y: CGFloat(properties[2]))
+                    gadget.editPulley(CGFloat(properties[0]), location: location, radius: CGFloat(properties[3]), other: CGFloat(properties[4]), other2: CGFloat(properties[5]), friction: CGFloat(properties[6]))
+                    
+                }
             }
         }
     }
@@ -462,6 +466,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     // creates Pulley static gadget
     func createPulley(location:CGPoint){
         let Pulley = PWStaticObject.init(objectStringName: "Pulley", position: location, isMovable: true, isSelectable: true)
+        gadgetProperties[Pulley] = Pulley.getProperties(Pulley.name!)
         self.addChild(Pulley)
         selectGadget(Pulley)
     }
@@ -693,7 +698,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     /* Called before each frame is rendered */
     override func update(currentTime: CFTimeInterval) {        // continously update values of parameters for selected object
         updateFrameCounter += 1
-        if (updateFrameCounter % 20 == 0) {
+        if (updateFrameCounter % 5 == 0) {
             if selectedSprite != nil && !pwPaused  {
                 containerVC.setsInputBox(getParameters(selectedSprite), state: "static")
             }
