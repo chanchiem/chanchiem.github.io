@@ -18,8 +18,15 @@ class EventOrganizerContactDelegate: NSObject, SKPhysicsContactDelegate {
 //    var posEvents       = [Event](); // Anything that handles position, acceleration, velocity
 //    var collisionEvents = [Event](); // Handles Collision Events;
     var eventOrganizer: EventOrganizer! = nil;
+    var event: Event! = nil;
+    
+    func setCollisionEvent(event: Event) {
+        if (!event.isCollisionEvent()) { return }
+        self.event = event;
+    }
 
     func didBeginContact(contact: SKPhysicsContact) {
+        if (event == nil) { return; }
         let node1 = contact.bodyA.node!;
         let node2 = contact.bodyB.node!;
         
@@ -28,8 +35,8 @@ class EventOrganizerContactDelegate: NSObject, SKPhysicsContactDelegate {
         let sprite1 = node1 as! PWObject
         let sprite2 = node2 as! PWObject
         
-        // Check to see if it's c
-        eventOrganizer.triggerAndCheckCollision(sprite1, sprite2: sprite2);
+        // Check to see if the collision occured between correct objects.
+        event.checkAndTriggerCollision(sprite1, sprite2: sprite2);
     }
     
     

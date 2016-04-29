@@ -809,9 +809,16 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     }
     
     
-    // This function is called if there exists an event and also
-    func collisionEventTriggered(sprite1: PWObject, sprite2: PWObject) {
-        print(String(sprite1.getID()) + " has collided with " + String(sprite2.getID));
+    // This function is called if there exists an event
+    func eventTriggered(event: Event) {
+        
+        if (event.isCollisionEvent()) {
+            let sprites = event.getSprites();
+            print(String(sprites![0].getID()) + " has collided with " + String(sprites![1].getID));
+        }
+        if (event.isTimerEvent()) {
+            print("Timer occured!");
+        }
     }
     
     // Moves the objects that are on the screen by the amount that the background is being moved
