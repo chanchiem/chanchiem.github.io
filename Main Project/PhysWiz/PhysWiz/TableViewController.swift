@@ -13,17 +13,13 @@ class TableViewController: UITableViewController {
     @IBOutlet var gadgetMenu: UITableView!
     
     var shapes = ["circle.png", "square.png", "triangle.png", "crate.png", "baseball.png", "brickwall.png", "airplane.png", "bike.png", "car.png", "black.png"]
-    var gadgets = ["black.png", "rope.png", "spring.png", "rod.png", "ramp.png", "platform.png", "vertical_line.png", "circle_gadget.png", "pulley.png"]
+    var gadgets = ["black.png", "rope.png", "spring.png", "rod.png", "ramp.png"]
     struct gadgetIndex {
         let blank = 0
         let rope = 1
         let spring = 2
         let rod = 3
         let ramp = 4
-        let platform = 5
-        let wall = 6
-        let round = 7
-        let pulley = 8
     }
     
     override func viewDidLoad() {

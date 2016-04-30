@@ -18,10 +18,10 @@ struct PhysicsCategory {
 }
 
 class GameScene: SKScene , SKPhysicsContactDelegate{
-    var gadgetNode1: SKNode! = nil;
-    var gadgetNode2: SKNode! = nil;
+    var gadgetNode1: PWObject! = nil;
+    var gadgetNode2: PWObject! = nil;
     
-    var springglobal = [SKSpriteNode: [SKNode]]() // Spring that maps to two other nodes. PWOBJECT
+    var springglobal = [SKSpriteNode: [PWObject]]() // Spring that maps to two other nodes. PWOBJECT
     var initialHeight = [SKSpriteNode: CGFloat](); // PWOBJECT
     var labelMap = [PWObject: SKLabelNode](); // Each sk spritenode will have a label associated with it. PWOBJECT
     
@@ -43,10 +43,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     var containerVC: containerViewController!
     // The selected object for parameters
     var selectedSprite: PWObject! = nil
-    var selectedGadget: PWStaticObject! = nil
     var objectProperties: [PWObject : [Float]]!
-    var gadgetProperties: [PWStaticObject : [Float]]!
-    var defaultObjectProperties: [Float] = [1, 0 ,0 ,0, 0, 0, 0 ,0 ,0,0]
     var updateFrameCounter = 0
     // used to scale all parameters from pixels to other metric system
     // not applied to mass or values not associated with pixels
@@ -101,7 +98,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         self.addChild(PWObject.createFloor(CGSize.init(width: background.size.width, height: 20))) // Floor
         self.physicsWorld.speed = 0
         objectProperties = [PWObject: [Float]]()
-        gadgetProperties = [PWStaticObject : [Float]]()
         physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: 0, y: 0, width: background.size.width, height: background.size.height))
         
         //
@@ -262,37 +258,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             }
         }
     }
-    // restores gadget properties
-    func applyAllGadgetProperties(inputDictionary: [PWStaticObject: [Float]])
-    {
-        if (inputDictionary.count == 0) { return } // input contains nothing
-        
-        for (gadget, properties) in inputDictionary {
-            if (PWStaticObject.isPWStaticObject(gadget)) {
-                if gadget.name == "Ramp" {
-                    let location = CGPoint(x: CGFloat(properties[1]), y: CGFloat(properties[2]))
-                    gadget.editRamp(CGFloat(properties[0]), location: location, height: CGFloat(properties[3]), base: CGFloat(properties[4]), angle: CGFloat(properties[5]), friction: CGFloat(properties[6]))
-                    
-                }
-                else if gadget.name == "Platform" {
-                    let location = CGPoint(x: CGFloat(properties[1]), y: CGFloat(properties[2]))
-                    gadget.editPlatform(CGFloat(properties[0]), location: location, length: CGFloat(properties[3]), width: CGFloat(properties[4]), rotation: CGFloat(properties[5]), friction: CGFloat(properties[6]))
-                    
-                }
-                else if gadget.name == "Wall" {
-                    let location = CGPoint(x: CGFloat(properties[1]), y: CGFloat(properties[2]))
-                    gadget.editWall(CGFloat(properties[0]), location: location, height: CGFloat(properties[3]), width: CGFloat(properties[4]), rotation: CGFloat(properties[5]), friction: CGFloat(properties[6]))
-                    
-                }
-                else if gadget.name == "Round" {
-                    let location = CGPoint(x: CGFloat(properties[1]), y: CGFloat(properties[2]))
-                    gadget.editRound(CGFloat(properties[0]), location: location, radius: CGFloat(properties[3]), other: CGFloat(properties[4]), other2: CGFloat(properties[5]), friction: CGFloat(properties[6]))
-                    
-                }
-                
-            }
-        }
-    }
+    
     // Checks to see if the location that is valid (i.e. if it's actually a point on the game scene plane itself)
     // The button is considered a valid point, so long as it is not another PWObject.
     func checkValidPoint(location: CGPoint) -> Bool {
@@ -300,7 +266,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         for node in nodes {
             if(node.name == "button") { return false }
             if(PWObject.isPWObject(node)) { return false }
-            if(PWStaticObject.isPWStaticObject(node)) { return false }
         }
         
         return true
@@ -317,21 +282,21 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         
     }
     
-    func createRopeBetweenNodes(node1: SKNode, node2: SKNode) {
-        let node1Mid = node1.position
-        let node2Mid = node2.position
+    func createRopeBetweenNodes(node1: PWObject, node2: PWObject) {
+        let node1Mid = node1.getPos()
+        let node2Mid = node2.getPos()
         let spring = SKPhysicsJointLimit.jointWithBodyA(node1.physicsBody!, bodyB: node2.physicsBody!, anchorA: node1Mid, anchorB: node2Mid)
         self.physicsWorld.addJoint(spring)
         
         self.addChild(Rope.init(parentScene: self, node: node1, node: node2, texture: "rope.png"))
     }
     
-    func createSpringBetweenNodes(node1: SKNode, node2: SKNode) {
-        let n1 = node1.position
-        let n2 = node2.position
+    func createSpringBetweenNodes(node1: PWObject, node2: PWObject) {
+        let n1 = node1.getPos()
+        let n2 = node2.getPos()
         let deltax = n1.x - n2.x
         let deltay = n1.y - n2.y
-        let distance = sqrt(deltax * deltax + deltay*deltay)
+        let distance = node1.distanceTo(node2)
         
         // Create the joint between the two objects
         let spring = SKPhysicsJointSpring.jointWithBodyA(node1.physicsBody!, bodyB: node2.physicsBody!, anchorA: n1, anchorB: n2)
@@ -344,7 +309,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         let nodes = [node1, node2];
         springglobal[springobj] = nodes;
         
-        let angle = CGFloat(atan2f(Float(deltay), Float(deltax)))
+        let angle = node1.angleTo(node2)
         springobj.zRotation = angle + 1.57 // 1.57 because image is naturally vertical
         initialHeight[springobj] = springobj.size.height;
         springobj.yScale = distance/springobj.size.height;
@@ -366,11 +331,11 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             
             let deltax = springnode1.position.x - springnode2.position.x
             let deltay = springnode1.position.y - springnode2.position.y
-            let distance = sqrt(deltax * deltax + deltay*deltay)
+            let distance = springnode1.distanceTo(springnode2)
             spring.yScale = distance/initialHeight[spring]!;
             let xOffset = deltax / 2
             let yOffset = deltay / 2
-            let angle = CGFloat(atan2f(Float(deltay), Float(deltax)))
+            let angle = springnode1.angleTo(springnode2)
             spring.zRotation = CGFloat(angle + 1.57) // 1.57 because image is naturally vertical
             spring.position = CGPoint.init(x: springnode1.position.x - xOffset, y: springnode1.position.y - yOffset)
         }
@@ -379,13 +344,12 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     // Updates relative distance labels when an object is being dragged.
     func updateNodeLabels()
     {
-        // I moved the selected sprite check out of the loop as its not necessary to check every time
-        if (selectedSprite == nil) { return }
         
         // Otherwise, label is on when simulation is NOT running
         for node in self.children
         {
             if (!PWObject.isPWObject(node)) { continue; }
+            if (selectedSprite == nil) { return }
             let sprite = node as! PWObject
             if (sprite == selectedSprite) { continue }
             
@@ -456,90 +420,35 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         self.physicsWorld.addJoint(rodJoint1)
         self.physicsWorld.addJoint(rodJoint2)
     }
-    // ##############################################################
-    //  Create Static Objects
-    // ##############################################################
 
-    // create ramp static gadget
+
     func createRamp(location:CGPoint){
-        let Ramp = PWStaticObject.init(objectStringName: "Ramp", position: location, isMovable: true, isSelectable: true)
-        gadgetProperties[Ramp] = Ramp.getProperties(Ramp.name!)
-        self.addChild(Ramp)
-        selectGadget(Ramp)
-
+//        let newObj = self.createObject(location, image: "ramp.png")
+//        newObj.size = CGSize(width: 200, height: 200)
+//        let objectTexture = SKTexture.init(imageNamed: "ramp.png")
+//        newObj.physicsBody = SKPhysicsBody(texture: objectTexture, size: newObj.size)
+        let ramp = PWObject.init(objectStringName: "ramp", position: location, isMovable: false, isSelectable: false)
+        self.addChild(ramp)
     }
-    // creates platform static gadget
-    func createPlatform(location:CGPoint){
-        let Platform = PWStaticObject.init(objectStringName: "Platform", position: location, isMovable: true, isSelectable: true)
-        gadgetProperties[Platform] = Platform.getProperties(Platform.name!)
-        self.addChild(Platform)
-        selectGadget(Platform)
-    }
-    // creates wall static gadget
-    func createWall(location:CGPoint){
-        let Wall = PWStaticObject.init(objectStringName: "Wall", position: location, isMovable: true, isSelectable: true)
-        gadgetProperties[Wall] = Wall.getProperties(Wall.name!)
-        self.addChild(Wall)
-        selectGadget(Wall)
-    }
-    // creates round static gadget
-    func createRound(location:CGPoint){
-        let Round = PWStaticObject.init(objectStringName: "Round", position: location, isMovable: true, isSelectable: true)
-        gadgetProperties[Round] = Round.getProperties(Round.name!)
-        self.addChild(Round)
-        selectGadget(Round)
-    }
-    // creates Pulley static gadget
-    func createPulley(location:CGPoint){
-        let Pulley = PWStaticObject.init(objectStringName: "Pulley", position: location, isMovable: true, isSelectable: true)
-        self.addChild(Pulley)
-        selectGadget(Pulley)
-    }
-    // ##############################################################
+    
+    
     // Selects a sprite in the game scene.
-    // ##############################################################
     func selectSprite(sprite: PWObject?) {
         let prevSprite = selectedSprite;
         if (prevSprite != nil) { prevSprite.setUnselected() }
+        
         // Passed in sprite is nil so nothing is selected now.
         if (sprite == nil) {
             selectedSprite = nil
-            return
+            return;
         }
-        deselectGadget()
-        selectedSprite = sprite
-        containerVC.setsInputBox(objectProperties[selectedSprite]!, state: "editable")
+        
+        selectedSprite = sprite!;
+        containerVC.setsInputBox(objectProperties[selectedSprite]!)
         selectedSprite.setSelected();
         
     }
-    func selectGadget(sprite: PWStaticObject?) {
-        let prevGadget = selectedGadget
-        if (prevGadget != nil) { prevGadget!.setUnselected() }
-        // Passed in sprite is nil so nothing is selected now.
-        if (sprite == nil) {
-            selectedGadget = nil
-            return
-        }
-        deselectSprite()
-        selectedGadget = sprite;
-        containerVC.setsGadgetInputBox(selectedGadget.name!, input: gadgetProperties[selectedGadget]!, state: "editable")
-        selectedGadget.setSelected();
-        
-    }
     
-    func deselectGadget() {
-        if selectedGadget != nil {
-        selectedGadget.setUnselected()
-        selectedGadget = nil
-        }
-    }
-    func deselectSprite() {
-        if selectedSprite != nil {
-        selectedSprite.setUnselected()
-        selectedSprite = nil
-        }
-    }
-    // ##############################################################
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for touch: AnyObject in touches {
             let location:CGPoint = touch.locationInNode(background)
@@ -549,34 +458,15 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             //////// CREATE OBJECT ///////////
             //////////////////////////////////
             // Make sure the point that is being touched is part of the game scene plane is part of the game
-            if((checkValidPoint(location) || touchedNode.name == "Round") && pwPaused ) {
+            if(checkValidPoint(location) && pwPaused) {
                 // When clicking outside a In the scene return to main scene
                 containerVC.changeToMainView()
-                if (touchedNode.name == "Round") {
-                    selectGadget(touchedNode as? PWStaticObject)
-                    containerVC.changeToGadgetInputBox(selectedGadget.name!)
-                }
-                else if (containerVC.getGadgetFlag() == 0) {
-                    deselectGadget()
-                }
-                else if (containerVC.getGadgetFlag() == 4) {
+                if (containerVC.getGadgetFlag() == 4) {
                     createRamp(location)
-                }
-                else if (containerVC.getGadgetFlag() == 5) {
-                    createPlatform(location)
-                }
-                else if (containerVC.getGadgetFlag() == 6) {
-                    createWall(location)
-                }
-                else if (containerVC.getGadgetFlag() == 7) {
-                    createRound(location)
-                }
-                else if (containerVC.getGadgetFlag() == 8) {
-                    createPulley(location)
                 }
                 let objectType = shapeArray[containerVC.getObjectFlag()]
                 if (objectType == shapeType.BLACK) {
-                    self.deselectSprite();
+                    self.selectSprite(nil);
                 } else {
                     let spriteName = String(objectType).lowercaseString
                     let newObj = PWObject.init(objectStringName: spriteName, position: location, isMovable: true, isSelectable: true)
@@ -598,40 +488,24 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             //////////////////////////////////
             //////// APPLY GADGETS ///////////
             //////////////////////////////////
-            let sprite: SKNode
-            if (PWObject.isPWObject(touchedNode)) {
-                sprite = touchedNode as! PWObject
-            }
-             else if (PWStaticObject.isPWStaticObject(touchedNode)) {
-                sprite = touchedNode as! PWStaticObject
-            }
-            else {continue}
-            
+            if (!PWObject.isPWObject(touchedNode)) { continue };
+            let sprite = touchedNode as! PWObject
             if (containerVC.getGadgetFlag() != 0) { // Rope
                 if (gadgetNode1 == nil) {
                     gadgetNode1 = sprite
                 } else if(gadgetNode2 == nil) {
-                    gadgetNode2 = sprite 
+                    gadgetNode2 = sprite
                     if (gadgetNode1 != gadgetNode2) {
                         if (containerVC.getGadgetFlag() == 1) { createRopeBetweenNodes(gadgetNode1, node2: gadgetNode2) }
                         if (containerVC.getGadgetFlag() == 2) { createSpringBetweenNodes(gadgetNode1, node2: gadgetNode2) }
-                        //if (containerVC.getGadgetFlag() == 3) { createRodBetweenNodes(gadgetNode1, node2: gadgetNode2) }
+                        if (containerVC.getGadgetFlag() == 3) { createRodBetweenNodes(gadgetNode1, node2: gadgetNode2) }
                     }
                     gadgetNode2 = nil;
                     gadgetNode1 = nil;
                 }
             } else {
-                if (PWObject.isPWObject(touchedNode))  {
-                self.selectSprite((sprite as! PWObject));
-                containerVC.changeToObjectInputBox()
-                    containerVC.setsInputBox(objectProperties[selectedSprite]!, state: "editable")
-                }
-                else if pwPaused {
-                self.selectGadget((sprite as! PWStaticObject));
-                containerVC.changeToGadgetInputBox(sprite.name!)
-                containerVC.setsGadgetInputBox(selectedGadget.name!, input: gadgetProperties[selectedGadget]!, state: "editable")
-                }
-
+                self.selectSprite(sprite);
+               containerVC.setsInputBox(objectProperties[selectedSprite]!)
             }
             
             
@@ -650,24 +524,11 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             let cameraNodeLocation = cam.convertPoint(location, fromNode: self)
             hideLabels();
             // Removes the selectedShape if it's over the trash bin
-<<<<<<< HEAD
             if trash.containsPoint(cameraNodeLocation) {
                 objectProperties.removeValueForKey(selectedSprite) /**********************************************/
-=======
-            if trash.containsPoint(cameraNodeLocation){
-                if selectedSprite != nil {
-                objectProperties.removeValueForKey(selectedSprite)
->>>>>>> origin/master
                 selectedSprite.removeFromParent()
                 containerVC.removeObjectFromList(selectedSprite.getID())
                 self.selectSprite(nil);
-                }
-                else if selectedGadget != nil {
-                // gadgetProperties.removeValueForKey(selectedGadget) need to populate gadget properties
-                selectedGadget.removeFromParent()
-                //containerVC.removeGadgetFromList(selectedGadgetgetID())  implent this
-                self.selectSprite(nil);
-                }
             }
             // Removes all non-essential nodes from the gamescene
             if stop.containsPoint(cameraNodeLocation) {
@@ -699,21 +560,12 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                     self.physicsWorld.speed = 1
                     pwPaused = false
                     button.texture = SKTexture(imageNamed: "pause.png")
-                    if (selectedGadget != nil) {
-                    deselectGadget()
-                    containerVC.changeToObjectInputBox()
-                    containerVC.setsInputBox(defaultObjectProperties, state: "static")
-                    }
                 } else {
                     self.physicsWorld.speed = 0
                     pwPaused = true
                     button.texture = SKTexture(imageNamed: "play.png")
                     if selectedSprite != nil {
-<<<<<<< HEAD
                         containerVC.setsInputBox(objectProperties[selectedSprite]!)
-=======
-                    containerVC.setsInputBox(objectProperties[selectedSprite]!, state: "editable")
->>>>>>> origin/master
                     }
                 }
             }
@@ -739,7 +591,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         updateFrameCounter += 1
         if (updateFrameCounter % 20 == 0) {
             if selectedSprite != nil && !pwPaused  {
-                containerVC.setsInputBox(getParameters(selectedSprite), state: "static")
+                containerVC.setsStaticBox(getParameters(selectedSprite))
             }
         }
 
@@ -753,24 +605,17 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 objectProperties[selectedSprite] = values /**********************************************/
                 restoreAllobjectProperties(objectProperties) /**********************************************/
             }
-            
-        else if (selectedGadget != nil && pwPaused) {
-            var values = gadgetProperties[selectedGadget]!
-            let input = containerVC.getGadgetInput(selectedGadget.name!)
-            for i in 0 ..< values.count {
-                if (Float(input[i]) != nil) { values[i] = Float(input[i])! }
-            }
-            gadgetProperties[selectedGadget] = values
-            applyAllGadgetProperties(gadgetProperties)
-        }
-        // apply accelerations to objects (constant force)
+        
         for object in self.children {
             if (!PWObject.isPWObject(object)) { continue };
             let sprite = object as! PWObject
+
+            
             let xComponent = CGFloat(objectProperties[sprite]![shapePropertyIndex.AX.rawValue]*pixelToMetric);
             let yComponent = CGFloat(objectProperties[sprite]![shapePropertyIndex.AY.rawValue]*pixelToMetric);
             sprite.applyForce(xComponent, y: yComponent)
         }
+
         updateSprings();
         if selectedSprite != nil && !pwPaused {
             self.camera!.position = boundedCamMovement(selectedSprite.position)
@@ -798,31 +643,19 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
 
     // Allows users to drag and drop selectedShapes and the background
     func panForTranslation(translation: CGPoint) {
-        updateNodeLabels()
+        updateNodeLabels();
         if selectedSprite != nil {
             let position = selectedSprite.position
             if selectedSprite.isMovable() {
                 selectedSprite.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
                 //changes values in the input box to the position it is dragged to
-<<<<<<< HEAD
                 containerVC.setsInputBox(getParameters(selectedSprite))
                 PWObjects[PWObjects.indexOf(selectedSprite)!].setPos(selectedSprite.position)
                 //saveSprites()
-=======
-                containerVC.setsInputBox(getParameters(selectedSprite), state: "editable")
->>>>>>> origin/master
                 
                 // Connects selectedShape to its nearestNodes
                 //connectNodes(selectedShape)
             }
-        }
-            else if selectedGadget != nil {
-                    let position = selectedGadget.position
-                    if selectedGadget.isMovable() {
-                        selectedGadget.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
-                        //changes values in the input box to the position it is dragged to
-                        containerVC.setsGadgetInputBox(selectedGadget.name!, input:selectedGadget.getProperties(selectedGadget.name!), state: "editable")
-                    }
         }
         else {
             //let position = background.position
@@ -856,19 +689,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         if (upper_cam_y > upper_bg_y) { retval.y = upper_bg_y - (self.size.height * (self.camera?.yScale)!)/2 }
         
         return retval
-    }
-    
-    
-    // This function is called if there exists an event
-    func eventTriggered(event: Event) {
-        
-        if (event.isCollisionEvent()) {
-            let sprites = event.getSprites();
-            print(String(sprites![0].getID()) + " has collided with " + String(sprites![1].getID));
-        }
-        if (event.isTimerEvent()) {
-            print("Timer occured!");
-        }
     }
     
     // Moves the objects that are on the screen by the amount that the background is being moved

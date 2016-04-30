@@ -403,7 +403,7 @@ class PWObject: SKSpriteNode
         self.physicsBody?.friction = 0
         self.physicsBody?.linearDamping = 0
         self.physicsBody?.restitution = 0.7
-        self.physicsBody?.contactTestBitMask = PhysicsCategory.Sprites;
+        self.physicsBody?.contactTestBitMask = PhysicsCategory.All;
     }
     
     // Initialize object without texture, only color.

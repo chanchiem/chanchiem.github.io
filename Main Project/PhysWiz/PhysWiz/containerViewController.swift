@@ -9,13 +9,8 @@
 import Foundation
 import UIKit
 
-<<<<<<< HEAD
 class containerViewController: UIViewController, UIPopoverPresentationControllerDelegate {
     
-=======
-class containerViewController: UIViewController {
-    let staticObjects = ["Ramp", "Platform", "Wall", "Round", "Pulley"]
->>>>>>> origin/master
     @IBOutlet weak var gameView: UIView!
     @IBOutlet weak var physicsLog: UIView!
     @IBOutlet weak var objectMenu: UIBarButtonItem!
@@ -131,7 +126,6 @@ class containerViewController: UIViewController {
         if index != 9 {
             gadgetflag = 0
         }
-        changeToObjectInputBox()
         objectflag = index
         NSLog("Test")
     }
@@ -139,9 +133,6 @@ class containerViewController: UIViewController {
         // set other flag to null
         if index != 0 {
             objectflag = 9
-        }
-        if index > 3 {
-            changeToGadgetInputBox(staticObjects[index - 4]) // four is array offset 
         }
         gadgetflag = index
         NSLog("Test")
@@ -158,14 +149,16 @@ class containerViewController: UIViewController {
     }
     
     // Resets the input fields in the input box
-    func setsInputBox(input: [Float], state: String) {
-        PhysicsLogVC.setsInputBox(input, state: state)
+    func setsInputBox(input: [Float]) {
+        PhysicsLogVC.setsInputBox(input, state: "editable")
     }
-    // sets input box with values
-    func setsGadgetInputBox(gadgetType: String, input: [Float], state: String){
-        return PhysicsLogVC.setsGadgetInputBox(gadgetType, input: input, state: state)
+    
+    // display parameters of selected object in label by modifying
+    // labels in the static box.
+    // metric parameter is added to scale according to users desired metric ( meter/feet etc
+    func setsStaticBox(input: [Float]) {
+        return PhysicsLogVC.setsInputBox(input, state: "static")
     }
-    // adds object to selection list 
     func addObjectToList(ID: Int) {
         PhysicsLogVC.addObjectToList(ID)
     }
@@ -187,19 +180,4 @@ class containerViewController: UIViewController {
     func changeToMainView(){
         PhysicsLogVC.changeToMainView()
     }
-<<<<<<< HEAD
-=======
-    func changeToGadgetInputBox(gadgetType: String) {
-        PhysicsLogVC.changeToGadgetInputBox(gadgetType)
-    }
-    // changes input back to have object properties 
-    func changeToObjectInputBox() {
-        PhysicsLogVC.changeToObjectInputBox()
-    }
-    // retrieves gadget inpute from physics log
-    func getGadgetInput(gadgetType: String) -> [String] {
-        return PhysicsLogVC.getGadgetInput(gadgetType)
-    }
-
->>>>>>> origin/master
 }
