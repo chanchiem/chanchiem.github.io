@@ -38,6 +38,13 @@ class EventOrganizer: NSObject {
         }
     }
     
+    // Checks if the parameter event has been triggered.
+    func checkParameterEventTriggered() {
+        if (event == nil) { return; }
+        event.checkParameters();
+    }
+    
+    
     
     func createCollisionEvent(sprite1: PWObject, sprite2: PWObject) {
         let event = Event.createCollision(self, sprite1: sprite1, sprite2: sprite2)
@@ -60,7 +67,6 @@ class EventOrganizer: NSObject {
     {
         print("Created parameter event");
         event = Event.createParameter(self, sprite: sprite, parameterFlag: flag, limitValue: value)
-        event.dispatchPropertyChecker();
     }
     
     

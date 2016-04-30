@@ -8,7 +8,8 @@
 //  An Event object that will be used by the Event Organizer.
 //  Every event that is created will instantiate this event object.
 //  This object can either be a time element, a contact element,
-//  or a distance element.
+//  or a property element. It will be used to trigger conditions
+//  that the user sets.
 //  There are three types of events:
 //  Collision - Any type of collision between two objects.
 //  Time      - Any type of event that relies on time passing by.
@@ -41,7 +42,7 @@ class Event: NSObject {
     ////////////////////////////////////////////////////////////
     //////////////// Collision Variables ///////////////////////
     ////////////////////////////////////////////////////////////
-     var sprite1: PWObject! = nil; // Also used for time and Properties
+    private var sprite1: PWObject! = nil; // Also used for time and Properties
     private var sprite2: PWObject! = nil;
     
     ////////////////////////////////////////////////////////////
@@ -167,6 +168,18 @@ class Event: NSObject {
 
         self.dispatchWorker.addOperation(checkLimit)
 
+    }
+    
+    // Checks if the parameters of these events exceed the limit.
+    // If so, it has been triggered.
+    func checkParameters() {
+        if (!self.isPropertyEvent()) { return }
+        
+        if (self.checkGreaterThanLimit()) {
+            self.setHappened();
+            self.eventorganizer.triggerEvent(self);
+            return;
+        }
     }
 
     // Returns the value set by the properties that this event
