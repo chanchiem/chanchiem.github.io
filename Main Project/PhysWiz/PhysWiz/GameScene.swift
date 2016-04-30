@@ -859,7 +859,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     }
     
     
-    // This function is called if there exists an event
+    // This function is called if an event has been triggered
     func eventTriggered(event: Event) {
         
         if (event.isCollisionEvent()) {
@@ -868,6 +868,11 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         }
         if (event.isTimerEvent()) {
             print("Timer occured!");
+        }
+        
+        if (event.isPropertyEvent()) {
+            let s = event.getCurrentPropertyValue();
+            print("Property exceeded: " + String(s));
         }
     }
     

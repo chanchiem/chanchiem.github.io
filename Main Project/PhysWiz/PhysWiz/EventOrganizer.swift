@@ -20,6 +20,8 @@ class EventOrganizer: NSObject {
     var event: Event!;  // The event that we will be analyzing.
     var scene: GameScene;
     
+    // This function is called by the event. This is what happens
+    // when an event condition is actually executed.
     func triggerEvent(event: Event) {
         // The event that happened is a collision event!
         if (event.isCollisionEvent()) {
@@ -28,6 +30,10 @@ class EventOrganizer: NSObject {
         };
         
         if (event.isTimerEvent()) {
+            scene.eventTriggered(event)
+        }
+        
+        if (event.isPropertyEvent()) {
             scene.eventTriggered(event)
         }
     }
@@ -50,6 +56,14 @@ class EventOrganizer: NSObject {
         
     }
     
+    func createParameterEvent(sprite: PWObject, flag: Int, value: CGFloat)
+    {
+        print("Created parameter event");
+        event = Event.createParameter(self, sprite: sprite, parameterFlag: flag, limitValue: value)
+        event.dispatchPropertyChecker();
+    }
+    
+    
     // Resets the current event.
     func resetEvent() -> Event! {
         if (event == nil) { return nil; }
@@ -60,9 +74,9 @@ class EventOrganizer: NSObject {
         return prev;
     }
     
-    // Has the event occured yet?
     func hasEventOccurred() -> Bool { return event.hasHappened() }
     
+    // Does this module have an event relating with it
     func containsEvent() -> Bool { return (event != nil) }
     
     // Creates Event Organizer object and initializes
