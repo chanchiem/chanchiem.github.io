@@ -650,14 +650,9 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             let cameraNodeLocation = cam.convertPoint(location, fromNode: self)
             hideLabels();
             // Removes the selectedShape if it's over the trash bin
-<<<<<<< HEAD
-            if trash.containsPoint(cameraNodeLocation) {
-                objectProperties.removeValueForKey(selectedSprite) /**********************************************/
-=======
             if trash.containsPoint(cameraNodeLocation){
                 if selectedSprite != nil {
                 objectProperties.removeValueForKey(selectedSprite)
->>>>>>> origin/master
                 selectedSprite.removeFromParent()
                 containerVC.removeObjectFromList(selectedSprite.getID())
                 self.selectSprite(nil);
@@ -709,11 +704,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                     pwPaused = true
                     button.texture = SKTexture(imageNamed: "play.png")
                     if selectedSprite != nil {
-<<<<<<< HEAD
-                        containerVC.setsInputBox(objectProperties[selectedSprite]!)
-=======
                     containerVC.setsInputBox(objectProperties[selectedSprite]!, state: "editable")
->>>>>>> origin/master
                     }
                 }
             }
@@ -804,13 +795,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             if selectedSprite.isMovable() {
                 selectedSprite.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
                 //changes values in the input box to the position it is dragged to
-<<<<<<< HEAD
-                containerVC.setsInputBox(getParameters(selectedSprite))
-                PWObjects[PWObjects.indexOf(selectedSprite)!].setPos(selectedSprite.position)
-                //saveSprites()
-=======
                 containerVC.setsInputBox(getParameters(selectedSprite), state: "editable")
->>>>>>> origin/master
                 
                 // Connects selectedShape to its nearestNodes
                 //connectNodes(selectedShape)

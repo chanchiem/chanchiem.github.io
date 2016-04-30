@@ -9,13 +9,8 @@
 import Foundation
 import UIKit
 
-<<<<<<< HEAD
 class containerViewController: UIViewController, UIPopoverPresentationControllerDelegate {
-    
-=======
-class containerViewController: UIViewController {
     let staticObjects = ["Ramp", "Platform", "Wall", "Round", "Pulley"]
->>>>>>> origin/master
     @IBOutlet weak var gameView: UIView!
     @IBOutlet weak var physicsLog: UIView!
     @IBOutlet weak var objectMenu: UIBarButtonItem!
@@ -187,8 +182,6 @@ class containerViewController: UIViewController {
     func changeToMainView(){
         PhysicsLogVC.changeToMainView()
     }
-<<<<<<< HEAD
-=======
     func changeToGadgetInputBox(gadgetType: String) {
         PhysicsLogVC.changeToGadgetInputBox(gadgetType)
     }
@@ -200,6 +193,4 @@ class containerViewController: UIViewController {
     func getGadgetInput(gadgetType: String) -> [String] {
         return PhysicsLogVC.getGadgetInput(gadgetType)
     }
-
->>>>>>> origin/master
 }
