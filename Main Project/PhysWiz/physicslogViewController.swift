@@ -88,53 +88,58 @@ import Darwin
     }
     // changes velocities types tells whether velocity input is cartesian (off) or polar/vectorial (on)
     @IBOutlet weak var velocityType: UISwitch!
-    @IBOutlet weak var velocityXLabel: UILabel!
-    @IBOutlet weak var velocityYLabel: UILabel!
     @IBAction func changeVelocityType(sender: AnyObject) {
         if velocityType.on {
-            velocityXLabel.text = "V"
-            velocityYLabel.text = "θ"
+            ThirdLabel.text = "V"
+            FourthLabel.text = "θ"
             Vx.text = truncateString(String(toMagnitude(Vx.text!, y: Vy.text!)), decLen: 2)
             Vy.text = truncateString(String(toTheta(Vx.text!, y: Vy.text!)), decLen: 2)
             }
         if !velocityType.on {
-            velocityXLabel.text = "Vx"
-            velocityYLabel.text = "Vy"
+            ThirdLabel.text = "Vx"
+            FourthLabel.text = "Vy"
             Vx.text = toX(self.Vx.text!, theta: self.Vy.text!)
             Vy.text = toY(self.Vx.text!, theta: self.Vy.text!)
         }
     }
     // changes acceleration types tells whether acceleration input is cartesian (off) or polar/vectorial (on)
     @IBOutlet weak var accelerationType: UISwitch!
-    @IBOutlet weak var accelerationXLabel: UILabel!
-    @IBOutlet weak var accelerationYLabel: UILabel!
     @IBAction func changeAccelerationType(sender: AnyObject) {
         if accelerationType.on {
-            accelerationXLabel.text = "A"
-            accelerationYLabel.text = "θ"
+            FifthLabel.text = "A"
+            SixthLabel.text = "θ"
         }
         if !accelerationType.on {
-            accelerationXLabel.text = "Ax"
-            accelerationYLabel.text = "Ay"
+            FifthLabel.text = "Ax"
+            SixthLabel.text = "Ay"
         }
     }
     // changes force types tells whether force input is cartesian (off) or polar/vectorial (on)
     @IBOutlet weak var forceType: UISwitch!
-    @IBOutlet weak var forceXLabel: UILabel!
-    @IBOutlet weak var forceYLabel: UILabel!
     @IBAction func changeForceType(sender: AnyObject) {
         if forceType.on {
-            forceXLabel.text = "F"
-            forceYLabel.text = "θ"
+            SeventhLabel.text = "F"
+            EighthLabel.text = "θ"
         }
         if !forceType.on {
-            forceXLabel.text = "Fx"
-            forceYLabel.text = "Fy"
+            SeventhLabel.text = "Fx"
+            EighthLabel.text = "Fy"
         }
     }
     // ##############################################################
     //  InputBox
-    // ##############################################################
+    // ####################################
+    @IBOutlet weak var TopLabel: UILabel!
+    @IBOutlet weak var FirstLabel: UILabel! //Px
+    @IBOutlet weak var SecondLabel: UILabel! //Py
+    @IBOutlet weak var ThirdLabel: UILabel! //Vx
+    @IBOutlet weak var FourthLabel: UILabel! //Vy
+    @IBOutlet weak var FifthLabel: UILabel! //Ax
+    @IBOutlet weak var SixthLabel: UILabel! //Ay
+    @IBOutlet weak var SeventhLabel: UILabel! //Fx
+    @IBOutlet weak var EighthLabel: UILabel! //Fy
+    @IBOutlet weak var NinthLabel: UILabel! //Av
+    
     
     // Gets the input from all the TextFields inside the inputBox.
     func getInput() -> [String] {
@@ -173,7 +178,54 @@ import Darwin
         
         return values
     }
-    
+    func getGadgetInput(gadgetType: String)-> [String] {
+        var values = [String]()
+        //properties [ scale, posx, posy, height, base, angle, friction]
+        if gadgetType == "Ramp" {
+             values.append(Mass.text!) //scale
+             values.append(Px.text!) // position x
+             values.append(Py.text!) // position y
+             values.append(Vx.text!) // height
+             values.append(Vy.text!) // base
+             values.append(Ax.text!) // angle
+             values.append(Ay.text!) // friction
+            
+        }
+        else if gadgetType == "Platform" {
+            values.append(Mass.text!) //scale
+            values.append(Px.text!) // position x
+            values.append(Py.text!) // position y
+            values.append(Vx.text!) // length
+            values.append(Vy.text!) // width
+            values.append(Ax.text!) // rotate
+            values.append(Ay.text!) // friction
+        }
+        else if gadgetType == "Wall" {
+            values.append(Mass.text!) //scale
+            values.append(Px.text!) // position x
+            values.append(Py.text!) // position y
+            values.append(Vx.text!) // height
+            values.append(Vy.text!) // width
+            values.append(Ax.text!) // rotate
+            values.append(Ay.text!) // friction
+        }
+        else if gadgetType == "Round" {
+            values.append(Mass.text!) //scale
+            values.append(Px.text!) // position x
+            values.append(Py.text!) // position y
+            values.append(Vx.text!) // radius
+            values.append(Vy.text!) // width
+            values.append(Ax.text!) // rotate
+            values.append(Ay.text!) // friction
+     
+        }
+        else if gadgetType == "Pulley" {
+         
+       
+        }
+       return values
+ 
+    }
     // Resets the input fields in the input box state variable is either static or editable
     func setsInputBox(input: [Float], state: String ) {
         if state == "static" {
@@ -242,6 +294,103 @@ import Darwin
         Fy.backgroundColor = UIColor.whiteColor()
         
     }
+    func changeToGadgetInputBox(gadgetType: String) {
+        if gadgetType == "Ramp" {
+            TopLabel.text = "Scale"
+            ThirdLabel.text = "Height"
+            FourthLabel.text = "Base"
+            FifthLabel.text = "Angle"
+            SixthLabel.text = "Friction"
+            SeventhLabel.hidden = true
+            Fx.hidden = true
+            EighthLabel.hidden = true
+            Fy.hidden = true
+            NinthLabel.hidden = true
+            Av.hidden = true
+        }
+        else if gadgetType == "Platform" {
+            TopLabel.text = "Scale"
+            ThirdLabel.text = "Length"
+            FourthLabel.text = "Width"
+            FifthLabel.text = "Rotate"
+            SixthLabel.text = "Friction"
+            SeventhLabel.hidden = true
+            Fx.hidden = true
+            EighthLabel.hidden = true
+            Fy.hidden = true
+            NinthLabel.hidden = true
+            Av.hidden = true
+        }
+        else if gadgetType == "Wall" {
+            TopLabel.text = "Scale"
+            ThirdLabel.text = "Height"
+            FourthLabel.text = "Width"
+            FifthLabel.text = "Rotate"
+            SixthLabel.text = "Friction"
+            SeventhLabel.hidden = true
+            Fx.hidden = true
+            EighthLabel.hidden = true
+            Fy.hidden = true
+            NinthLabel.hidden = true
+            Av.hidden = true
+        }
+        else if gadgetType == "Round" {
+            TopLabel.text = "Scale"
+            ThirdLabel.text = "Radius"
+            FourthLabel.text = "Curve"
+            FifthLabel.text = "Friction"
+            SixthLabel.text = "Rotate"
+            SeventhLabel.hidden = true
+            Fx.hidden = true
+            EighthLabel.hidden = true
+            Fy.hidden = true
+            NinthLabel.hidden = true
+            Av.hidden = true
+        }
+        else if gadgetType == "Pulley" {
+            TopLabel.text = "Scale"
+            ThirdLabel.text = "Radius"
+            FourthLabel.text = "Friction"
+            FifthLabel.text = "Angle"
+            SixthLabel.text = "Rotate"
+            SeventhLabel.hidden = true
+            Fx.hidden = true
+            EighthLabel.hidden = true
+            Fy.hidden = true
+            NinthLabel.hidden = true
+            Av.hidden = true
+        }
+    }
+    // Resets the input fields in the input box state variable is either static or editable
+    func setsGadgetInputBox(gadgetType: String, input: [Float], state: String ) {
+        if state == "static" {
+            makeInputBoxStatic()
+        }
+        else if state == "editable" {
+            makeInputBoxEditable()
+        }
+        Mass.text = truncateString(String(input[0]), decLen: 2)
+        Px.text = truncateString(String(input[1]), decLen: 2)
+        Py.text = truncateString(String(input[2]), decLen: 2)
+        Vx.text = truncateString(String(input[3]), decLen: 2)
+        Vy.text = truncateString(String(input[4]), decLen: 2)
+        Ax.text = truncateString(String(input[5]), decLen: 2)
+        Ay.text = truncateString(String(input[6]), decLen: 2)
+    }
+    func changeToObjectInputBox() {
+        TopLabel.text = "Mass"
+        ThirdLabel.text = "Vx"
+        FourthLabel.text = "Vy"
+        FifthLabel.text = "Ax"
+        SixthLabel.text = "Ay"
+        SeventhLabel.hidden = false
+        Fx.hidden = false
+        EighthLabel.hidden = false
+        Fy.hidden = false
+        NinthLabel.hidden = false
+        Av.hidden = false
+    }
+    
     // ##############################################################
     //  Number Pad
     // ##############################################################

@@ -16,50 +16,62 @@ events that occur. */
 import Foundation
 
 class EventOrganizer: NSObject {
-    
     var eventContactDelegate: EventOrganizerContactDelegate! = nil;
-    var timer: NSTimer! = nil;
-    var events: [Event];
-    var objs: [PWObject]; // All the objects that has an event associated with it.
+    var event: Event!;  // The event that we will be analyzing.
+    var scene: GameScene;
     
-    var timeEvents:         [PWObject: Event]! = nil
-    var collisionEvents:    [PWObject: Event]! = nil
-    var posEvents:          [PWObject: Event]! = nil
-    
-
-    func createTimeEvent(sprite: PWObject, time: CGFloat) {
-        let event = Event.createTime(sprite, time: time)
+    func triggerEvent(event: Event) {
+        // The event that happened is a collision event!
+        if (event.isCollisionEvent()) {
+            // Event is collision so it should have both sprites!
+            scene.eventTriggered(event)
+        };
         
-        if (event == nil) { return }
-        events.append(event!);
-        timeEvents[sprite] = event;
+        if (event.isTimerEvent()) {
+            scene.eventTriggered(event)
+        }
     }
     
-    // Check all the events that need to happen. And returns all the
-    // events that have happened.
-    func checkEvents() -> [Event]! {
+    
+    func createCollisionEvent(sprite1: PWObject, sprite2: PWObject) {
+        let event = Event.createCollision(self, sprite1: sprite1, sprite2: sprite2)
         
-        return nil;
-//        return timeEvents;
+        if (event == nil) { return };
+        print("Created collision event");
+        
+        self.event = event!
+        eventContactDelegate.setCollisionEvent(event!);
     }
     
-    func startEventOrganizer() {
-        return;
+    func createTimeEvent(sprite: PWObject, time: CGFloat)
+    {
+        print("Created timer event");
+        event = Event.createTime(self, sprite: sprite, time: time)
+        
     }
     
+    // Resets the current event.
+    func resetEvent() -> Event! {
+        if (event == nil) { return nil; }
+        
+        let prev = event;
+        event = nil;
+        
+        return prev;
+    }
+    
+    // Has the event occured yet?
+    func hasEventOccurred() -> Bool { return event.hasHappened() }
+    
+    func containsEvent() -> Bool { return (event != nil) }
     
     // Creates Event Organizer object and initializes
     // the contact delegate in preparation for the events.
     required init(gamescene: GameScene) {
-        events          = [Event]();
-        objs            = [PWObject]();
-        timeEvents      = [PWObject: Event]();
-        collisionEvents = [PWObject: Event]();
-        posEvents       = [PWObject: Event]();
-        eventContactDelegate = EventOrganizerContactDelegate.init();
-        
-        gamescene.physicsWorld.contactDelegate = eventContactDelegate;
+        scene = gamescene;
         super.init();
+        eventContactDelegate = EventOrganizerContactDelegate.init(eo: self);
+        gamescene.physicsWorld.contactDelegate = eventContactDelegate;
     }
     
     
