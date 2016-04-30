@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="f04-S9-SkO">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="14F1713" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="f04-S9-SkO">
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
         <capability name="Navigation items with more than one left or right bar item" minToolsVersion="7.0"/>
     </dependencies>
     <scenes>
@@ -53,6 +53,104 @@
             </objects>
             <point key="canvasLocation" x="-612" y="-688"/>
         </scene>
+        <!--Saving View Controller-->
+        <scene sceneID="IcA-mr-Wud">
+            <objects>
+                <viewController id="idT-4U-YjO" customClass="SavingViewController" customModule="PhysWiz" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="RCz-8L-Fe7"/>
+                        <viewControllerLayoutGuide type="bottom" id="btE-0x-hv7"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="Yka-7W-wLf">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6HU-Y7-BYf">
+                                <rect key="frame" x="278" y="20" width="44" height="30"/>
+                                <state key="normal" title="Save 1"/>
+                                <connections>
+                                    <action selector="saveOne:" destination="idT-4U-YjO" eventType="touchUpInside" id="IdJ-Xl-uDQ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vn1-oY-lxV">
+                                <rect key="frame" x="277" y="285" width="46" height="30"/>
+                                <state key="normal" title="Save 2"/>
+                                <connections>
+                                    <action selector="saveTwo:" destination="idT-4U-YjO" eventType="touchUpInside" id="SDM-Do-7L2"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Oqt-CA-ZbV">
+                                <rect key="frame" x="277" y="550" width="47" height="30"/>
+                                <state key="normal" title="Save 3"/>
+                                <connections>
+                                    <action selector="saveThree:" destination="idT-4U-YjO" eventType="touchUpInside" id="YzI-vS-p56"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="vn1-oY-lxV" firstAttribute="leading" secondItem="Oqt-CA-ZbV" secondAttribute="leading" id="NDX-lP-btB"/>
+                            <constraint firstItem="6HU-Y7-BYf" firstAttribute="centerX" secondItem="Yka-7W-wLf" secondAttribute="centerX" id="ZAc-dQ-eUD"/>
+                            <constraint firstItem="vn1-oY-lxV" firstAttribute="centerX" secondItem="6HU-Y7-BYf" secondAttribute="centerX" id="brS-ft-ER4"/>
+                            <constraint firstAttribute="bottom" secondItem="Oqt-CA-ZbV" secondAttribute="bottom" constant="20" symbolic="YES" id="kV4-PS-rWN"/>
+                            <constraint firstItem="6HU-Y7-BYf" firstAttribute="top" secondItem="RCz-8L-Fe7" secondAttribute="bottom" id="pbL-3n-ftG"/>
+                            <constraint firstItem="vn1-oY-lxV" firstAttribute="centerY" secondItem="Yka-7W-wLf" secondAttribute="centerY" id="zds-sf-QoL"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LJx-fF-xkp" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2438" y="-1399"/>
+        </scene>
+        <!--Loading View Controller-->
+        <scene sceneID="6JQ-x0-ivY">
+            <objects>
+                <viewController id="Cjl-6p-vkv" customClass="LoadingViewController" customModule="PhysWiz" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="WYf-eC-Coe"/>
+                        <viewControllerLayoutGuide type="bottom" id="ab7-1v-BNz"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="qCY-Xl-nxq">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gAr-8z-DAH">
+                                <rect key="frame" x="278" y="28" width="45" height="30"/>
+                                <state key="normal" title="Load 1"/>
+                                <connections>
+                                    <action selector="loadOne:" destination="Cjl-6p-vkv" eventType="touchUpInside" id="g1T-DJ-WMZ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kX3-xo-XPD">
+                                <rect key="frame" x="277" y="285" width="47" height="30"/>
+                                <state key="normal" title="Load 2"/>
+                                <connections>
+                                    <action selector="loadTwo:" destination="Cjl-6p-vkv" eventType="touchUpInside" id="ZpO-d1-IDZ"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iGU-1b-B8S">
+                                <rect key="frame" x="277" y="550" width="47" height="30"/>
+                                <state key="normal" title="Load 3"/>
+                                <connections>
+                                    <action selector="loadThree:" destination="Cjl-6p-vkv" eventType="touchUpInside" id="5ef-bO-TiG"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="kX3-xo-XPD" firstAttribute="centerX" secondItem="gAr-8z-DAH" secondAttribute="centerX" id="P6x-6g-4ae"/>
+                            <constraint firstAttribute="bottom" secondItem="iGU-1b-B8S" secondAttribute="bottom" constant="20" symbolic="YES" id="W3s-Pm-MUv"/>
+                            <constraint firstItem="kX3-xo-XPD" firstAttribute="centerY" secondItem="qCY-Xl-nxq" secondAttribute="centerY" id="iUy-sS-npm"/>
+                            <constraint firstItem="kX3-xo-XPD" firstAttribute="centerX" secondItem="qCY-Xl-nxq" secondAttribute="centerX" id="lTf-7y-Epj"/>
+                            <constraint firstItem="iGU-1b-B8S" firstAttribute="leading" secondItem="kX3-xo-XPD" secondAttribute="leading" id="xry-M2-srV"/>
+                            <constraint firstItem="gAr-8z-DAH" firstAttribute="top" secondItem="WYf-eC-Coe" secondAttribute="bottom" constant="8" symbolic="YES" id="yBG-JM-gTq"/>
+                        </constraints>
+                    </view>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="IU4-pa-ETC" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1535" y="-1388"/>
+        </scene>
         <!--Container View Controller-->
         <scene sceneID="Gei-HL-jDn">
             <objects>
@@ -67,7 +165,6 @@
                         <subviews>
                             <containerView opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="X35-sT-gTa">
                                 <rect key="frame" x="0.0" y="700" width="1024" height="200"/>
-                                <animations/>
                                 <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="calibratedWhite"/>
                                 <connections>
                                     <segue destination="fPQ-S9-gZ9" kind="embed" identifier="toPhysicsLog" id="PeU-Dd-TqK"/>
@@ -88,7 +185,11 @@
                             <constraint firstItem="X35-sT-gTa" firstAttribute="width" secondItem="HiH-iq-Y8S" secondAttribute="width" id="OPW-qf-ave"/>
                         </constraints>
                     </view>
+                    <toolbarItems>
+                        <barButtonItem width="42" style="plain" systemItem="fixedSpace" id="Q5y-Mh-Fad"/>
+                    </toolbarItems>
                     <navigationItem key="navigationItem" id="hNh-OJ-fjD">
+                        <nil key="title"/>
                         <leftBarButtonItems>
                             <barButtonItem title="Gadgets" id="Wcz-Pc-vvH"/>
                             <barButtonItem title="Log" id="UuB-WA-CK0">
@@ -96,9 +197,26 @@
                                     <action selector="showPhysicsLog:" destination="Ddb-st-tCg" id="l3S-BB-t97"/>
                                 </connections>
                             </barButtonItem>
+                            <barButtonItem title="Load" id="TCG-gb-EeG">
+                                <connections>
+                                    <segue destination="Cjl-6p-vkv" kind="popoverPresentation" identifier="popoverLoadView" popoverAnchorBarButtonItem="TCG-gb-EeG" id="S7x-sp-UEx">
+                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                    </segue>
+                                </connections>
+                            </barButtonItem>
                         </leftBarButtonItems>
-                        <barButtonItem key="rightBarButtonItem" title="Objects" id="RQ4-oC-FJg"/>
+                        <rightBarButtonItems>
+                            <barButtonItem title="Objects" id="RQ4-oC-FJg"/>
+                            <barButtonItem title="Save" id="pwt-vW-lnP">
+                                <connections>
+                                    <segue destination="idT-4U-YjO" kind="popoverPresentation" identifier="popoverSaveView" popoverAnchorBarButtonItem="pwt-vW-lnP" id="HPT-uF-qsO">
+                                        <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                    </segue>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
                     <connections>
                         <outlet property="NavigationBar" destination="hNh-OJ-fjD" id="HGI-FE-rfz"/>
                         <outlet property="gadgetMenu" destination="Wcz-Pc-vvH" id="bxG-OC-E7w"/>
@@ -469,7 +587,6 @@
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qXk-Q6-z5B">
                                         <rect key="frame" x="15" y="74" width="73" height="46"/>
-                                        <animations/>
                                         <fontDescription key="fontDescription" type="system" pointSize="28"/>
                                         <state key="normal" title="Time"/>
                                         <connections>
@@ -478,7 +595,6 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="UNV-od-mmY">
                                         <rect key="frame" x="355" y="74" width="70" height="46"/>
-                                        <animations/>
                                         <fontDescription key="fontDescription" type="system" pointSize="28"/>
                                         <state key="normal" title="Event"/>
                                         <connections>
@@ -487,7 +603,6 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wh1-GN-4MX">
                                         <rect key="frame" x="128" y="74" width="187" height="46"/>
-                                        <animations/>
                                         <fontDescription key="fontDescription" type="system" pointSize="28"/>
                                         <state key="normal" title="End-Parameter"/>
                                         <connections>
@@ -495,7 +610,6 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <animations/>
                                 <color key="backgroundColor" red="0.83733822599999996" green="0.83733822599999996" blue="0.83733822599999996" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Uf8-o9-JrE" userLabel="Output">
@@ -503,8 +617,7 @@
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rdU-iT-2ll">
                                         <rect key="frame" x="24" y="58" width="30" height="30"/>
-                                        <animations/>
-                                        <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                        <color key="backgroundColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <state key="normal" title="4">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -514,8 +627,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9cC-xK-Zaq">
                                         <rect key="frame" x="70" y="58" width="30" height="30"/>
-                                        <animations/>
-                                        <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                        <color key="backgroundColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <state key="normal" title="5">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -525,8 +637,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="o06-Oa-4jA">
                                         <rect key="frame" x="114" y="58" width="30" height="30"/>
-                                        <animations/>
-                                        <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                        <color key="backgroundColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <state key="normal" title="6">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -536,8 +647,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qZe-2u-Dcy">
                                         <rect key="frame" x="24" y="96" width="30" height="30"/>
-                                        <animations/>
-                                        <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                        <color key="backgroundColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <state key="normal" title="7">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -547,8 +657,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="YUr-0F-BBV">
                                         <rect key="frame" x="70" y="96" width="30" height="30"/>
-                                        <animations/>
-                                        <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                        <color key="backgroundColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <state key="normal" title="8">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -558,8 +667,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="27i-Uf-gC8">
                                         <rect key="frame" x="114" y="96" width="30" height="30"/>
-                                        <animations/>
-                                        <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                        <color key="backgroundColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <state key="normal" title="9">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -569,8 +677,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="E37-oT-OG6">
                                         <rect key="frame" x="24" y="134" width="30" height="30"/>
-                                        <animations/>
-                                        <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                        <color key="backgroundColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <state key="normal" title=".">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -580,8 +687,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="NiL-NV-dx5">
                                         <rect key="frame" x="70" y="134" width="30" height="30"/>
-                                        <animations/>
-                                        <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                        <color key="backgroundColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <state key="normal" title="0">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -591,8 +697,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="w2a-ox-YDK">
                                         <rect key="frame" x="70" y="20" width="30" height="30"/>
-                                        <animations/>
-                                        <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                        <color key="backgroundColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <state key="normal" title="2">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -602,8 +707,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FWC-ET-Xnf">
                                         <rect key="frame" x="114" y="20" width="30" height="30"/>
-                                        <animations/>
-                                        <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                        <color key="backgroundColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <state key="normal" title="3">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -613,8 +717,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lcA-yV-DQu">
                                         <rect key="frame" x="24" y="20" width="30" height="30"/>
-                                        <animations/>
-                                        <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                        <color key="backgroundColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <state key="normal" title="1">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -624,8 +727,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WrR-Q8-Icp">
                                         <rect key="frame" x="152" y="20" width="30" height="30"/>
-                                        <animations/>
-                                        <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                        <color key="backgroundColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <state key="normal" title="AC"/>
                                         <connections>
                                             <action selector="clear:" destination="fPQ-S9-gZ9" eventType="touchDown" id="l2a-Jn-NGD"/>
@@ -633,8 +735,7 @@
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hs2-HM-ICL">
                                         <rect key="frame" x="114" y="134" width="30" height="30"/>
-                                        <animations/>
-                                        <color key="backgroundColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
+                                        <color key="backgroundColor" red="0.43529411759999997" green="0.4431372549" blue="0.47450980390000003" alpha="1" colorSpace="calibratedRGB"/>
                                         <state key="normal" title="-">
                                             <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                         </state>
@@ -643,7 +744,6 @@
                                         </connections>
                                     </button>
                                 </subviews>
-                                <animations/>
                                 <color key="backgroundColor" red="0.83733822599999996" green="0.83733822599999996" blue="0.83733822599999996" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                         </subviews>

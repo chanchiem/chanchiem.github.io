@@ -64,8 +64,14 @@ class PWObject: SKSpriteNode
     var movable: Bool       = true
     var selectable: Bool    = true
     
-    static let DocumentsDirectory = NSFileManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
-    static let ArchiveURL = DocumentsDirectory.URLByAppendingPathComponent("PWSprites")
+    static let DocumentsDirectory1 = NSFileManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
+    static let ArchiveURL1 = DocumentsDirectory1.URLByAppendingPathComponent("save1")
+    
+    static let DocumentsDirectory2 = NSFileManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
+    static let ArchiveURL2 = DocumentsDirectory2.URLByAppendingPathComponent("save2")
+    
+    static let DocumentsDirectory3 = NSFileManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
+    static let ArchiveURL3 = DocumentsDirectory3.URLByAppendingPathComponent("save3")
     
     
     // This initializes the static variables if it hasn't been initialized yet.

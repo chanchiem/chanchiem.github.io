@@ -100,26 +100,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         objectProperties = [PWObject: [Float]]()
         physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: 0, y: 0, width: background.size.width, height: background.size.height))
         
-        if let savedSprites = loadSprites() {
-            for obj in savedSprites {
-                var values = [Float]()
-                values.append(Float(obj.getMass()))
-                values.append(Float(obj.getPos().x)/pixelToMetric)
-                values.append(Float(obj.getPos().y)/pixelToMetric)
-                values.append(Float(obj.getVelocity().dx)/pixelToMetric)
-                values.append(Float(obj.getVelocity().dy)/pixelToMetric)
-                values.append(Float(obj.getAngularVelocity()))
-                values.append(Float(0.0))
-                values.append(Float(0.0))
-                values.append(Float(0.0))
-                values.append(Float(0.0))
-                objectProperties[obj] = values
-                PWObjects += [obj]
-                print(obj)
-                print(values)
-                self.addChild(obj)
-            }
-        }
+        //
+        //createSaveWindow()
         
         // INIT Shape arrays to call later in flag function
         shapeArray.append(shapeType.CIRCLE)
@@ -141,7 +123,33 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         eventorganizer = EventOrganizer.init(gamescene: self); // Sets contact delegate inside.
     }
     
-    
+    // Creates a window and slots inside for users to save and load data
+    /*func createSaveWindow() {
+        let mainWindow = SKShapeNode(rect: CGRect(x: 0, y: 0, width: self.size.width/2, height: self.size.height/2))
+        let saveSlot1 = SKShapeNode(rect: CGRect(x: 0, y: 0, width: self.size.width/2 - 20, height: self.size.height/6 - 15))
+        let saveSlot2 = SKShapeNode(rect: CGRect(x: 0, y: 0, width: self.size.width/2 - 20, height: self.size.height/6 - 15))
+        let saveSlot3 = SKShapeNode(rect: CGRect(x: 0, y: 0, width: self.size.width/2 - 20, height: self.size.height/6 - 15))
+        
+        mainWindow.fillColor = SKColor(red: 0, green: 0, blue: 0, alpha: 1.0)
+        mainWindow.position = CGPoint(x: self.position.x/2 - self.size.width/4, y: self.position.y/2 - self.size.height/4)
+        
+        saveSlot1.fillColor = SKColor(red: 255, green: 255, blue: 255, alpha: 1.0)
+        saveSlot1.position.x = 10
+        saveSlot1.position.y = 11
+        mainWindow.addChild(saveSlot1)
+        
+        saveSlot2.fillColor = SKColor(red: 255, green: 255, blue: 255, alpha: 1.0)
+        saveSlot2.position.x = 10
+        saveSlot2.position.y = saveSlot1.position.y + self.size.height/6 - 4
+        mainWindow.addChild(saveSlot2)
+        
+        saveSlot3.fillColor = SKColor(red: 255, green: 255, blue: 255, alpha: 1.0)
+        saveSlot3.position.x = 10
+        saveSlot3.position.y = saveSlot2.position.y + self.size.height/6 - 4
+        mainWindow.addChild(saveSlot3)
+
+        cam.addChild(mainWindow)
+    }*/
     
     // Creates a background for the gamescene
     func createBG() -> SKSpriteNode {
@@ -470,7 +478,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                     self.addChild(newObj)
                     self.selectSprite(newObj)
                     PWObjects += [newObj]
-                    saveSprites()
+                    //print(PWObjects)
+                    //saveSprites()
                 }
                 continue;
             }
@@ -530,7 +539,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                     pwPaused = true
                     button.texture = SKTexture(imageNamed: "play.png")
                     PWObjects.removeAll()
-                    saveSprites()
+                    //saveSprites()
                 }
                 containerVC.removeAllFromList()
                 let floor = PWObject.createFloor(CGSize.init(width: background.size.width, height: 20))
@@ -642,7 +651,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 //changes values in the input box to the position it is dragged to
                 containerVC.setsInputBox(getParameters(selectedSprite))
                 PWObjects[PWObjects.indexOf(selectedSprite)!].setPos(selectedSprite.position)
-                saveSprites()
+                //saveSprites()
                 
                 // Connects selectedShape to its nearestNodes
                 //connectNodes(selectedShape)
@@ -794,16 +803,70 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     }
     
     // Saves the sprites that are currently in the scene
-    func saveSprites() {
-        print("saving")
-        let isSuccessfulSave = NSKeyedArchiver.archiveRootObject(PWObjects, toFile: PWObject.ArchiveURL.path!)
+    func saveSprites(saveNumber: Int) {
+        var isSuccessfulSave = false
+        
+        if saveNumber == 1 {
+            isSuccessfulSave = NSKeyedArchiver.archiveRootObject(PWObjects, toFile: PWObject.ArchiveURL1.path!)
+        }
+        if saveNumber == 2 {
+            isSuccessfulSave = NSKeyedArchiver.archiveRootObject(PWObjects, toFile: PWObject.ArchiveURL2.path!)
+        }
+        if saveNumber == 3 {
+            isSuccessfulSave = NSKeyedArchiver.archiveRootObject(PWObjects, toFile: PWObject.ArchiveURL3.path!)
+        }
+        
         if !isSuccessfulSave {
             print("Failed to save sprites.")
         }
     }
     
     // Loads the sprites from hardware memory
-    func loadSprites() -> [PWObject]? {
-        return NSKeyedUnarchiver.unarchiveObjectWithFile(PWObject.ArchiveURL.path!) as? [PWObject]
+    func loadSprites(loadFileNumber: Int) -> [PWObject]? {
+        var loadArray: [PWObject]?
+        
+        if loadFileNumber == 1 {
+            loadArray = NSKeyedUnarchiver.unarchiveObjectWithFile(PWObject.ArchiveURL1.path!) as? [PWObject]
+        }
+        if loadFileNumber == 2 {
+            loadArray = NSKeyedUnarchiver.unarchiveObjectWithFile(PWObject.ArchiveURL2.path!) as? [PWObject]
+        }
+        if loadFileNumber == 3 {
+            loadArray = NSKeyedUnarchiver.unarchiveObjectWithFile(PWObject.ArchiveURL3.path!) as? [PWObject]
+        }
+        
+        return loadArray
+    }
+    
+    func loadSave(loadFileNumber: Int) {
+        for node in self.children {
+            if (node != cam) {
+                node.removeFromParent()
+            }
+        }
+        PWObjects.removeAll()
+        containerVC.removeAllFromList()
+        let floor = PWObject.createFloor(CGSize.init(width: background.size.width, height: 20))
+        self.addChild(floor)
+        self.addChild(self.createBG())
+        
+        if let savedSprites = loadSprites(loadFileNumber) {
+            for obj in savedSprites {
+                var values = [Float]()
+                values.append(Float(obj.getMass()))
+                values.append(Float(obj.getPos().x)/pixelToMetric)
+                values.append(Float(obj.getPos().y)/pixelToMetric)
+                values.append(Float(obj.getVelocity().dx)/pixelToMetric)
+                values.append(Float(obj.getVelocity().dy)/pixelToMetric)
+                values.append(Float(obj.getAngularVelocity()))
+                values.append(Float(0.0))
+                values.append(Float(0.0))
+                values.append(Float(0.0))
+                values.append(Float(0.0))
+                objectProperties[obj] = values
+                PWObjects += [obj]
+                self.addChild(obj)
+            }
+        }
     }
 }
