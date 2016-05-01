@@ -287,63 +287,57 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Mass" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p8L-6L-N6D">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Mass" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="p8L-6L-N6D" userLabel="Top Label">
                                         <rect key="frame" x="68" y="7" width="42" height="22"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Px" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HnM-T6-8Aq">
-                                        <rect key="frame" x="5" y="35" width="19" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <rect key="frame" x="5" y="35" width="43" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Py" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6wf-MO-EHd">
-                                        <rect key="frame" x="115" y="35" width="20" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <rect key="frame" x="115" y="35" width="42" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Vx" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6Cf-1Y-Rgx">
-                                        <rect key="frame" x="5" y="60" width="20" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <rect key="frame" x="5" y="60" width="43" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Vy" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="USS-ny-MT7">
-                                        <rect key="frame" x="115" y="60" width="20" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <rect key="frame" x="115" y="60" width="42" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Ax" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="GrL-bh-ztA">
-                                        <rect key="frame" x="5" y="85" width="20" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <rect key="frame" x="5" y="85" width="43" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Ay" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="H1N-ed-y6W">
-                                        <rect key="frame" x="115" y="85" width="19" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Fx" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yyM-cY-9JS">
-                                        <rect key="frame" x="5" y="110" width="18" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <rect key="frame" x="115" y="85" width="42" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Fy" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="B0F-7L-kSn">
-                                        <rect key="frame" x="115" y="110" width="19" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <rect key="frame" x="115" y="110" width="42" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Av" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="onc-U7-v6m">
-                                        <rect key="frame" x="5" y="135" width="19" height="21"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <rect key="frame" x="5" y="135" width="43" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
@@ -366,6 +360,12 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Fx" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yyM-cY-9JS">
+                                        <rect key="frame" x="5" y="110" width="43" height="21"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
+                                        <nil key="highlightedColor"/>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" red="0.83733822601010099" green="0.83733822601010099" blue="0.83733822601010099" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
@@ -475,6 +475,7 @@
                                                                 </label>
                                                             </subviews>
                                                         </tableViewCellContentView>
+                                                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                                                     </tableViewCell>
                                                 </prototypes>
                                                 <sections/>
@@ -758,9 +759,10 @@
                     <size key="freeformSize" width="1024" height="900"/>
                     <connections>
                         <outlet property="Av" destination="j94-0H-MU0" id="wUk-ZY-wcF"/>
-                        <outlet property="Ax" destination="0CG-g6-Olw" id="KFd-c5-cbf"/>
+                        <outlet property="Ax" destination="0CG-g6-Olw" id="O6r-Aq-E2F"/>
                         <outlet property="Ay" destination="sHk-1J-B8F" id="40Z-7J-N8U"/>
                         <outlet property="ChosenEndView" destination="3HD-5X-8QY" id="xyS-Zf-jve"/>
+                        <outlet property="EighthLabel" destination="B0F-7L-kSn" id="kl1-QR-137"/>
                         <outlet property="EndObjectList" destination="hrD-QD-eMN" id="yd6-BH-oJR"/>
                         <outlet property="EndObjectListBox" destination="YaT-VS-tvf" id="X5e-OL-Dih"/>
                         <outlet property="EndParameterButton" destination="wh1-GN-4MX" id="ove-Lv-9a9"/>
@@ -771,33 +773,36 @@
                         <outlet property="EndViewBackButton" destination="mNs-yP-X9S" id="duP-bp-QjY"/>
                         <outlet property="EndViewTitle" destination="o47-Fb-OMO" id="ISp-2Z-ZYk"/>
                         <outlet property="EventButton" destination="UNV-od-mmY" id="kmJ-ax-6a5"/>
+                        <outlet property="FifthLabel" destination="GrL-bh-ztA" id="ZKT-M7-T5G"/>
+                        <outlet property="FirstLabel" destination="HnM-T6-8Aq" id="Ii4-BF-XRr"/>
                         <outlet property="ForObjectLabel" destination="haK-yq-y9M" id="cam-6r-PbC"/>
+                        <outlet property="FourthLabel" destination="USS-ny-MT7" id="sRj-Ko-RF1"/>
                         <outlet property="Fx" destination="Y4m-Qy-yqV" id="do1-jT-dg9"/>
                         <outlet property="Fy" destination="7zK-7d-vaZ" id="TAM-i5-YDH"/>
                         <outlet property="InputBox" destination="3gf-js-iHe" id="p5A-Zf-6Bs"/>
                         <outlet property="KeyPad" destination="Uf8-o9-JrE" id="89k-4A-7g4"/>
                         <outlet property="Mass" destination="bDm-AI-z5b" id="HUZ-l9-eMn"/>
+                        <outlet property="NinthLabel" destination="onc-U7-v6m" id="fF0-8G-eph"/>
                         <outlet property="OutputValues" destination="xlG-n4-IjE" id="V7R-Xr-TII"/>
                         <outlet property="ParameterEqualsTo" destination="sNv-r6-e9P" id="kGU-KH-Mow"/>
                         <outlet property="Px" destination="SAj-CO-JnA" id="qBl-Qx-T5j"/>
                         <outlet property="Py" destination="3Wv-pP-Dpf" id="Dt2-ia-sL2"/>
+                        <outlet property="SecondLabel" destination="6wf-MO-EHd" id="CRf-iD-xJ4"/>
                         <outlet property="SettingsBox" destination="yyp-7e-3tV" id="K8h-1j-BLE"/>
+                        <outlet property="SeventhLabel" destination="yyM-cY-9JS" id="hpB-Gg-thQ"/>
+                        <outlet property="SixthLabel" destination="H1N-ed-y6W" id="eW3-6d-GQC"/>
                         <outlet property="StopWhenLabel" destination="E80-0a-GnZ" id="ram-Yb-dVb"/>
+                        <outlet property="ThirdLabel" destination="6Cf-1Y-Rgx" id="3Pc-nZ-uc3"/>
                         <outlet property="TimeButton" destination="qXk-Q6-z5B" id="HLc-hg-4wb"/>
+                        <outlet property="TopLabel" destination="p8L-6L-N6D" id="qJU-W2-KQ3"/>
                         <outlet property="Vx" destination="dxd-0f-9B3" id="ckF-YE-aZj"/>
                         <outlet property="Vy" destination="tl4-fr-azw" id="vPo-Ay-KJ0"/>
                         <outlet property="accelerationType" destination="Co5-0K-9xW" id="9aN-hv-reA"/>
-                        <outlet property="accelerationXLabel" destination="GrL-bh-ztA" id="u3B-Ge-ijM"/>
-                        <outlet property="accelerationYLabel" destination="H1N-ed-y6W" id="w5p-kf-rsh"/>
                         <outlet property="forceType" destination="AjY-gf-SuK" id="nPM-Fh-Ssn"/>
-                        <outlet property="forceXLabel" destination="yyM-cY-9JS" id="B27-y7-2Xv"/>
-                        <outlet property="forceYLabel" destination="B0F-7L-kSn" id="w9H-Qk-S7m"/>
                         <outlet property="mainLogView" destination="RJz-o1-puM" id="RHP-ci-KxL"/>
                         <outlet property="objectSelector" destination="0zh-nK-MYZ" id="bEA-4t-X3E"/>
                         <outlet property="physicsLog" destination="GWf-sF-3lX" id="TGd-Tv-WZD"/>
                         <outlet property="velocityType" destination="CqY-vA-Xjd" id="UBq-HH-baW"/>
-                        <outlet property="velocityXLabel" destination="6Cf-1Y-Rgx" id="rb2-YI-JOj"/>
-                        <outlet property="velocityYLabel" destination="USS-ny-MT7" id="XCS-6B-WFM"/>
                         <segue destination="mSw-wh-qeC" kind="unwind" identifier="toHomeView" unwindAction="unwindSegue:" id="Z8A-hk-8lm"/>
                     </connections>
                 </viewController>
