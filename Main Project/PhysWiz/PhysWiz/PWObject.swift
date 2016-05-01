@@ -233,15 +233,15 @@ class PWObject: SKSpriteNode
     
     
     // Returns the current acceleration of the object.
-    func getAcceleration() -> CGFloat {
+    func getAcceleration() -> CGVector {
         // Implement later using change of velocity
-        return 1.0
+        return CGVector.init(dx: 1.0, dy: 1.0)
     }
     
     // Returns the current angular acceleration of the object.
-    func getAngularAcceleration() -> CGFloat
+    func getAngularAcceleration() -> CGVector
     {
-        return 1.0
+        return CGVector.init(dx: 6.9, dy: 1.0)
     }
     
     // Returns the kinetic energy of the object.

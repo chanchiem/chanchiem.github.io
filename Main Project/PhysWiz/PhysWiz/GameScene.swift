@@ -650,14 +650,9 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             let cameraNodeLocation = cam.convertPoint(location, fromNode: self)
             hideLabels();
             // Removes the selectedShape if it's over the trash bin
-<<<<<<< HEAD
-            if trash.containsPoint(cameraNodeLocation) {
-                objectProperties.removeValueForKey(selectedSprite) /**********************************************/
-=======
             if trash.containsPoint(cameraNodeLocation){
                 if selectedSprite != nil {
                 objectProperties.removeValueForKey(selectedSprite)
->>>>>>> origin/master
                 selectedSprite.removeFromParent()
                 containerVC.removeObjectFromList(selectedSprite.getID())
                 self.selectSprite(nil);
@@ -709,11 +704,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                     pwPaused = true
                     button.texture = SKTexture(imageNamed: "play.png")
                     if selectedSprite != nil {
-<<<<<<< HEAD
-                        containerVC.setsInputBox(objectProperties[selectedSprite]!)
-=======
                     containerVC.setsInputBox(objectProperties[selectedSprite]!, state: "editable")
->>>>>>> origin/master
                     }
                 }
             }
@@ -775,6 +766,9 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         if selectedSprite != nil && !pwPaused {
             self.camera!.position = boundedCamMovement(selectedSprite.position)
         }
+        // Checks if there are any parameter events that need checking
+        // and checks them.
+        eventorganizer.checkParameterEventTriggered();
     }
     
     
@@ -804,13 +798,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             if selectedSprite.isMovable() {
                 selectedSprite.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
                 //changes values in the input box to the position it is dragged to
-<<<<<<< HEAD
-                containerVC.setsInputBox(getParameters(selectedSprite))
-                PWObjects[PWObjects.indexOf(selectedSprite)!].setPos(selectedSprite.position)
-                //saveSprites()
-=======
                 containerVC.setsInputBox(getParameters(selectedSprite), state: "editable")
->>>>>>> origin/master
                 
                 // Connects selectedShape to its nearestNodes
                 //connectNodes(selectedShape)
@@ -859,7 +847,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     }
     
     
-    // This function is called if there exists an event
+    // This function is called if an event has been triggered
     func eventTriggered(event: Event) {
         
         if (event.isCollisionEvent()) {
@@ -868,6 +856,11 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         }
         if (event.isTimerEvent()) {
             print("Timer occured!");
+        }
+        
+        if (event.isPropertyEvent()) {
+            let s = event.getCurrentPropertyValue();
+            print("Property exceeded: " + String(s));
         }
     }
     
