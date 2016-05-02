@@ -44,6 +44,7 @@ class EventOrganizer: NSObject {
     // the gamescene eventTriggered function will be called.
     // The game scene handles the rest.
     func createCollisionEvent(sprite1: PWObject, sprite2: PWObject) {
+        if (self.event != nil) { deleteEvent() }
         let event = Event.createCollision(self, sprite1: sprite1, sprite2: sprite2)
         
         if (event == nil) { return };
@@ -55,11 +56,26 @@ class EventOrganizer: NSObject {
     
     // Creates a time event. In the specified time frame AFTER starting the simulation,
     // the eventTriggered function gets called in game scene.
-    func createTimeEvent(sprite: PWObject, time: CGFloat)
-    {
+    func createTimeEvent(time: CGFloat) {
+        if (self.event != nil) { deleteEvent() }
         print("Created timer event");
-        event = Event.createTime(self, sprite: sprite, time: time)
+        event = Event.createTime(self, time: time)
+    }
+    
+    func pauseEventTimer() {
+        if (self.event == nil) { return }
+        if (!self.event.isTimerEvent()) { return }
+        if (self.event.hasHappened()) { return }
         
+        self.event.stopTimer()
+    }
+    
+    func resumeEventTimer() {
+        if (self.event == nil) { return }
+        if (!self.event.isTimerEvent()) { return }
+        if (self.event.hasHappened()) { return }
+        
+        self.event.resumeTimer()
     }
     
     
@@ -68,16 +84,18 @@ class EventOrganizer: NSObject {
     // The available event types are defined in the struct in Event.swift.
     func createParameterEvent(sprite: PWObject, flag: Int, value: CGFloat)
     {
+        if (self.event != nil) { deleteEvent() }
         print("Created parameter event");
         event = Event.createParameter(self, sprite: sprite, parameterFlag: flag, limitValue: value)
+        event.setOriginPoint(sprite.position);
     }
     
     
     // Deletes the current event.
     func deleteEvent() -> Event! {
         if (event == nil) { return nil; }
-        
         let prev = event;
+        
         event = nil;
         
         return prev;

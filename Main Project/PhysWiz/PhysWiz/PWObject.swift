@@ -365,6 +365,7 @@ class PWObject: SKSpriteNode
     
     // Highlights the node. Currently used when being selected.
     func highlight(color: UIColor) {
+        self.unhighlight();
         let glow = SKShapeNode.init(rectOfSize: self.size)
         glow.position = CGPoint(x: 0, y: 0)
         glow.fillColor = color;

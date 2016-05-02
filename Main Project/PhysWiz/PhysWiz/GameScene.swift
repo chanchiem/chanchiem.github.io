@@ -386,7 +386,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         let angle = CGFloat(atan2f(Float(deltay), Float(deltax)))
         springobj.zRotation = angle + 1.57 // 1.57 because image is naturally vertical
         initialHeight[springobj] = springobj.size.height;
-        springobj.yScale = distance/springobj.size.height;
+        springobj.yScale = distance/springobj.size.height / 4;
         let xOffset = deltax / 2
         let yOffset = deltay / 2
         springobj.position = CGPoint.init(x: n1.x - xOffset, y: n1.y - yOffset)
@@ -468,13 +468,14 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     }
     
     
-    func createRodBetweenNodes(node1: PWObject, node2: PWObject) {
-        let n1 = node1.getPos()
-        let n2 = node2.getPos()
+    func createRodBetweenNodes(node1: SKNode, node2: SKNode) {
+        let n1 = node1.position
+        let n2 = node2.position
         let deltax = n1.x - n2.x
         let deltay = n1.y - n2.y
-        let distance = node1.distanceTo(node2);
-        let angle = node1.angleTo(node2)
+        let distance = sqrt(deltax * deltax + deltay*deltay)
+        
+        let angle = CGFloat(atan2f(Float(deltay), Float(deltax)))
         
         let dimension = CGSizeMake(distance, 4)
         let rod = SKShapeNode(rectOfSize: dimension)
@@ -558,10 +559,11 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         if (prevGadget != nil) { prevGadget!.setUnselected() }
         // Passed in sprite is nil so nothing is selected now.
         if (sprite == nil) {
+            selectedSprite.setUnselected()
             selectedGadget = nil
             return
         }
-        deselectSprite()
+        selectSprite(nil)
         selectedGadget = sprite;
         var values = getGadgetParameters(selectedGadget)
     containerVC.setsGadgetInputBox(selectedGadget.name!, input: values, state: "editable")
@@ -573,12 +575,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         if selectedGadget != nil {
         selectedGadget.setUnselected()
         selectedGadget = nil
-        }
-    }
-    func deselectSprite() {
-        if selectedSprite != nil {
-        selectedSprite.setUnselected()
-        selectedSprite = nil
         }
     }
     // ##############################################################
@@ -619,7 +615,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 }
                 let objectType = shapeArray[containerVC.getObjectFlag()]
                 if (objectType == shapeType.BLACK) {
-                    self.deselectSprite();
+                    self.selectSprite(nil);
                 } else {
                     let spriteName = String(objectType).lowercaseString
                     let newObj = PWObject.init(objectStringName: spriteName, position: location, isMovable: true, isSelectable: true)
@@ -637,47 +633,53 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 continue;
             }
             
-            
             //////////////////////////////////
             //////// APPLY GADGETS ///////////
             //////////////////////////////////
-            let sprite: SKNode
-            if (PWObject.isPWObject(touchedNode)) {
-                sprite = touchedNode as! PWObject
-            }
-             else if (PWStaticObject.isPWStaticObject(touchedNode)) {
-                sprite = touchedNode as! PWStaticObject
-            }
-            else {continue}
-            
-            if (containerVC.getGadgetFlag() != 0) { // Rope
-                if (gadgetNode1 == nil) {
-                    gadgetNode1 = sprite
-                } else if(gadgetNode2 == nil) {
-                    gadgetNode2 = sprite 
-                    if (gadgetNode1 != gadgetNode2) {
-                        if (containerVC.getGadgetFlag() == 1) { createRopeBetweenNodes(gadgetNode1, node2: gadgetNode2) }
-                        if (containerVC.getGadgetFlag() == 2) { createSpringBetweenNodes(gadgetNode1, node2: gadgetNode2) }
-                        //if (containerVC.getGadgetFlag() == 3) { createRodBetweenNodes(gadgetNode1, node2: gadgetNode2) }
-                    }
-                    gadgetNode2 = nil;
-                    gadgetNode1 = nil;
+            var sprite: SKNode
+            let allNodesInPoint = nodesAtPoint(location)
+            for touchedNode:SKNode in allNodesInPoint { // Traverse through all the nodes in the location
+                if (PWObject.isPWObject(touchedNode)) {
+                    sprite = touchedNode as! PWObject
                 }
-            } else {
-                if (PWObject.isPWObject(touchedNode))  {
-                self.selectSprite((sprite as! PWObject));
-                containerVC.changeToObjectInputBox()
-                    containerVC.setsInputBox(objectProperties[selectedSprite]!, state: "editable")
+                 else if (PWStaticObject.isPWStaticObject(touchedNode)) {
+                    sprite = touchedNode as! PWStaticObject
                 }
-                else if pwPaused {
-                self.selectGadget((sprite as! PWStaticObject));
-                containerVC.changeToGadgetInputBox(sprite.name!)
-                containerVC.setsGadgetInputBox(selectedGadget.name!, input: gadgetProperties[selectedGadget]!, state: "editable")
-                }
+                else { continue }
 
+                if (containerVC.getGadgetFlag() != 0) { // Rope
+                    if (gadgetNode1 == nil) {
+                        gadgetNode1 = sprite
+                        if (PWObject.isPWObject(gadgetNode1)) { let n1 = gadgetNode1 as! PWObject;
+                            n1.highlight(UIColor.redColor()) }
+                    } else if(gadgetNode2 == nil) {
+                        gadgetNode2 = sprite
+                        if (PWObject.isPWObject(gadgetNode2)) { let n1 = gadgetNode2 as! PWObject;
+                            n1.highlight(UIColor.redColor()) }
+                        if (gadgetNode1 != gadgetNode2) {
+                            if (containerVC.getGadgetFlag() == 1) { createRopeBetweenNodes(gadgetNode1, node2: gadgetNode2) }
+                            if (containerVC.getGadgetFlag() == 2) { createSpringBetweenNodes(gadgetNode1, node2: gadgetNode2) }
+                            if (containerVC.getGadgetFlag() == 3) { createRodBetweenNodes(gadgetNode1, node2: gadgetNode2) }
+                        }
+                        if (PWObject.isPWObject(gadgetNode2)) { let n1 = gadgetNode2 as! PWObject; n1.unhighlight() }
+                        if (PWObject.isPWObject(gadgetNode1)) { let n1 = gadgetNode1 as! PWObject; n1.unhighlight() }
+                        gadgetNode2 = nil;
+                        gadgetNode1 = nil;
+                    }
+                } else {
+                    if (PWObject.isPWObject(touchedNode))  {
+                    self.selectSprite((sprite as! PWObject));
+                    containerVC.changeToObjectInputBox()
+                        containerVC.setsInputBox(objectProperties[selectedSprite]!, state: "editable")
+                    }
+                    else if pwPaused {
+                    self.selectGadget((sprite as! PWStaticObject));
+                    containerVC.changeToGadgetInputBox(sprite.name!)
+                    containerVC.setsGadgetInputBox(selectedGadget.name!, input: gadgetProperties[selectedGadget]!, state: "editable")
+                    }
+
+                }
             }
-            
-            
         }
     }
     
@@ -731,31 +733,82 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 restoreAllobjectProperties(objectProperties) /**********************************************/
                 
                 // Pause / Resume the world
-                if (pwPaused) {
-                    let end = containerVC.getEndSetter()
-                    self.physicsWorld.speed = 1
-                    pwPaused = false
-                    button.texture = SKTexture(imageNamed: "pause.png")
-                    if (selectedGadget != nil) {
-                    deselectGadget()
-                    containerVC.changeToObjectInputBox()
-                    containerVC.setsInputBox(defaultObjectProperties, state: "static")
-                    }
-                } else {
-                    self.physicsWorld.speed = 0
-                    pwPaused = true
-                    button.texture = SKTexture(imageNamed: "play.png")
-                    if selectedSprite != nil {
-                    containerVC.setsInputBox(objectProperties[selectedSprite]!, state: "editable")
-                    }
-                }
+                if (pwPaused)   { resumeWorld() }
+                else            { pauseWorld()  }
+
             }
             
+        }
+    }
+    
+    func resumeWorld() {
+        eventorganizer.resumeEventTimer()
+        pwPaused = false;
+        let end = containerVC.getEndSetter()
+        executeEndSetterArray(end); // Executes the events and starts them.
+        self.physicsWorld.speed = 1
+        pwPaused = false
+        button.texture = SKTexture(imageNamed: "pause.png")
+        if (selectedGadget != nil) {
+            deselectGadget()
+            containerVC.changeToObjectInputBox()
+            containerVC.setsInputBox(defaultObjectProperties, state: "static")
+        }
+    }
+    
+    func pauseWorld() {
+        eventorganizer.pauseEventTimer()
+        pwPaused = true;
+        self.physicsWorld.speed = 0
+        pwPaused = true
+        button.texture = SKTexture(imageNamed: "play.png")
+        if selectedSprite != nil {
+            containerVC.setsInputBox(objectProperties[selectedSprite]!, state: "editable")
+        }
+    }
+    
+    // Creates conditional events based on the input array.
+    func executeEndSetterArray(setterString: [String])
+    {
+        //if Time ["Time", "value"]
+        //if End Parameter ["End-Parameter", "parameter", "value", "object"]
+        //if Event ["Event", "event type", "value", "object1", "object2"]
+        let ID_TIME         = 0; // Time parameters
+        let ID_END_PARAM    = 1; // Refers to any single-type number.
+        let ID_EVENT        = 2; // Event refers to any
+        var flag = -1;
+        
+        let type = setterString[0];
+        
+        if (type == "Time") { flag = ID_TIME }
+        if (type == "End-Parameter") { flag = ID_END_PARAM }
+        if (type == "Event") { flag = ID_EVENT }
+        
+        switch flag {
+        case ID_TIME:
+            let timeVal = CGFloat(Double(setterString[1])!)
+            eventorganizer.createTimeEvent(timeVal)
+        case ID_END_PARAM:
+            let param = Int(setterString[1]);
+            let val = Float(setterString[2])! * pixelToMetric
+            let objID = setterString[3]
+            print(objID);
+            let sprite = objIdToSprite[Int(setterString[3])!]
+            eventorganizer.createParameterEvent(sprite!, flag: param!, value: CGFloat(val))
+        case ID_EVENT:
+            let sprite1 = objIdToSprite[Int(setterString[3])!]
+            let sprite2 = objIdToSprite[Int(setterString[4])!]
+            eventorganizer.createCollisionEvent(sprite1!, sprite2: sprite2!);
+        default:
+            return;
         }
     }
 
     /* Called before each frame is rendered */
     override func update(currentTime: CFTimeInterval) {        // continously update values of parameters for selected object
+        // Checks if there are any parameter events that need checking
+        // and checks them.
+        eventorganizer.checkParameterEventTriggered();
         updateFrameCounter += 1
         if (updateFrameCounter % 5 == 0) {
             if selectedSprite != nil && !pwPaused  {
@@ -795,9 +848,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         if selectedSprite != nil && !pwPaused {
             self.camera!.position = boundedCamMovement(selectedSprite.position)
         }
-        // Checks if there are any parameter events that need checking
-        // and checks them.
-        eventorganizer.checkParameterEventTriggered();
     }
     
     
@@ -878,7 +928,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     
     // This function is called if an event has been triggered
     func eventTriggered(event: Event) {
-        
         if (event.isCollisionEvent()) {
             let sprites = event.getSprites();
             print(String(sprites![0].getID()) + " has collided with " + String(sprites![1].getID));
@@ -891,6 +940,9 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             let s = event.getCurrentPropertyValue();
             print("Property exceeded: " + String(s));
         }
+        
+        self.physicsWorld.speed = 0;
+        eventorganizer.deleteEvent();
     }
     
     
