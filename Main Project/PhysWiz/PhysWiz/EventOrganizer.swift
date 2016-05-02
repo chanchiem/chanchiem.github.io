@@ -56,27 +56,13 @@ class EventOrganizer: NSObject {
     
     // Creates a time event. In the specified time frame AFTER starting the simulation,
     // the eventTriggered function gets called in game scene.
-    func createTimeEvent(time: CGFloat) {
+    func createTimeEvent(time: CGFloat)
+    {
         if (self.event != nil) { deleteEvent() }
         print("Created timer event");
         event = Event.createTime(self, time: time)
+        
     }
-    
-//    func pauseEventTimer() {
-//        if (self.event == nil) { return }
-//        if (!self.event.isTimerEvent()) { return }
-//        if (self.event.hasHappened()) { return }
-//        
-//        self.event.stopTimer()
-//    }
-//    
-//    func resumeEventTimer() {
-//        if (self.event == nil) { return }
-//        if (!self.event.isTimerEvent()) { return }
-//        if (self.event.hasHappened()) { return }
-//        
-//        self.event.resumeTimer()
-//    }
     
     
     // Creates a parameter-driven event. This is a kind of event that 
@@ -94,8 +80,8 @@ class EventOrganizer: NSObject {
     // Deletes the current event.
     func deleteEvent() -> Event! {
         if (event == nil) { return nil; }
-        let prev = event;
         
+        let prev = event;
         event = nil;
         
         return prev;

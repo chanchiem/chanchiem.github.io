@@ -46,10 +46,8 @@ class Event: NSObject {
     ////////////////////////////////////////////////////////////
     //////////////// Time Variables ////////////////////////////
     ////////////////////////////////////////////////////////////
-    private var time: CGFloat!              = nil;
-    private var timer: NSTimer!             = nil;
-    private var gameTimePassed: CGFloat     = 0; // The total in game time passed with timer.
-//    private var isCounting: Bool            = true;
+    private var time: CGFloat!  = nil;
+    private var timer: NSTimer! = nil;
     
     ////////////////////////////////////////////////////////////
     //////////////// Parameter Variables ///////////////////////
@@ -113,34 +111,32 @@ class Event: NSObject {
         return time;
     }
     
-    func getCurrentTime() -> CGFloat? {
-        if (!isTime) { return nil; }
-        return gameTimePassed;
-    }
-    
     func setTime(time: CGFloat) {
         if (!isTime) { return }
         self.time = time;
     }
     
+    func startTimer() {
+        if (!isTime) { return }
+        if (self.timer == nil) { return }
+        self.timer.fire();
+    }
+    
     func stopTimer() {
         if (!isTime) { return }
         if (self.timer == nil) { return };
-        
         self.timer.invalidate();
-        self.timer = nil;
     }
     
     func initTimer(time: CGFloat) {
         self.setTime(time);
-        let selector_func = #selector(self.triggerTimer)
-        self.timer = NSTimer.scheduledTimerWithTimeInterval(Double(time), target: self, selector: selector_func, userInfo: nil, repeats: false);
+//        let selector_func = #selector(self.triggerTimer)
+//        self.timer = NSTimer.scheduledTimerWithTimeInterval(Double(time), target: self, selector: selector_func, userInfo: nil, repeats: false);
     }
     
     func triggerTimer() {
         NSLog("Timer triggered!");
         self.setHappened();
-        self.stopTimer();
         eventorganizer.triggerEvent(self);
     }
     
@@ -264,7 +260,6 @@ class Event: NSObject {
         
 //        event.sprite1 = sprite;
         event.initTimer(time);
-        event.gameTimePassed = 0;
         
         return event;
     }
