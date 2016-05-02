@@ -19,8 +19,6 @@ import Foundation
 
 // The types of parameters to be found within the object.
 // This is ONLY used when the event is of type parameter.
-
-//"Distance", "Height","Velocity x", "Velocity y", "Angular Velocity", "Acceleration x", "Acceleration y"
 struct event_PropertyType {
     static let UNKNOWN  = -1;
     static let distance = 0;
@@ -54,8 +52,8 @@ class Event: NSObject {
     ////////////////////////////////////////////////////////////
     //////////////// Parameter Variables ///////////////////////
     ////////////////////////////////////////////////////////////
-    private var parameterFlag = event_PropertyType.UNKNOWN; // Defined in the top
-    private var parameterLimit = CGFloat.infinity;
+    private var parameterFlag   = event_PropertyType.UNKNOWN; // Defined in the top
+    private var parameterLimit  = CGFloat.infinity;
     private var dispatchWorker: NSOperationQueue! = nil; // Worker that checks parameters.
     
     
