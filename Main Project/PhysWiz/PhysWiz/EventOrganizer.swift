@@ -44,6 +44,7 @@ class EventOrganizer: NSObject {
     // the gamescene eventTriggered function will be called.
     // The game scene handles the rest.
     func createCollisionEvent(sprite1: PWObject, sprite2: PWObject) {
+        if (self.event != nil) { deleteEvent() }
         let event = Event.createCollision(self, sprite1: sprite1, sprite2: sprite2)
         
         if (event == nil) { return };
@@ -57,6 +58,7 @@ class EventOrganizer: NSObject {
     // the eventTriggered function gets called in game scene.
     func createTimeEvent(time: CGFloat)
     {
+        if (self.event != nil) { deleteEvent() }
         print("Created timer event");
         event = Event.createTime(self, time: time)
         
@@ -68,6 +70,7 @@ class EventOrganizer: NSObject {
     // The available event types are defined in the struct in Event.swift.
     func createParameterEvent(sprite: PWObject, flag: Int, value: CGFloat)
     {
+        if (self.event != nil) { deleteEvent() }
         print("Created parameter event");
         event = Event.createParameter(self, sprite: sprite, parameterFlag: flag, limitValue: value)
     }

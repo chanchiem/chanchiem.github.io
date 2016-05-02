@@ -659,7 +659,7 @@ import Darwin
             endSettings[0] = EndType
             endSettings[1] = String(EndParameter)
             endSettings[2] = EndParameterInputBox.text!
-            endSettings[3] = String(objectIDMap[EndObject])
+            endSettings[3] = String(objectIDMap[EndObject]!)
             endSettings[4] = ""
             
         }
@@ -667,8 +667,8 @@ import Darwin
             endSettings[0] = EndType
             endSettings[1] = String(EndParameter)
             endSettings[2] = EndParameterInputBox.text!
-            endSettings[3] = String(objectIDMap[EndObject])
-            endSettings[4] = String(objectIDMap[EndObject2])
+            endSettings[3] = String(objectIDMap[EndObject]!)
+            endSettings[4] = String(objectIDMap[EndObject2]!)
         }
 
         return endSettings

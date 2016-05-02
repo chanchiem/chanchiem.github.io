@@ -694,27 +694,35 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 restoreAllobjectProperties(objectProperties) /**********************************************/
                 
                 // Pause / Resume the world
-                if (pwPaused) {
-                    let end = containerVC.getEndSetter()
-                    executeEndSetterArray(end); // Executes the events and starts them.
-                    self.physicsWorld.speed = 1
-                    pwPaused = false
-                    button.texture = SKTexture(imageNamed: "pause.png")
-                    if (selectedGadget != nil) {
-                    deselectGadget()
-                    containerVC.changeToObjectInputBox()
-                    containerVC.setsInputBox(defaultObjectProperties, state: "static")
-                    }
-                } else {
-                    self.physicsWorld.speed = 0
-                    pwPaused = true
-                    button.texture = SKTexture(imageNamed: "play.png")
-                    if selectedSprite != nil {
-                    containerVC.setsInputBox(objectProperties[selectedSprite]!, state: "editable")
-                    }
-                }
+                if (pwPaused)   { resumeWorld() }
+                else            { pauseWorld()  }
+
             }
             
+        }
+    }
+    
+    func resumeWorld() {
+        pwPaused = false;
+        let end = containerVC.getEndSetter()
+        executeEndSetterArray(end); // Executes the events and starts them.
+        self.physicsWorld.speed = 1
+        pwPaused = false
+        button.texture = SKTexture(imageNamed: "pause.png")
+        if (selectedGadget != nil) {
+            deselectGadget()
+            containerVC.changeToObjectInputBox()
+            containerVC.setsInputBox(defaultObjectProperties, state: "static")
+        }
+    }
+    
+    func pauseWorld() {
+        pwPaused = true;
+        self.physicsWorld.speed = 0
+        pwPaused = true
+        button.texture = SKTexture(imageNamed: "play.png")
+        if selectedSprite != nil {
+            containerVC.setsInputBox(objectProperties[selectedSprite]!, state: "editable")
         }
     }
     
@@ -743,9 +751,11 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             
         case ID_END_PARAM:
             let param = Int(setterString[1]);
-            let val = CGFloat(Double(setterString[2])!)
+            let val = Float(setterString[2])! * pixelToMetric
+            let objID = setterString[3]
+            print(objID);
             let sprite = objIdToSprite[Int(setterString[3])!]
-            eventorganizer.createParameterEvent(sprite!, flag: param!, value: val)
+            eventorganizer.createParameterEvent(sprite!, flag: param!, value: CGFloat(val))
         case ID_EVENT:
             let sprite1 = objIdToSprite[Int(setterString[3])!]
             let sprite2 = objIdToSprite[Int(setterString[4])!]
@@ -757,6 +767,9 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
 
     /* Called before each frame is rendered */
     override func update(currentTime: CFTimeInterval) {        // continously update values of parameters for selected object
+        // Checks if there are any parameter events that need checking
+        // and checks them.
+        eventorganizer.checkParameterEventTriggered();
         updateFrameCounter += 1
         if (updateFrameCounter % 5 == 0) {
             if selectedSprite != nil && !pwPaused  {
@@ -799,9 +812,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         if selectedSprite != nil && !pwPaused {
             self.camera!.position = boundedCamMovement(selectedSprite.position)
         }
-        // Checks if there are any parameter events that need checking
-        // and checks them.
-        eventorganizer.checkParameterEventTriggered();
     }
     
     
@@ -885,7 +895,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     
     // This function is called if an event has been triggered
     func eventTriggered(event: Event) {
-        
         if (event.isCollisionEvent()) {
             let sprites = event.getSprites();
             print(String(sprites![0].getID()) + " has collided with " + String(sprites![1].getID));
@@ -898,6 +907,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             let s = event.getCurrentPropertyValue();
             print("Property exceeded: " + String(s));
         }
+        
+        self.physicsWorld.speed = 0;
     }
     
     // Moves the objects that are on the screen by the amount that the background is being moved
