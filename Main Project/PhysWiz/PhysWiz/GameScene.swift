@@ -744,7 +744,10 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         else if (selectedGadget != nil && pwPaused) {
             var values = gadgetProperties[selectedGadget]!
             let input = containerVC.getGadgetInput(selectedGadget.name!)
-            for i in 0 ..< values.count {
+            values[0] = Float(input[0])!
+            values[1] = Float(input[1])!
+            values[2] = Float(input[2])!
+            for i in 3 ..< values.count {
                 if (Float(input[i]) != nil) { values[i] = Float(input[i])! }
             }
             gadgetProperties[selectedGadget] = values
