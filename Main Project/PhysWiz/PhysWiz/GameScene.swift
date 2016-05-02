@@ -351,7 +351,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         let angle = CGFloat(atan2f(Float(deltay), Float(deltax)))
         springobj.zRotation = angle + 1.57 // 1.57 because image is naturally vertical
         initialHeight[springobj] = springobj.size.height;
-        springobj.yScale = distance/springobj.size.height;
+        springobj.yScale = distance/springobj.size.height / 4;
         let xOffset = deltax / 2
         let yOffset = deltay / 2
         springobj.position = CGPoint.init(x: n1.x - xOffset, y: n1.y - yOffset)
@@ -603,46 +603,49 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             //////////////////////////////////
             //////// APPLY GADGETS ///////////
             //////////////////////////////////
-            let sprite: SKNode
-            if (PWObject.isPWObject(touchedNode)) {
-                sprite = touchedNode as! PWObject
-            }
-             else if (PWStaticObject.isPWStaticObject(touchedNode)) {
-                sprite = touchedNode as! PWStaticObject
-            }
-            else {continue}
-            
-            if (containerVC.getGadgetFlag() != 0) { // Rope
-                if (gadgetNode1 == nil) {
-                    gadgetNode1 = sprite
-                    if (PWObject.isPWObject(gadgetNode1)) { let n1 = gadgetNode1 as! PWObject;
-                        n1.highlight(UIColor.redColor()) }
-                } else if(gadgetNode2 == nil) {
-                    gadgetNode2 = sprite
-                    if (PWObject.isPWObject(gadgetNode2)) { let n1 = gadgetNode2 as! PWObject;
-                        n1.highlight(UIColor.redColor()) }
-                    if (gadgetNode1 != gadgetNode2) {
-                        if (containerVC.getGadgetFlag() == 1) { createRopeBetweenNodes(gadgetNode1, node2: gadgetNode2) }
-                        if (containerVC.getGadgetFlag() == 2) { createSpringBetweenNodes(gadgetNode1, node2: gadgetNode2) }
-                        if (containerVC.getGadgetFlag() == 3) { createRodBetweenNodes(gadgetNode1, node2: gadgetNode2) }
-                    }
-                    if (PWObject.isPWObject(gadgetNode2)) { let n1 = gadgetNode2 as! PWObject; n1.unhighlight() }
-                    if (PWObject.isPWObject(gadgetNode1)) { let n1 = gadgetNode1 as! PWObject; n1.unhighlight() }
-                    gadgetNode2 = nil;
-                    gadgetNode1 = nil;
+            var sprite: SKNode
+            let allNodesInPoint = nodesAtPoint(location)
+            for touchedNode:SKNode in allNodesInPoint { // Traverse through all the nodes in the location
+                if (PWObject.isPWObject(touchedNode)) {
+                    sprite = touchedNode as! PWObject
                 }
-            } else {
-                if (PWObject.isPWObject(touchedNode))  {
-                self.selectSprite((sprite as! PWObject));
-                containerVC.changeToObjectInputBox()
-                    containerVC.setsInputBox(objectProperties[selectedSprite]!, state: "editable")
+                 else if (PWStaticObject.isPWStaticObject(touchedNode)) {
+                    sprite = touchedNode as! PWStaticObject
                 }
-                else if pwPaused {
-                self.selectGadget((sprite as! PWStaticObject));
-                containerVC.changeToGadgetInputBox(sprite.name!)
-                containerVC.setsGadgetInputBox(selectedGadget.name!, input: gadgetProperties[selectedGadget]!, state: "editable")
-                }
+                else { continue }
 
+                if (containerVC.getGadgetFlag() != 0) { // Rope
+                    if (gadgetNode1 == nil) {
+                        gadgetNode1 = sprite
+                        if (PWObject.isPWObject(gadgetNode1)) { let n1 = gadgetNode1 as! PWObject;
+                            n1.highlight(UIColor.redColor()) }
+                    } else if(gadgetNode2 == nil) {
+                        gadgetNode2 = sprite
+                        if (PWObject.isPWObject(gadgetNode2)) { let n1 = gadgetNode2 as! PWObject;
+                            n1.highlight(UIColor.redColor()) }
+                        if (gadgetNode1 != gadgetNode2) {
+                            if (containerVC.getGadgetFlag() == 1) { createRopeBetweenNodes(gadgetNode1, node2: gadgetNode2) }
+                            if (containerVC.getGadgetFlag() == 2) { createSpringBetweenNodes(gadgetNode1, node2: gadgetNode2) }
+                            if (containerVC.getGadgetFlag() == 3) { createRodBetweenNodes(gadgetNode1, node2: gadgetNode2) }
+                        }
+                        if (PWObject.isPWObject(gadgetNode2)) { let n1 = gadgetNode2 as! PWObject; n1.unhighlight() }
+                        if (PWObject.isPWObject(gadgetNode1)) { let n1 = gadgetNode1 as! PWObject; n1.unhighlight() }
+                        gadgetNode2 = nil;
+                        gadgetNode1 = nil;
+                    }
+                } else {
+                    if (PWObject.isPWObject(touchedNode))  {
+                    self.selectSprite((sprite as! PWObject));
+                    containerVC.changeToObjectInputBox()
+                        containerVC.setsInputBox(objectProperties[selectedSprite]!, state: "editable")
+                    }
+                    else if pwPaused {
+                    self.selectGadget((sprite as! PWStaticObject));
+                    containerVC.changeToGadgetInputBox(sprite.name!)
+                    containerVC.setsGadgetInputBox(selectedGadget.name!, input: gadgetProperties[selectedGadget]!, state: "editable")
+                    }
+
+                }
             }
         }
     }
