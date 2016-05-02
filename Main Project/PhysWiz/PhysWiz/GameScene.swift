@@ -745,8 +745,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             var values = gadgetProperties[selectedGadget]!
             let input = containerVC.getGadgetInput(selectedGadget.name!)
             values[0] = Float(input[0])!
-            values[1] = Float(input[1])!
-            values[2] = Float(input[2])!
+            values[1] = Float(input[1])!*pixelToMetric
+            values[2] = Float(input[2])!*pixelToMetric
             for i in 3 ..< values.count {
                 if (Float(input[i]) != nil) { values[i] = Float(input[i])! }
             }
@@ -808,7 +808,10 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                     if selectedGadget.isMovable() {
                         selectedGadget.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
                         //changes values in the input box to the position it is dragged to
-                        containerVC.setsGadgetInputBox(selectedGadget.name!, input:selectedGadget.getProperties(selectedGadget.name!), state: "editable")
+                        var values = selectedGadget.getProperties(selectedGadget.name!)
+                        values[1] = values[1]/pixelToMetric
+                        values[2] = values[2]/pixelToMetric
+                        containerVC.setsGadgetInputBox(selectedGadget.name!, input:values, state: "editable")
                     }
         }
         else {

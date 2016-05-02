@@ -595,8 +595,8 @@ import Darwin
         }
         // deals with parameter table selection for endsetter
         if tableView == EndParameterList {
-            EndParameter = endSetterParameterNames[indexPath.row]
-             ParameterEqualsTo.text = EndParameter + " ="
+            EndParameter = indexPath.row
+             ParameterEqualsTo.text = selectionTableData[EndParameter] + " ="
             
         }
 
@@ -622,7 +622,7 @@ import Darwin
     @IBOutlet weak var EndParameterList: UITableView!
     var endSettings: [String] = ["", "", "", "", ""]
     var EndType = ""
-    var EndParameter = ""
+    var EndParameter = 0
     var EndObject = ""
     var EndObject2 = ""
     func changeToEndSetter() {
@@ -657,7 +657,7 @@ import Darwin
         }
         if EndType == "End-Parameter" {
             endSettings[0] = EndType
-            endSettings[1] = EndParameter
+            endSettings[1] = String(EndParameter)
             endSettings[2] = EndParameterInputBox.text!
             endSettings[3] = String(objectIDMap[EndObject])
             endSettings[4] = ""
@@ -665,7 +665,7 @@ import Darwin
         }
         if EndType == "Event" {
             endSettings[0] = EndType
-            endSettings[1] = EndParameter
+            endSettings[1] = String(EndParameter)
             endSettings[2] = EndParameterInputBox.text!
             endSettings[3] = String(objectIDMap[EndObject])
             endSettings[4] = String(objectIDMap[EndObject2])
