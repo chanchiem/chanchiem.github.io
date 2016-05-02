@@ -22,15 +22,25 @@ class PWStaticObject: SKShapeNode
     
     // Flag that will determine if this object can be moved by the
     // game scene.
-    private var movable: Bool       = true
-    private var selectable: Bool    = true
     private var metricScale         = 100   // Factor to convert pixel units to metric units
     private var staticObjectID      = -1    // Unique ID Assigned to each sprite.
     private var selected            = true  // Flag that determines if the object is selected by the scene.
     private var glowNode: SKShapeNode?      // The node representing the glow of this object.
-    private var values: [Float] = []
-
-
+    
+    var values: [Float] = []
+    var objectStringName: String = ""
+    var objectPosition: CGPoint = CGPointZero
+    var movable: Bool       = true
+    var selectable: Bool    = true
+    
+    static let DocumentsDirectoryS1 = NSFileManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
+    static let ArchiveURLS1 = DocumentsDirectoryS1.URLByAppendingPathComponent("saveS1")
+    
+    static let DocumentsDirectoryS2 = NSFileManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
+    static let ArchiveURLS2 = DocumentsDirectoryS2.URLByAppendingPathComponent("saveS2")
+    
+    static let DocumentsDirectoryS3 = NSFileManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
+    static let ArchiveURLS3 = DocumentsDirectoryS3.URLByAppendingPathComponent("saveS3")
     
     // ##############################################################
     //
@@ -123,7 +133,7 @@ class PWStaticObject: SKShapeNode
         CGPathMoveToPoint(polygonPath, nil, -scale*base/2, -scale*base*CGFloat(Darwin.tan(Float(angleInDegrees)))/2)
         CGPathAddLineToPoint(polygonPath, nil,scale*(base/2), -scale*base*CGFloat(Darwin.tan(Float(angleInDegrees)))/2)
         CGPathAddLineToPoint(polygonPath, nil, -scale*base/2, scale*base*CGFloat(Darwin.tan(Float(angleInDegrees)))/2)
-        CGPathAddLineToPoint(polygonPath, nil, -scale*base/2 , -scale*base*CGFloat(Darwin.tan(Float(angleInDegrees)))/2)
+        CGPathAddLineToPoint(polygonPath, nil, -scale*base/2, -scale*base*CGFloat(Darwin.tan(Float(angleInDegrees)))/2)
         self.path = polygonPath
         self.strokeColor = UIColor.blackColor()
         self.fillColor = UIColor.blackColor()
@@ -313,6 +323,10 @@ class PWStaticObject: SKShapeNode
             self.physicsBody = SKPhysicsBody(polygonFromPath: polygonPath)
         }
        
+        self.objectStringName = objectStringName
+        self.objectPosition = position
+        self.movable = isMovable
+        self.selectable = isSelectable
        
         self.movable = isMovable
         self.selectable = isSelectable
@@ -325,11 +339,33 @@ class PWStaticObject: SKShapeNode
         self.physicsBody?.contactTestBitMask = PhysicsCategory.All;
     }
 
+    override func encodeWithCoder(aCoder: NSCoder) {
+        aCoder.encodeObject(objectStringName, forKey: "objectStringName")
+        aCoder.encodeCGPoint(objectPosition, forKey: "objectPosition")
+        aCoder.encodeBool(movable, forKey: "movable")
+        aCoder.encodeBool(selectable, forKey: "selectable")
+        
+        aCoder.encodeFloat(self.values[0], forKey: "value0")
+        aCoder.encodeFloat(self.values[3], forKey: "value3")
+        aCoder.encodeFloat(self.values[4], forKey: "value4")
+        aCoder.encodeFloat(self.values[5], forKey: "value5")
+        aCoder.encodeFloat(self.values[6], forKey: "value6")
+    }
     
     // Don't know why this is needed. Swift semantics...
     required convenience init?(coder aDecoder: NSCoder) {
-        self.init(coder: aDecoder);
-        //        fatalError("init(coder:) has not been implemented")
+        let objectStringName = aDecoder.decodeObjectForKey("objectStringName") as! String
+        let objectPosition = aDecoder.decodeCGPointForKey("objectPosition")
+        let movable = aDecoder.decodeBoolForKey("movable")
+        let selectable = aDecoder.decodeBoolForKey("selectable")
+        self.init(objectStringName: objectStringName, position: objectPosition, isMovable: movable, isSelectable: selectable)
+        
+        let value0 = aDecoder.decodeFloatForKey("value0")
+        let value3 = aDecoder.decodeFloatForKey("value3")
+        let value4 = aDecoder.decodeFloatForKey("value4")
+        let value5 = aDecoder.decodeFloatForKey("value5")
+        let value6 = aDecoder.decodeFloatForKey("value6")
+        self.values = [value0, Float(objectPosition.x), Float(objectPosition.y), value3, value4, value5, value6]
     }
     
     // ##############################################################

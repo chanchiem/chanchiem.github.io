@@ -37,6 +37,9 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     let cam = SKCameraNode()
     var camPos = CGPoint()
     var PWObjects = [PWObject]()
+    var PWStaticObjects = [PWStaticObject]()
+    var ropeConnections = [SKNode]()
+    var rodConnections = [SKNode]()
     
     var toggledSprite = shapeType.CIRCLE;
     var shapeArray = [shapeType]();
@@ -320,6 +323,16 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     func createRopeBetweenNodes(node1: SKNode, node2: SKNode) {
         let node1Mid = node1.position
         let node2Mid = node2.position
+        
+        ropeConnections.append(node1) /********************************************/
+        ropeConnections.append(node2) /********************************************/
+        
+        print(node1)
+        print(node2)
+        print(node1.physicsBody!)
+        print(node2.physicsBody!)
+        print(node1Mid)
+        print(node2Mid)
         let spring = SKPhysicsJointLimit.jointWithBodyA(node1.physicsBody!, bodyB: node2.physicsBody!, anchorA: node1Mid, anchorB: node2Mid)
         self.physicsWorld.addJoint(spring)
         
@@ -466,7 +479,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         gadgetProperties[Ramp] = Ramp.getProperties(Ramp.name!)
         self.addChild(Ramp)
         selectGadget(Ramp)
-
+        PWStaticObjects += [Ramp]
     }
     // creates platform static gadget
     func createPlatform(location:CGPoint){
@@ -474,6 +487,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         gadgetProperties[Platform] = Platform.getProperties(Platform.name!)
         self.addChild(Platform)
         selectGadget(Platform)
+        PWStaticObjects += [Platform]
     }
     // creates wall static gadget
     func createWall(location:CGPoint){
@@ -481,6 +495,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         gadgetProperties[Wall] = Wall.getProperties(Wall.name!)
         self.addChild(Wall)
         selectGadget(Wall)
+        PWStaticObjects += [Wall]
     }
     // creates round static gadget
     func createRound(location:CGPoint){
@@ -488,12 +503,14 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         gadgetProperties[Round] = Round.getProperties(Round.name!)
         self.addChild(Round)
         selectGadget(Round)
+        PWStaticObjects += [Round]
     }
     // creates Pulley static gadget
     func createPulley(location:CGPoint){
         let Pulley = PWStaticObject.init(objectStringName: "Pulley", position: location, isMovable: true, isSelectable: true)
         self.addChild(Pulley)
         selectGadget(Pulley)
+        PWStaticObjects += [Pulley]
     }
     // ##############################################################
     // Selects a sprite in the game scene.
@@ -650,18 +667,23 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             let cameraNodeLocation = cam.convertPoint(location, fromNode: self)
             hideLabels();
             // Removes the selectedShape if it's over the trash bin
+            /*****************************************************/
+            /*  BUG: MUST REMOVE PWOBJECTS AND PWSTATICOBJECTS   */
+            /*****************************************************/
             if trash.containsPoint(cameraNodeLocation){
                 if selectedSprite != nil {
-                objectProperties.removeValueForKey(selectedSprite)
-                selectedSprite.removeFromParent()
-                containerVC.removeObjectFromList(selectedSprite.getID())
-                self.selectSprite(nil);
+                    PWObjects.removeAtIndex(PWObjects.indexOf(selectedSprite)!)
+                    objectProperties.removeValueForKey(selectedSprite)
+                    selectedSprite.removeFromParent()
+                    containerVC.removeObjectFromList(selectedSprite.getID())
+                    self.selectSprite(nil);
                 }
                 else if selectedGadget != nil {
-                // gadgetProperties.removeValueForKey(selectedGadget) need to populate gadget properties
-                selectedGadget.removeFromParent()
-                //containerVC.removeGadgetFromList(selectedGadgetgetID())  implent this
-                self.selectSprite(nil);
+                    PWStaticObjects.removeAtIndex(PWStaticObjects.indexOf(selectedGadget)!)
+                    // gadgetProperties.removeValueForKey(selectedGadget) need to populate gadget properties
+                    selectedGadget.removeFromParent()
+                    //containerVC.removeGadgetFromList(selectedGadgetgetID())  implent this
+                    self.selectSprite(nil);
                 }
             }
             // Removes all non-essential nodes from the gamescene
@@ -673,6 +695,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                     pwPaused = true
                     button.texture = SKTexture(imageNamed: "play.png")
                     PWObjects.removeAll()
+                    PWStaticObjects.removeAll()
+                    ropeConnections.removeAll() /********************************************/
                     //saveSprites()
                 }
                 containerVC.removeAllFromList()
@@ -978,19 +1002,35 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     // Saves the sprites that are currently in the scene
     func saveSprites(saveNumber: Int) {
         var isSuccessfulSave = false
+        var isSuccessfulSaveS = false
         
         if saveNumber == 1 {
             isSuccessfulSave = NSKeyedArchiver.archiveRootObject(PWObjects, toFile: PWObject.ArchiveURL1.path!)
+            isSuccessfulSaveS = NSKeyedArchiver.archiveRootObject(PWStaticObjects, toFile: PWStaticObject.ArchiveURLS1.path!)
+            /********************************************/
+            let dataSave = NSKeyedArchiver.archivedDataWithRootObject(ropeConnections)
+            NSUserDefaults.standardUserDefaults().setObject(dataSave, forKey: "ropeConnections1")
         }
         if saveNumber == 2 {
             isSuccessfulSave = NSKeyedArchiver.archiveRootObject(PWObjects, toFile: PWObject.ArchiveURL2.path!)
+            isSuccessfulSaveS = NSKeyedArchiver.archiveRootObject(PWStaticObjects, toFile: PWStaticObject.ArchiveURLS2.path!)
+            let dataSave = NSKeyedArchiver.archivedDataWithRootObject(ropeConnections)
+            NSUserDefaults.standardUserDefaults().setObject(dataSave, forKey: "ropeConnections2")
         }
         if saveNumber == 3 {
             isSuccessfulSave = NSKeyedArchiver.archiveRootObject(PWObjects, toFile: PWObject.ArchiveURL3.path!)
+            isSuccessfulSaveS = NSKeyedArchiver.archiveRootObject(PWStaticObjects, toFile: PWStaticObject.ArchiveURLS3.path!)
+            let dataSave = NSKeyedArchiver.archivedDataWithRootObject(ropeConnections)
+            NSUserDefaults.standardUserDefaults().setObject(dataSave, forKey: "ropeConnections3")
         }
         
+        
+        NSUserDefaults.standardUserDefaults().synchronize() /********************************************/
         if !isSuccessfulSave {
-            print("Failed to save sprites.")
+            print("Failed to save PWObjects.")
+        }
+        if !isSuccessfulSaveS {
+            print("Failed to save PWStaticObjects")
         }
     }
     
@@ -1011,17 +1051,51 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         return loadArray
     }
     
+    func loadStaticSprites(loadFileNumber: Int) -> [PWStaticObject]? {
+        var loadStaticArray: [PWStaticObject]?
+        
+        if loadFileNumber == 1 {
+            loadStaticArray = NSKeyedUnarchiver.unarchiveObjectWithFile(PWStaticObject.ArchiveURLS1.path!) as? [PWStaticObject]
+        }
+        if loadFileNumber == 2 {
+            loadStaticArray = NSKeyedUnarchiver.unarchiveObjectWithFile(PWStaticObject.ArchiveURLS2.path!) as? [PWStaticObject]
+        }
+        if loadFileNumber == 3 {
+            loadStaticArray = NSKeyedUnarchiver.unarchiveObjectWithFile(PWStaticObject.ArchiveURLS3.path!) as? [PWStaticObject]
+        }
+        
+        return loadStaticArray
+    }
+    
     func loadSave(loadFileNumber: Int) {
         for node in self.children {
             if (node != cam) {
                 node.removeFromParent()
             }
         }
+        selectedSprite = nil
         PWObjects.removeAll()
+        PWStaticObjects.removeAll()
         containerVC.removeAllFromList()
         let floor = PWObject.createFloor(CGSize.init(width: background.size.width, height: 20))
         self.addChild(floor)
         self.addChild(self.createBG())
+        
+        var connectRopes = [SKNode]()
+        var savedRopeData = NSUserDefaults.standardUserDefaults().valueForKey("ropeConnections1") as! NSData
+        var savedRopeNodes = NSKeyedUnarchiver.unarchiveObjectWithData(savedRopeData) as? [SKNode]
+        if loadFileNumber == 1 {
+            savedRopeData = NSUserDefaults.standardUserDefaults().valueForKey("ropeConnections1") as! NSData
+            savedRopeNodes = NSKeyedUnarchiver.unarchiveObjectWithData(savedRopeData) as? [SKNode]
+        }
+        if loadFileNumber == 2 {
+            savedRopeData = NSUserDefaults.standardUserDefaults().valueForKey("ropeConnections2") as! NSData
+            savedRopeNodes = NSKeyedUnarchiver.unarchiveObjectWithData(savedRopeData) as? [SKNode]
+        }
+        if loadFileNumber == 3 {
+            savedRopeData = NSUserDefaults.standardUserDefaults().valueForKey("ropeConnections3") as! NSData
+            savedRopeNodes = NSKeyedUnarchiver.unarchiveObjectWithData(savedRopeData) as? [SKNode]
+        }
         
         if let savedSprites = loadSprites(loadFileNumber) {
             for obj in savedSprites {
@@ -1036,10 +1110,47 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 values.append(Float(0.0))
                 values.append(Float(0.0))
                 values.append(Float(0.0))
+    
+                for var i = 0; i < savedRopeNodes!.count; i++ {
+                    if savedRopeNodes![i].position == obj.position {
+                        connectRopes.append(obj)
+                        //connectRopes.insert(obj, atIndex: i)
+                    }
+                }
+                
                 objectProperties[obj] = values
                 PWObjects += [obj]
                 self.addChild(obj)
             }
+        }
+        
+        if let savedStaticSprites = loadStaticSprites(loadFileNumber) {
+            for obj in savedStaticSprites {
+                gadgetProperties[obj] = obj.values
+                
+                for var i = 0; i < savedRopeNodes!.count; i++ {
+                    if savedRopeNodes![i].position == obj.position {
+                        connectRopes.append(obj)
+                        //connectRopes.insert(obj, atIndex: i)
+                    }
+                }
+                
+                PWStaticObjects += [obj]
+                self.addChild(obj)
+            }
+        }
+        
+        var sortedConnectRopes = [SKNode]()
+        for var i = 0; i < savedRopeNodes!.count; i++ {
+            for var j = 0; j < connectRopes.count; j++ {
+                if savedRopeNodes![i].position == connectRopes[j].position {
+                    sortedConnectRopes.append(connectRopes[j])
+                }
+            }
+        }
+        
+        for var i = 0; i < sortedConnectRopes.count; i += 2 {
+            createRopeBetweenNodes(sortedConnectRopes[i], node2: sortedConnectRopes[i+1])
         }
     }
 }
