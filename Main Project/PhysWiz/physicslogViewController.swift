@@ -596,7 +596,7 @@ import Darwin
         // deals with parameter table selection for endsetter
         if tableView == EndParameterList {
             EndParameter = indexPath.row
-             ParameterEqualsTo.text = selectionTableData[EndParameter] + " ="
+             ParameterEqualsTo.text = endSetterParameterNames[EndParameter] + " ="
             
         }
 

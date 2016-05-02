@@ -433,13 +433,14 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     }
     
     
-    func createRodBetweenNodes(node1: PWObject, node2: PWObject) {
-        let n1 = node1.getPos()
-        let n2 = node2.getPos()
+    func createRodBetweenNodes(node1: SKNode, node2: SKNode) {
+        let n1 = node1.position
+        let n2 = node2.position
         let deltax = n1.x - n2.x
         let deltay = n1.y - n2.y
-        let distance = node1.distanceTo(node2);
-        let angle = node1.angleTo(node2)
+        let distance = sqrt(deltax * deltax + deltay*deltay)
+        
+        let angle = CGFloat(atan2f(Float(deltay), Float(deltax)))
         
         let dimension = CGSizeMake(distance, 4)
         let rod = SKShapeNode(rectOfSize: dimension)
@@ -524,10 +525,11 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         if (prevGadget != nil) { prevGadget!.setUnselected() }
         // Passed in sprite is nil so nothing is selected now.
         if (sprite == nil) {
+            selectedSprite.setUnselected()
             selectedGadget = nil
             return
         }
-        deselectSprite()
+        selectSprite(nil)
         selectedGadget = sprite;
         var values = gadgetProperties[selectedGadget]!
         values[1] = values[1]/pixelToMetric
@@ -541,12 +543,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         if selectedGadget != nil {
         selectedGadget.setUnselected()
         selectedGadget = nil
-        }
-    }
-    func deselectSprite() {
-        if selectedSprite != nil {
-        selectedSprite.setUnselected()
-        selectedSprite = nil
         }
     }
     // ##############################################################
@@ -586,7 +582,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 }
                 let objectType = shapeArray[containerVC.getObjectFlag()]
                 if (objectType == shapeType.BLACK) {
-                    self.deselectSprite();
+                    self.selectSprite(nil);
                 } else {
                     let spriteName = String(objectType).lowercaseString
                     let newObj = PWObject.init(objectStringName: spriteName, position: location, isMovable: true, isSelectable: true)
@@ -625,7 +621,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                     if (gadgetNode1 != gadgetNode2) {
                         if (containerVC.getGadgetFlag() == 1) { createRopeBetweenNodes(gadgetNode1, node2: gadgetNode2) }
                         if (containerVC.getGadgetFlag() == 2) { createSpringBetweenNodes(gadgetNode1, node2: gadgetNode2) }
-                        //if (containerVC.getGadgetFlag() == 3) { createRodBetweenNodes(gadgetNode1, node2: gadgetNode2) }
+                        if (containerVC.getGadgetFlag() == 3) { createRodBetweenNodes(gadgetNode1, node2: gadgetNode2) }
                     }
                     gadgetNode2 = nil;
                     gadgetNode1 = nil;
