@@ -24,7 +24,7 @@ class PWStaticObject: SKShapeNode
     // game scene.
     private var movable: Bool       = true
     private var selectable: Bool    = true
-    private var metricScale         = 100   // Factor to convert pixel units to metric units
+    private var metricScale         = Float(100)   // Factor to convert pixel units to metric units
     private var staticObjectID      = -1    // Unique ID Assigned to each sprite.
     private var selected            = true  // Flag that determines if the object is selected by the scene.
     private var glowNode: SKShapeNode?      // The node representing the glow of this object.

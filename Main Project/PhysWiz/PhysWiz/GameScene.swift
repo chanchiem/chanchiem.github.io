@@ -220,6 +220,44 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         }
         return parameterOutput
     }
+     func getGadgetParameters(object: PWStaticObject) -> [Float]{
+        var values = object.getProperties(object.name!)
+        //ramp
+        if object.name! == "Ramp" {
+            values[1] =  values[1]/pixelToMetric
+            values[2] =  values[2]/pixelToMetric
+            values[3] =  values[3]/pixelToMetric
+            values[4] =  values[4]/pixelToMetric
+        }
+        //platform
+        else if object.name! == "Platform" {
+            values[1] =  values[1]/pixelToMetric
+            values[2] =  values[2]/pixelToMetric
+            values[3] =  values[3]/pixelToMetric
+            values[4] =  values[4]/pixelToMetric
+        }
+        //wall 
+        else if object.name! == "Wall" {
+            values[1] =  values[1]/pixelToMetric
+            values[2] =  values[2]/pixelToMetric
+            values[3] =  values[3]/pixelToMetric
+            values[4] =  values[4]/pixelToMetric
+        }
+        //round 
+        else if object.name! == "Round" {
+            values[1] =  values[1]/pixelToMetric
+            values[2] =  values[2]/pixelToMetric
+            values[3] =  values[3]/pixelToMetric
+        
+        }
+        //pulley
+        else if object.name! == "Pulley" {
+            values[1] =  values[1]/pixelToMetric
+            values[2] =  values[2]/pixelToMetric
+            values[3] =  values[3]/pixelToMetric
+        }
+        return values
+    }
     
     // Stores all object properties in the scene (velocity, position, and acceleration) to a data structure.
     // This function will be called when the user presses pause. 
@@ -268,30 +306,27 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         if (inputDictionary.count == 0) { return } // input contains nothing
         
         for (gadget, properties) in inputDictionary {
+            let location = CGPoint(x: CGFloat(pixelToMetric*properties[1]), y: CGFloat(pixelToMetric*properties[2]))
             if (PWStaticObject.isPWStaticObject(gadget)) {
                 if gadget.name == "Ramp" {
-                    let location = CGPoint(x: CGFloat(properties[1]), y: CGFloat(properties[2]))
-                    gadget.editRamp(CGFloat(properties[0]), location: location, height: CGFloat(properties[3]), base: CGFloat(properties[4]), angle: CGFloat(properties[5]), friction: CGFloat(properties[6]))
+                    
+                    gadget.editRamp(CGFloat(properties[0]), location: location, height: CGFloat(pixelToMetric*properties[3]), base: CGFloat(pixelToMetric*properties[4]), angle: CGFloat(properties[5]), friction: CGFloat(properties[6]))
                     
                 }
                 else if gadget.name == "Platform" {
-                    let location = CGPoint(x: CGFloat(properties[1]), y: CGFloat(properties[2]))
-                    gadget.editPlatform(CGFloat(properties[0]), location: location, length: CGFloat(properties[3]), width: CGFloat(properties[4]), rotation: CGFloat(properties[5]), friction: CGFloat(properties[6]))
+                    gadget.editPlatform(CGFloat(properties[0]), location: location, length: CGFloat(pixelToMetric*properties[3]), width: CGFloat(pixelToMetric*properties[4]), rotation: CGFloat(properties[5]), friction: CGFloat(properties[6]))
                     
                 }
                 else if gadget.name == "Wall" {
-                    let location = CGPoint(x: CGFloat(properties[1]), y: CGFloat(properties[2]))
-                    gadget.editWall(CGFloat(properties[0]), location: location, height: CGFloat(properties[3]), width: CGFloat(properties[4]), rotation: CGFloat(properties[5]), friction: CGFloat(properties[6]))
+                    gadget.editWall(CGFloat(properties[0]), location: location, height: CGFloat(pixelToMetric*properties[3]), width: CGFloat(pixelToMetric*properties[4]), rotation: CGFloat(properties[5]), friction: CGFloat(properties[6]))
                     
                 }
                 else if gadget.name == "Round" {
-                    let location = CGPoint(x: CGFloat(properties[1]), y: CGFloat(properties[2]))
-                    gadget.editRound(CGFloat(properties[0]), location: location, radius: CGFloat(properties[3]), other: CGFloat(properties[4]), other2: CGFloat(properties[5]), friction: CGFloat(properties[6]))
+               gadget.editRound(CGFloat(properties[0]), location: location, radius: CGFloat(pixelToMetric*properties[3]), other: CGFloat(properties[4]), other2: CGFloat(properties[5]), friction: CGFloat(properties[6]))
                     
                 }
                 else if gadget.name == "Pulley" {
-                    let location = CGPoint(x: CGFloat(properties[1]), y: CGFloat(properties[2]))
-                    gadget.editPulley(CGFloat(properties[0]), location: location, radius: CGFloat(properties[3]), other: CGFloat(properties[4]), other2: CGFloat(properties[5]), friction: CGFloat(properties[6]))
+                gadget.editPulley(CGFloat(properties[0]), location: location, radius: CGFloat(pixelToMetric*properties[3]), other: CGFloat(properties[4]), other2: CGFloat(properties[5]), friction: CGFloat(properties[6]))
                     
                 }
             }
@@ -467,36 +502,35 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     // create ramp static gadget
     func createRamp(location:CGPoint){
         let Ramp = PWStaticObject.init(objectStringName: "Ramp", position: location, isMovable: true, isSelectable: true)
-        gadgetProperties[Ramp] = Ramp.getProperties(Ramp.name!)
-        self.addChild(Ramp)
+        gadgetProperties[Ramp] = getGadgetParameters(Ramp);        self.addChild(Ramp)
         selectGadget(Ramp)
 
     }
     // creates platform static gadget
     func createPlatform(location:CGPoint){
         let Platform = PWStaticObject.init(objectStringName: "Platform", position: location, isMovable: true, isSelectable: true)
-        gadgetProperties[Platform] = Platform.getProperties(Platform.name!)
+        gadgetProperties[Platform] = getGadgetParameters(Platform)
         self.addChild(Platform)
         selectGadget(Platform)
     }
     // creates wall static gadget
     func createWall(location:CGPoint){
         let Wall = PWStaticObject.init(objectStringName: "Wall", position: location, isMovable: true, isSelectable: true)
-        gadgetProperties[Wall] = Wall.getProperties(Wall.name!)
+        gadgetProperties[Wall] = getGadgetParameters(Wall)
         self.addChild(Wall)
         selectGadget(Wall)
     }
     // creates round static gadget
     func createRound(location:CGPoint){
         let Round = PWStaticObject.init(objectStringName: "Round", position: location, isMovable: true, isSelectable: true)
-        gadgetProperties[Round] = Round.getProperties(Round.name!)
+        gadgetProperties[Round] = getGadgetParameters(Round)
         self.addChild(Round)
         selectGadget(Round)
     }
     // creates Pulley static gadget
     func createPulley(location:CGPoint){
         let Pulley = PWStaticObject.init(objectStringName: "Pulley", position: location, isMovable: true, isSelectable: true)
-        gadgetProperties[Pulley] = Pulley.getProperties(Pulley.name!)
+        gadgetProperties[Pulley] = getGadgetParameters(Pulley)
         self.addChild(Pulley)
         selectGadget(Pulley)
     }
@@ -529,10 +563,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         }
         deselectSprite()
         selectedGadget = sprite;
-        var values = gadgetProperties[selectedGadget]!
-        values[1] = values[1]/pixelToMetric
-        values[2] = values[2]/pixelToMetric
-        containerVC.setsGadgetInputBox(selectedGadget.name!, input: values, state: "editable")
+        var values = getGadgetParameters(selectedGadget)
+    containerVC.setsGadgetInputBox(selectedGadget.name!, input: values, state: "editable")
         selectedGadget.setSelected();
         
     }
@@ -552,6 +584,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     // ##############################################################
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         for touch: AnyObject in touches {
+            containerVC.deselectTextBox()
             let location:CGPoint = touch.locationInNode(background)
             let touchedNode = self.nodeAtPoint(location)
             
@@ -744,10 +777,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         else if (selectedGadget != nil && pwPaused) {
             var values = gadgetProperties[selectedGadget]!
             let input = containerVC.getGadgetInput(selectedGadget.name!)
-            values[0] = Float(input[0])!
-            values[1] = Float(input[1])!*pixelToMetric
-            values[2] = Float(input[2])!*pixelToMetric
-            for i in 3 ..< values.count {
+            for i in 0 ..< values.count {
                 if (Float(input[i]) != nil) { values[i] = Float(input[i])! }
             }
             gadgetProperties[selectedGadget] = values
@@ -807,11 +837,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                     let position = selectedGadget.position
                     if selectedGadget.isMovable() {
                         selectedGadget.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
-                        //changes values in the input box to the position it is dragged to
-                        var values = selectedGadget.getProperties(selectedGadget.name!)
-                        values[1] = values[1]/pixelToMetric
-                        values[2] = values[2]/pixelToMetric
-                        containerVC.setsGadgetInputBox(selectedGadget.name!, input:values, state: "editable")
+                        //changes values in the input box to the position it is dragged
+                        containerVC.setsGadgetInputBox(selectedGadget.name!, input:getGadgetParameters(selectedGadget), state: "editable")
                     }
         }
         else {
@@ -865,6 +892,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             print("Property exceeded: " + String(s));
         }
     }
+    
     
     // Moves the objects that are on the screen by the amount that the background is being moved
     func moveObjects(translation: CGPoint) {
