@@ -70,8 +70,7 @@ class Rope : SKNode {
             ropePiece.zPosition = -1
             
             // Circle seems to be a better collision detector.
-//            ropePiece.physicsBody = SKPhysicsBody(rectangleOfSize: ropePiece.size)
-            ropePiece.physicsBody = SKPhysicsBody(circleOfRadius: ropePiece.size.height / 1.2)
+            ropePiece.physicsBody = SKPhysicsBody(rectangleOfSize: ropePiece.size)
             ropePiece.physicsBody?.restitution = 0.0
             ropePiece.physicsBody?.collisionBitMask = 2
             ropePiece.physicsBody?.categoryBitMask = 2

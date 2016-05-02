@@ -19,8 +19,6 @@ import Foundation
 
 // The types of parameters to be found within the object.
 // This is ONLY used when the event is of type parameter.
-
-//"Distance", "Height","Velocity x", "Velocity y", "Angular Velocity", "Acceleration x", "Acceleration y"
 struct event_PropertyType {
     static let UNKNOWN  = -1;
     static let distance = 0;
@@ -54,9 +52,10 @@ class Event: NSObject {
     ////////////////////////////////////////////////////////////
     //////////////// Parameter Variables ///////////////////////
     ////////////////////////////////////////////////////////////
-    private var parameterFlag = event_PropertyType.UNKNOWN; // Defined in the top
-    private var parameterLimit = CGFloat.infinity;
-    private var dispatchWorker: NSOperationQueue! = nil; // Worker that checks parameters.
+    private var parameterFlag                       = event_PropertyType.UNKNOWN; // Defined in the top
+    private var parameterLimit                      = CGFloat.infinity;
+    private var dispatchWorker: NSOperationQueue!   = nil; // Worker that checks parameters.
+    private var originPoint: CGPoint!               = nil; // The point that the distance is gonna be compared to.
     
     
     // Has the event already been executed?
@@ -131,8 +130,13 @@ class Event: NSObject {
     
     func initTimer(time: CGFloat) {
         self.setTime(time);
+<<<<<<< HEAD
         //let selector_func = #selector(self.triggerTimer)
         //self.timer = NSTimer.scheduledTimerWithTimeInterval(Double(time), target: self, selector: selector_func, userInfo: nil, repeats: false);
+=======
+//        let selector_func = #selector(self.triggerTimer)
+//        self.timer = NSTimer.scheduledTimerWithTimeInterval(Double(time), target: self, selector: selector_func, userInfo: nil, repeats: false);
+>>>>>>> origin/master
     }
     
     func triggerTimer() {
@@ -195,7 +199,7 @@ class Event: NSObject {
                 return sprite.getPos().y
 
             case event_PropertyType.distance:
-                return 69; // Distance between two sprites?
+                return sprite.distanceToPoint(self.originPoint);
 
             case event_PropertyType.vel_x:
                 return sprite.getVelocity().dx;
@@ -234,6 +238,8 @@ class Event: NSObject {
     func getPropertyLimit() -> CGFloat { return self.parameterLimit }
     func setPropertyLimit(limit: CGFloat) { self.parameterLimit = limit; }
     
+    func setOriginPoint(pt: CGPoint) { self.originPoint = pt }
+    
     ////////////////////////////////////////////////////////////
     
     
@@ -254,11 +260,10 @@ class Event: NSObject {
         return event;
     }
     
-    static func createTime(eo:EventOrganizer, sprite: PWObject, time: CGFloat) -> Event? {
-        if (!PWObject.isPWObject(sprite)) { return nil; }
+    static func createTime(eo:EventOrganizer, time: CGFloat) -> Event? {
         let event = Event.init(isCollision: false, isTime: true, isParameter: false, eo: eo)
         
-        event.sprite1 = sprite;
+//        event.sprite1 = sprite;
         event.initTimer(time);
         
         return event;

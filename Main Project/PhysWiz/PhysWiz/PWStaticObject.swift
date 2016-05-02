@@ -199,6 +199,21 @@ class PWStaticObject: SKShapeNode
         self.physicsBody?.friction = friction
         self.position = location
     }
+    func editPulley(scale: CGFloat, location: CGPoint, radius: CGFloat, other: CGFloat,  other2: CGFloat, friction: CGFloat) {
+        // save new values
+        self.values = [Float(scale), Float(position.x), Float(position.y), Float(radius), Float(other), Float(other2), Float(friction)]
+        let polygonPath = CGPathCreateMutable()
+        CGPathMoveToPoint(polygonPath, nil, 0, -radius)
+        CGPathAddArc(polygonPath, nil, CGFloat(0), CGFloat(0), CGFloat(radius),CGFloat(-M_PI_2), CGFloat(M_PI_2*3), false);
+        self.path = polygonPath
+        self.strokeColor = UIColor.blackColor()
+        self.physicsBody = SKPhysicsBody(polygonFromPath: polygonPath)
+        
+        self.physicsBody?.dynamic = false
+        self.physicsBody?.restitution = 0
+        self.physicsBody?.friction = friction
+        self.position = location
+    }
 
     func getProperties(gadgetType: String) -> [Float] {
         self.values[1] = Float(self.position.x)
@@ -321,6 +336,7 @@ class PWStaticObject: SKShapeNode
             self.strokeColor = UIColor.blackColor()
             self.fillColor = UIColor.grayColor()
             self.physicsBody = SKPhysicsBody(polygonFromPath: polygonPath)
+              self.values = [1, Float(position.x), Float(position.y), 20, 0, 0, 0] // default values
         }
        
         self.objectStringName = objectStringName
