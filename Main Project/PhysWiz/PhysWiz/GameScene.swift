@@ -600,7 +600,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 continue;
             }
             
-            
             //////////////////////////////////
             //////// APPLY GADGETS ///////////
             //////////////////////////////////
@@ -616,13 +615,19 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             if (containerVC.getGadgetFlag() != 0) { // Rope
                 if (gadgetNode1 == nil) {
                     gadgetNode1 = sprite
+                    if (PWObject.isPWObject(gadgetNode1)) { let n1 = gadgetNode1 as! PWObject;
+                        n1.highlight(UIColor.redColor()) }
                 } else if(gadgetNode2 == nil) {
-                    gadgetNode2 = sprite 
+                    gadgetNode2 = sprite
+                    if (PWObject.isPWObject(gadgetNode2)) { let n1 = gadgetNode2 as! PWObject;
+                        n1.highlight(UIColor.redColor()) }
                     if (gadgetNode1 != gadgetNode2) {
                         if (containerVC.getGadgetFlag() == 1) { createRopeBetweenNodes(gadgetNode1, node2: gadgetNode2) }
                         if (containerVC.getGadgetFlag() == 2) { createSpringBetweenNodes(gadgetNode1, node2: gadgetNode2) }
                         if (containerVC.getGadgetFlag() == 3) { createRodBetweenNodes(gadgetNode1, node2: gadgetNode2) }
                     }
+                    if (PWObject.isPWObject(gadgetNode2)) { let n1 = gadgetNode2 as! PWObject; n1.unhighlight() }
+                    if (PWObject.isPWObject(gadgetNode1)) { let n1 = gadgetNode1 as! PWObject; n1.unhighlight() }
                     gadgetNode2 = nil;
                     gadgetNode1 = nil;
                 }
@@ -639,8 +644,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 }
 
             }
-            
-            
         }
     }
     
@@ -742,13 +745,11 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         if (type == "Time") { flag = ID_TIME }
         if (type == "End-Parameter") { flag = ID_END_PARAM }
         if (type == "Event") { flag = ID_EVENT }
-
         
         switch flag {
         case ID_TIME:
             let timeVal = CGFloat(Double(setterString[1])!)
             eventorganizer.createTimeEvent(timeVal)
-            
         case ID_END_PARAM:
             let param = Int(setterString[1]);
             let val = Float(setterString[2])! * pixelToMetric
@@ -909,6 +910,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         }
         
         self.physicsWorld.speed = 0;
+        eventorganizer.deleteEvent();
     }
     
     // Moves the objects that are on the screen by the amount that the background is being moved
