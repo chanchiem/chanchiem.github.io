@@ -191,17 +191,6 @@ class containerViewController: UIViewController, UIPopoverPresentationController
     }
     // retrieves gadget inpute from physics log
     func getGadgetInput(gadgetType: String) -> [String] {
-     return PhysicsLogVC.getGadgetInput(gadgetType)
-    }
-    // returns array of parameters with end setter data
-    //if Time ["Time", "value"]
-    //if End Parameter ["End-Parameter", "parameter", "value", "object"]
-    //if Event ["Event", "event type", "value", "object1", "object2"]
-    func getEndSetter()->[String] {
-    return PhysicsLogVC.getEndSetter()
-    }
-    
-    func setsSelectedType(type: String) {
-        PhysicsLogVC.setsSelectedType(type)
+        return PhysicsLogVC.getGadgetInput(gadgetType)
     }
 }

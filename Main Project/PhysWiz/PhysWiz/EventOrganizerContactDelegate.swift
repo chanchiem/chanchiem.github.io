@@ -20,15 +20,11 @@ class EventOrganizerContactDelegate: NSObject, SKPhysicsContactDelegate {
     var eventOrganizer: EventOrganizer! = nil;
     var event: Event! = nil;
     
-    // This part needs to be set so that the contact delegate part of 
-    // this class will call the appropriate function.
     func setCollisionEvent(event: Event) {
         if (!event.isCollisionEvent()) { return }
         self.event = event;
     }
 
-    // This function is called by PhysicsWorld of gamescene everytime
-    // objects collide. 
     func didBeginContact(contact: SKPhysicsContact) {
         if (event == nil) { return; }
         let node1 = contact.bodyA.node!;
