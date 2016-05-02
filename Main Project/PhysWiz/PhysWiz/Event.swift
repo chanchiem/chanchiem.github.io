@@ -8,30 +8,55 @@
 //  An Event object that will be used by the Event Organizer.
 //  Every event that is created will instantiate this event object.
 //  This object can either be a time element, a contact element,
-//  or a distance element.
+//  or a property element. It will be used to trigger conditions
+//  that the user sets.
 //  There are three types of events:
 //  Collision - Any type of collision between two objects.
 //  Time      - Any type of event that relies on time passing by.
-//  Pos       - Any type of event that requires change of position (Velocity, acceleration, etc)
+//  Property  - Any type of event that requires checking sprite properties (Velocity, acceleration, etc)
 
 import Foundation
 
+// The types of parameters to be found within the object.
+// This is ONLY used when the event is of type parameter.
+
+//"Distance", "Height","Velocity x", "Velocity y", "Angular Velocity", "Acceleration x", "Acceleration y"
+struct event_PropertyType {
+    static let UNKNOWN  = -1;
+    static let distance = 0;
+    static let height   = 1;
+    static let vel_x    = 2;
+    static let vel_y    = 3;
+    static let ang_vel  = 4;
+    static let acc_x    = 5;
+    static let acc_y    = 6;
+}
+
 class Event: NSObject {
-    private var isCollision = false;
-    private var isTime      = false;
-    private var isPos       = false;
-    private var alive       = true;  // Is the event still being checked?
+    private var isCollision                     = false;
+    private var isTime                          = false;
+    private var isProperty                      = false;
+    private var alive                           = true;  // Is the event still being checked?
+    private var eventorganizer: EventOrganizer
     
     ////////////////////////////////////////////////////////////
     //////////////// Collision Variables ///////////////////////
     ////////////////////////////////////////////////////////////
-    private var sprite1: PWObject! = nil; // Also used for time
+    private var sprite1: PWObject! = nil; // Also used for time and Properties
     private var sprite2: PWObject! = nil;
     
     ////////////////////////////////////////////////////////////
     //////////////// Time Variables ////////////////////////////
     ////////////////////////////////////////////////////////////
-    private var time: CGFloat! = nil;
+    private var time: CGFloat!  = nil;
+    private var timer: NSTimer! = nil;
+    
+    ////////////////////////////////////////////////////////////
+    //////////////// Parameter Variables ///////////////////////
+    ////////////////////////////////////////////////////////////
+    private var parameterFlag = event_PropertyType.UNKNOWN; // Defined in the top
+    private var parameterLimit = CGFloat.infinity;
+    private var dispatchWorker: NSOperationQueue! = nil; // Worker that checks parameters.
     
     
     // Has the event already been executed?
@@ -56,34 +81,172 @@ class Event: NSObject {
     
     func isCollisionEvent() -> Bool { return self.isCollision }
     
+    // This function is called by the Contact Delegate to check if
+    // collision matches with the event. It is called pretty constantly.
+    func checkAndTriggerCollision(sprite1: PWObject, sprite2: PWObject)
+    {
+        if (!self.isCollisionEvent()) { return; }
+        
+        let eventSprites = self.getSprites();
+        if (eventSprites?.count != 2) { return; }
+        
+        
+        if (!(eventSprites?.contains(sprite1))!) { return; }
+        if (!(eventSprites?.contains(sprite2))!) { return; }
+        
+        // Collision matches with event!
+        self.setHappened();
+        eventorganizer.triggerEvent(self);
+    }
+    
     
     ////////////////////////////////////////////////////////////
     //////////////// Time Parameters ///////////////////////////
     ////////////////////////////////////////////////////////////
     
-    func compTime(event1: Event, event2:Event) -> Bool {
-        return (event1.getTime() > event2.getTime());
-    }
+    func isTimerEvent() -> Bool { return self.isTime }
 
-    func getTime() -> CGFloat? {
+    // Gets the upper bound of the timer
+    func getMaxTime() -> CGFloat? {
         if (!isTime) { return nil; }
         return time;
     }
-    func setTime(time: CGFloat) { self.time = time; }
     
+    func setTime(time: CGFloat) {
+        if (!isTime) { return }
+        self.time = time;
+    }
+    
+    func startTimer() {
+        if (!isTime) { return }
+        if (self.timer == nil) { return }
+        self.timer.fire();
+    }
+    
+    func stopTimer() {
+        if (!isTime) { return }
+        if (self.timer == nil) { return };
+        self.timer.invalidate();
+    }
+    
+    func initTimer(time: CGFloat) {
+        self.setTime(time);
+//        let selector_func = #selector(self.triggerTimer)
+//        self.timer = NSTimer.scheduledTimerWithTimeInterval(Double(time), target: self, selector: selector_func, userInfo: nil, repeats: false);
+    }
+    
+    func triggerTimer() {
+        NSLog("Timer triggered!");
+        self.setHappened();
+        eventorganizer.triggerEvent(self);
+    }
+    
+    ////////////////////////////////////////////////////////////
+    //////////////// PWObject Properties ///////////////////////
+    ////////////////////////////////////////////////////////////
+    func isPropertyEvent() -> Bool { return self.isProperty }
+    
+    // Creates the dispatch worker that will check the event properties.
+    // The reason why I choose to use NSOperationQueue is so that
+    // we take advantage of concurrency. This will hopefully not bog
+    // down the interface in using this approach.
+    func dispatchPropertyChecker() {
+        if (self.dispatchWorker != nil) { return }
+        
+        self.dispatchWorker = NSOperationQueue()
+        
+        let checkLimit : NSBlockOperation = NSBlockOperation (block: {
+            while (true) {
+                // Do all the checking in here
+                if (self.checkGreaterThanLimit()) {
+                    self.setHappened();
+                    self.eventorganizer.triggerEvent(self);
+                    return;
+                }
+            }
+        })
+
+        self.dispatchWorker.addOperation(checkLimit)
+
+    }
+    
+    // Checks if the parameters of these events exceed the limit.
+    // If so, it has been triggered.
+    func checkParameters() {
+        if (!self.isPropertyEvent()) { return }
+        
+        if (self.checkGreaterThanLimit()) {
+            self.setHappened();
+            self.eventorganizer.triggerEvent(self);
+            return;
+        }
+    }
+
+    // Returns the value set by the properties that this event
+    // is trying to find. Returns -1 if event is improperly
+    // initialized.
+    func getCurrentPropertyValue() -> CGFloat {
+        if (!self.isProperty) { return -1; }
+        if (self.parameterFlag == -1) { return -1; }
+        let sprite = sprite1;
+
+        switch parameterFlag {
+            case event_PropertyType.height:
+                return sprite.getPos().y
+
+            case event_PropertyType.distance:
+                return 69; // Distance between two sprites?
+
+            case event_PropertyType.vel_x:
+                return sprite.getVelocity().dx;
+
+            case event_PropertyType.vel_y:
+                return sprite.getVelocity().dy;
+
+            case event_PropertyType.ang_vel:
+                return sprite.getAngularVelocity();
+
+            case event_PropertyType.acc_x:
+                return sprite.getAcceleration().dx;
+
+            case event_PropertyType.acc_y:
+                return sprite.getAcceleration().dy;
+
+            default:
+                return -1;
+        };
+    }
+    
+    // Does the current property value exceed its limit
+    func checkGreaterThanLimit() -> Bool {
+        let currentVal = getCurrentPropertyValue();
+        return currentVal >= self.parameterLimit;
+    }
+    
+    // When this function is called, make sure you input 
+    // the flags based on the struct defined above!
+    // This function doesn't check for invalid flags.
+    func setPropertyType(flag: Int) { self.parameterFlag = flag }
+    
+    // Returns the current flag that this event is using.
+    func getPropertyType() -> Int { return self.parameterFlag }
+    
+    func getPropertyLimit() -> CGFloat { return self.parameterLimit }
+    func setPropertyLimit(limit: CGFloat) { self.parameterLimit = limit; }
     
     ////////////////////////////////////////////////////////////
     
     
-    private init(isCollision: Bool, isTime: Bool, isPos: Bool) {
-        self.isCollision = isCollision;
-        self.isTime      = isTime;
-        self.isPos       = isPos;
+    private init(isCollision: Bool, isTime: Bool, isParameter: Bool, eo: EventOrganizer) {
+        self.isCollision    = isCollision;
+        self.isTime         = isTime;
+        self.isProperty     = isParameter;
+        self.eventorganizer = eo;
     }
     
-    static func createCollision(sprite1: PWObject, sprite2: PWObject) -> Event? {
+    static func createCollision(eo:EventOrganizer, sprite1: PWObject, sprite2: PWObject) -> Event? {
         if (!PWObject.isPWObject(sprite1) && !PWObject.isPWObject(sprite2)) { return nil; }
-        let event = Event.init(isCollision: true, isTime: false, isPos: false)
+        let event = Event.init(isCollision: true, isTime: false, isParameter: false, eo: eo)
     
         event.sprite1 = sprite1;
         event.sprite2 = sprite2;
@@ -91,14 +254,27 @@ class Event: NSObject {
         return event;
     }
     
-    static func createTime(sprite: PWObject, time: CGFloat) -> Event? {
+    static func createTime(eo:EventOrganizer, sprite: PWObject, time: CGFloat) -> Event? {
         if (!PWObject.isPWObject(sprite)) { return nil; }
-        let event = Event.init(isCollision: false, isTime: true, isPos: false)
+        let event = Event.init(isCollision: false, isTime: true, isParameter: false, eo: eo)
         
         event.sprite1 = sprite;
-        event.time = time;
+        event.initTimer(time);
         
         return event;
     }
+    
+    // Make sure to specify parameter flag from the struct!
+    static func createParameter(eo: EventOrganizer, sprite: PWObject, parameterFlag: Int, limitValue: CGFloat) -> Event? {
+        if (!PWObject.isPWObject(sprite)) { return nil; }
+        let event = Event.init(isCollision: false, isTime: false, isParameter: true, eo: eo)
+        
+        event.sprite1 = sprite;
+        event.setPropertyType(parameterFlag);
+        event.setPropertyLimit(limitValue);
+        
+        return event;
+    }
+
     
 }

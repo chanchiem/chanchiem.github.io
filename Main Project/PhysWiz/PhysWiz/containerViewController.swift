@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class containerViewController: UIViewController {
+class containerViewController: UIViewController, UIPopoverPresentationControllerDelegate {
     let staticObjects = ["Ramp", "Platform", "Wall", "Round", "Pulley"]
     @IBOutlet weak var gameView: UIView!
     @IBOutlet weak var physicsLog: UIView!
@@ -32,7 +32,7 @@ class containerViewController: UIViewController {
             objectMenu.action = "rightRevealToggle:"
             // self.view.addGestureRecognizer(self.revealViewController().panGestureRecognizer())
         }
-        
+        self.definesPresentationContext = true
     }
     
     override func didReceiveMemoryWarning() {
@@ -65,17 +65,57 @@ class containerViewController: UIViewController {
         })
         
     }
+    
+    @IBAction func savePopover(sender: AnyObject) {
+        self.performSegueWithIdentifier("popoverSaveView", sender: self)
+    }
+    
+    @IBAction func loadPopover(sender: AnyObject) {
+        self.performSegueWithIdentifier("popoverLoadView", sender: self)
+    }
+    
     // give access from childviewcontrollers to the parentview controller(self)
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-    if (segue.identifier == "toGameView") {
-    GameVC = segue.destinationViewController as! GameViewController
-    GameVC.parentVC = self
+        
+        if (segue.identifier == "toGameView") {
+            GameVC = segue.destinationViewController as! GameViewController
+            GameVC.parentVC = self
         }
-    if (segue.identifier == "toPhysicsLog") {
-        PhysicsLogVC = segue.destinationViewController as! physicslogViewController
-        PhysicsLogVC.parentVC = self
+        
+        if (segue.identifier == "toPhysicsLog") {
+            PhysicsLogVC = segue.destinationViewController as! physicslogViewController
+            PhysicsLogVC.parentVC = self
+        }
+        
+        if (segue.identifier == "popoverSaveView") {
+            let saveVC = segue.destinationViewController as! SavingViewController
+            let saveController = saveVC.popoverPresentationController
+            saveVC.parentVC = self
+            
+            if saveController != nil {
+                saveController?.delegate = self
+            }
+            
+            saveVC.preferredContentSize = CGSizeMake(300, 300)
+        }
+        
+        if (segue.identifier == "popoverLoadView") {
+            let loadVC = segue.destinationViewController as! LoadingViewController
+            let loadController = loadVC.popoverPresentationController
+            loadVC.parentVC = self
+            
+            if loadController != nil {
+                loadController?.delegate = self
+            }
+            
+            loadVC.preferredContentSize = CGSizeMake(300, 300)
         }
     }
+    
+    func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
+        return .None
+    }
+    
     // return from selecting table object
     @IBAction func unwindSegue(segue: UIStoryboardSegue) {
         // do stuff
@@ -151,7 +191,17 @@ class containerViewController: UIViewController {
     }
     // retrieves gadget inpute from physics log
     func getGadgetInput(gadgetType: String) -> [String] {
-        return PhysicsLogVC.getGadgetInput(gadgetType)
+     return PhysicsLogVC.getGadgetInput(gadgetType)
     }
-
+    // returns array of parameters with end setter data
+    //if Time ["Time", "value"]
+    //if End Parameter ["End-Parameter", "parameter", "value", "object"]
+    //if Event ["Event", "event type", "value", "object1", "object2"]
+    func getEndSetter()->[String] {
+    return PhysicsLogVC.getEndSetter()
+    }
+    
+    func setsSelectedType(type: String) {
+        PhysicsLogVC.setsSelectedType(type)
+    }
 }

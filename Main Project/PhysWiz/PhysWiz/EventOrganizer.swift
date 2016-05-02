@@ -17,44 +17,58 @@ import Foundation
 
 class EventOrganizer: NSObject {
     var eventContactDelegate: EventOrganizerContactDelegate! = nil;
-    var timer: NSTimer! = nil;
     var event: Event!;  // The event that we will be analyzing.
     var scene: GameScene;
     
+    // This function is called by the event. This is what happens
+    // when an event condition is actually executed.
+    func triggerEvent(event: Event) {
+        // The event that happened is a collision event!
+        if (event.isCollisionEvent()) {
+            // Event is collision so it should have both sprites!
+            scene.eventTriggered(event)
+        };
+        
+        if (event.isTimerEvent()) {
+            scene.eventTriggered(event)
+        }
+        
+        if (event.isPropertyEvent()) {
+            scene.eventTriggered(event)
+        }
+    }
     
-    // This function is called by the Contact Delegate to check if
-    // collision matches with the event. It is called pretty constantly.
-    func triggerAndCheckCollision(sprite1: PWObject, sprite2: PWObject)
-    {
-        if (event == nil) { return }
-        if (!event.isCollisionEvent()) { return; }
-        
-        let eventSprites = event.getSprites();
-        if (eventSprites?.count != 2) { return; }
-        
-        
-        if (!(eventSprites?.contains(sprite1))!) { return; }
-        if (!(eventSprites?.contains(sprite2))!) { return; }
-        
-        // Collision matches with event!
-        event.setHappened();
-        scene.collisionEventTriggered(sprite1, sprite2: sprite2);
+    // Checks if the parameter event has been triggered.
+    func checkParameterEventTriggered() {
+        if (event == nil) { return; }
+        event.checkParameters();
     }
     
     
+    
     func createCollisionEvent(sprite1: PWObject, sprite2: PWObject) {
-        let event = Event.createCollision(sprite1, sprite2: sprite2)
+        let event = Event.createCollision(self, sprite1: sprite1, sprite2: sprite2)
         
         if (event == nil) { return };
         print("Created collision event");
         
         self.event = event!
+        eventContactDelegate.setCollisionEvent(event!);
     }
     
-//    func createTimeEvent(time: CGFloat)
-//    {
-//        let event = Event.createTime(<#T##sprite: PWObject##PWObject#>, time: <#T##CGFloat#>)
-//    }
+    func createTimeEvent(sprite: PWObject, time: CGFloat)
+    {
+        print("Created timer event");
+        event = Event.createTime(self, sprite: sprite, time: time)
+        
+    }
+    
+    func createParameterEvent(sprite: PWObject, flag: Int, value: CGFloat)
+    {
+        print("Created parameter event");
+        event = Event.createParameter(self, sprite: sprite, parameterFlag: flag, limitValue: value)
+    }
+    
     
     // Resets the current event.
     func resetEvent() -> Event! {
@@ -66,9 +80,9 @@ class EventOrganizer: NSObject {
         return prev;
     }
     
-    // Has the event occured yet?
     func hasEventOccurred() -> Bool { return event.hasHappened() }
     
+    // Does this module have an event relating with it
     func containsEvent() -> Bool { return (event != nil) }
     
     // Creates Event Organizer object and initializes
