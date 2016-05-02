@@ -319,6 +319,18 @@ class PWObject: SKSpriteNode
         return distance;
     }
     
+    // Same as the other distanceTo except it returns it relative to the 
+    // point specified.
+    func distanceToPoint(point: CGPoint) -> CGFloat {
+        let n1 = self.position
+        let n2 = point
+        let deltax = n1.x - n2.x
+        let deltay = n1.y - n2.y
+        let distance = sqrt(deltax * deltax + deltay*deltay)
+        
+        return distance;
+    }
+    
     // Returns the angle from this object to sprite relative to
     // the horizontal x axis.
     func angleTo(sprite: PWObject) -> CGFloat {

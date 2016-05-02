@@ -52,9 +52,10 @@ class Event: NSObject {
     ////////////////////////////////////////////////////////////
     //////////////// Parameter Variables ///////////////////////
     ////////////////////////////////////////////////////////////
-    private var parameterFlag   = event_PropertyType.UNKNOWN; // Defined in the top
-    private var parameterLimit  = CGFloat.infinity;
-    private var dispatchWorker: NSOperationQueue! = nil; // Worker that checks parameters.
+    private var parameterFlag                       = event_PropertyType.UNKNOWN; // Defined in the top
+    private var parameterLimit                      = CGFloat.infinity;
+    private var dispatchWorker: NSOperationQueue!   = nil; // Worker that checks parameters.
+    private var originPoint: CGPoint!               = nil; // The point that the distance is gonna be compared to.
     
     
     // Has the event already been executed?
@@ -193,7 +194,7 @@ class Event: NSObject {
                 return sprite.getPos().y
 
             case event_PropertyType.distance:
-                return 69; // Distance between two sprites?
+                return sprite.distanceToPoint(self.originPoint);
 
             case event_PropertyType.vel_x:
                 return sprite.getVelocity().dx;
@@ -231,6 +232,8 @@ class Event: NSObject {
     
     func getPropertyLimit() -> CGFloat { return self.parameterLimit }
     func setPropertyLimit(limit: CGFloat) { self.parameterLimit = limit; }
+    
+    func setOriginPoint(pt: CGPoint) { self.originPoint = pt }
     
     ////////////////////////////////////////////////////////////
     
