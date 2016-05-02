@@ -15,8 +15,9 @@ import Darwin
     var objects = ["none", "test"]
     var parameterNames = ["Mass", "Px", "Py","Vx", "Vy", "Av", "Ax", "Ay", "Fx", "Fy"]
     var endSetterParameterNames = ["Distance", "Height","Velocity x", "Velocity y", "Angular Velocity", "Acceleration x", "Acceleration y" ]
-    var objectIDMap = [Int: String](); // Each object name will have an ID associated with it
+    var objectIDMap = [String: Int](); // Each object name will have an ID associated with it
     var parentVC = containerViewController()
+    var selectedType = ""
     @IBOutlet var physicsLog: UIView!
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,12 +34,14 @@ import Darwin
         Fx.delegate = self;
         Fy.delegate = self;
         Av.delegate = self;
-        EndParameterInputBox.delegate = self;
+        WorldResistance.delegate = self;
+    EndParameterInputBox.delegate = self;
         // Move all the option boxes to the same spot in so that toggling is simply done with hide and unhide 
         self.activeLogView = self.mainLogView
         self.EndSetter.transform = CGAffineTransformMakeTranslation(0, -200)
         self.SettingsBox.transform = CGAffineTransformMakeTranslation(0, -400)
-         self.ChosenEndView.transform = CGAffineTransformMakeTranslation(0, -600)
+        self.ChosenEndView.transform = CGAffineTransformMakeTranslation(0, -600)
+        self.WorldSettingBox.transform = CGAffineTransformMakeTranslation(500, -200)
         
     }
     override func didReceiveMemoryWarning() {
@@ -54,8 +57,10 @@ import Darwin
     func textFieldDidBeginEditing(textField: UITextField) {
         currentTextField = textField
         currentTextField?.inputView = nil
-    }
+        textField.resignFirstResponder()
 
+            }
+ 
     
     // The input box contains all the text fields for the user to input information.
     // The type of information being passed is declared below the inputbox declaration.
@@ -81,54 +86,85 @@ import Darwin
     //  Settings View
     // ##############################################################
     @IBOutlet weak var SettingsBox: UIView!
+    @IBOutlet weak var WorldSettingBox: UIView!
+    @IBOutlet weak var WorldResistance: UITextField!
+    
     @IBAction func SettingsButton(sender: AnyObject) {
+        if selectedType == "object" {
         activeLogView?.hidden = true
         SettingsBox.hidden = false
         activeLogView = SettingsBox
+        }
+        else {
+        activeLogView?.hidden = true
+        WorldSettingBox.hidden = false
+        activeLogView = WorldSettingBox
+        }
+        
     }
     // changes velocities types tells whether velocity input is cartesian (off) or polar/vectorial (on)
     @IBOutlet weak var velocityType: UISwitch!
     @IBAction func changeVelocityType(sender: AnyObject) {
         if velocityType.on {
+            let vx = Vx.text
+            let vy = Vy.text
             ThirdLabel.text = "V"
             FourthLabel.text = "θ"
-            Vx.text = truncateString(String(toMagnitude(Vx.text!, y: Vy.text!)), decLen: 2)
-            Vy.text = truncateString(String(toTheta(Vx.text!, y: Vy.text!)), decLen: 2)
+            Vx.text = truncateString(String(toMagnitude(vx!, y: vy!)), decLen: 2)
+            Vy.text = truncateString(String(toTheta(vx!, y: vy!)), decLen: 2)
             }
         if !velocityType.on {
+            let v = Vx.text
+            let theta = Vy.text
             ThirdLabel.text = "Vx"
             FourthLabel.text = "Vy"
-            Vx.text = toX(self.Vx.text!, theta: self.Vy.text!)
-            Vy.text = toY(self.Vx.text!, theta: self.Vy.text!)
+            Vx.text = truncateString(String(toX(v!, theta: theta!)), decLen: 2)
+            Vy.text = truncateString(String(toY(v!, theta: theta!)), decLen: 2)
         }
     }
     // changes acceleration types tells whether acceleration input is cartesian (off) or polar/vectorial (on)
     @IBOutlet weak var accelerationType: UISwitch!
     @IBAction func changeAccelerationType(sender: AnyObject) {
         if accelerationType.on {
+            let ax = Ax.text
+            let ay = Ay.text
             FifthLabel.text = "A"
             SixthLabel.text = "θ"
+            Ax.text = truncateString(String(toMagnitude(ax!, y: ay!)), decLen: 2)
+            Ay.text = truncateString(String(toTheta(ax!, y: ay!)), decLen: 2)
         }
         if !accelerationType.on {
+            let a = Ax.text
+            let theta = Ay.text
             FifthLabel.text = "Ax"
             SixthLabel.text = "Ay"
+            Ax.text = truncateString(String(toX(a!, theta: theta!)), decLen: 2)
+            Ay.text = truncateString(String(toY(a!, theta: theta!)), decLen: 2)
         }
     }
     // changes force types tells whether force input is cartesian (off) or polar/vectorial (on)
     @IBOutlet weak var forceType: UISwitch!
     @IBAction func changeForceType(sender: AnyObject) {
         if forceType.on {
+            let fx = Fx.text
+            let fy = Fy.text
             SeventhLabel.text = "F"
             EighthLabel.text = "θ"
+            Fx.text = truncateString(String(toMagnitude(fx!, y: fy!)), decLen: 2)
+            Fy.text = truncateString(String(toTheta(fx!, y: fy!)), decLen: 2)
         }
         if !forceType.on {
+            let f = Fx.text
+            let theta = Fy.text
             SeventhLabel.text = "Fx"
             EighthLabel.text = "Fy"
+            Fx.text = truncateString(String(toX(f!, theta: theta!)), decLen: 2)
+            Fy.text = truncateString(String(toY(f!, theta: theta!)), decLen: 2)
         }
     }
     // ##############################################################
     //  InputBox
-    // ####################################
+    // ##############################################################
     @IBOutlet weak var TopLabel: UILabel!
     @IBOutlet weak var FirstLabel: UILabel! //Px
     @IBOutlet weak var SecondLabel: UILabel! //Py
@@ -220,8 +256,13 @@ import Darwin
      
         }
         else if gadgetType == "Pulley" {
-         
-       
+            values.append(Mass.text!) //scale
+            values.append(Px.text!) // position x
+            values.append(Py.text!) // position y
+            values.append(Vx.text!) // radius
+            values.append(Vy.text!) // width
+            values.append(Ax.text!) // rotate
+            values.append(Ay.text!) // friction
         }
        return values
  
@@ -361,6 +402,10 @@ import Darwin
             Av.hidden = true
         }
     }
+    // sets up log box for appropriate selection
+    func setsSelectedType(type: String) {
+     selectedType = type
+    }
     // Resets the input fields in the input box state variable is either static or editable
     func setsGadgetInputBox(gadgetType: String, input: [Float], state: String ) {
         if state == "static" {
@@ -482,16 +527,15 @@ import Darwin
     func addObjectToList(ID: Int) {
        let objectName = "object " + String(ID)
        selectionTableData.append(objectName)
-       objectIDMap[ID] = objectName
+       objectIDMap[objectName] = ID
        objectSelector.reloadData()
        EndObjectList.reloadData()
     }
     func removeObjectFromList(ID: Int) {
         for i in Range(0 ..< selectionTableData.count) {
-            let objectName = objectIDMap[ID]
-            if (selectionTableData[i] == objectName) {
+            if (objectIDMap[selectionTableData[i]] == ID) {
+                objectIDMap[selectionTableData[i]] = nil;
                 selectionTableData.removeAtIndex(i)
-                objectIDMap[ID] = nil;
                 objectSelector.reloadData()
                 EndObjectList.reloadData()
                 break
@@ -536,22 +580,24 @@ import Darwin
     func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         
         if tableView == objectSelector {
-            for ID in objectIDMap.keys {
-                if objectIDMap[ID] == selectionTableData[indexPath.row] {
-                    parentVC.changeSelectedObject(ID)
+            for object in objectIDMap.keys {
+                if object == selectionTableData[indexPath.row] {
+                    parentVC.changeSelectedObject(objectIDMap[object]!)
                 }
      
             }
         }
         // deals with object table selection for endsetter
         if tableView == EndObjectList {
+            
            EndObject = selectionTableData[indexPath.row]
-               ForObjectLabel.text = "For " + getEndobject()
+            ForObjectLabel.text = "For " + getEndobject()
         }
         // deals with parameter table selection for endsetter
         if tableView == EndParameterList {
-            EndType = endSetterParameterNames[indexPath.row]
-             ParameterEqualsTo.text = getEndType() + " ="
+            EndParameter = indexPath.row
+             ParameterEqualsTo.text = endSetterParameterNames[EndParameter] + " ="
+            
         }
 
     }
@@ -574,8 +620,11 @@ import Darwin
     @IBOutlet weak var ParameterEqualsTo: UILabel!
     @IBOutlet weak var EndParameterListBox: UIScrollView!
     @IBOutlet weak var EndParameterList: UITableView!
+    var endSettings: [String] = ["", "", "", "", ""]
     var EndType = ""
+    var EndParameter = 0
     var EndObject = ""
+    var EndObject2 = ""
     func changeToEndSetter() {
         activeLogView!.hidden = true
         EndSetter.hidden = false
@@ -596,9 +645,32 @@ import Darwin
     func getEndobject() -> String {
         return EndObject
     }
+    //returns the end event that is currently set
     func getEndSetter() -> [String] {
-        let endSettings = [String]()
-        
+        if EndType == "Time" {
+            endSettings[0] = EndType
+            endSettings[1] = EndParameterInputBox.text!
+            endSettings[2] = ""
+            endSettings[3] = ""
+            endSettings[4] = ""
+            
+        }
+        if EndType == "End-Parameter" {
+            endSettings[0] = EndType
+            endSettings[1] = String(EndParameter)
+            endSettings[2] = EndParameterInputBox.text!
+            endSettings[3] = String(objectIDMap[EndObject]!)
+            endSettings[4] = ""
+            
+        }
+        if EndType == "Event" {
+            endSettings[0] = EndType
+            endSettings[1] = String(EndParameter)
+            endSettings[2] = EndParameterInputBox.text!
+            endSettings[3] = String(objectIDMap[EndObject]!)
+            endSettings[4] = String(objectIDMap[EndObject2]!)
+        }
+
         return endSettings
     }
     // Set up endssetter View for Entering Time
@@ -629,6 +701,16 @@ import Darwin
     }
   
     @IBAction func eventSet(sender: AnyObject) {
+        EndViewTitle.text = "Event"
+        EndType = "Event"
+        ForObjectLabel.hidden = false
+        StopWhenLabel.hidden = false
+        ForObjectLabel.hidden = false
+        EndParameterListBox.hidden = false
+        EndObjectListBox.hidden = false
+        ChosenEndView.hidden = false
+        activeLogView!.hidden = true
+        activeLogView = ChosenEndView
     }
 
     // ##############################################################
@@ -649,9 +731,13 @@ import Darwin
     // converts degrees to radians (for use in darwin math)
     func degToRad(degrees: Float) -> Float {
         // M_PI is defined in Darwin.C.math
-        return Float(M_PI) * 2.0 * degrees / 360.0
+        return Float(M_PI) * degrees/180.0
     }
-    
+    // converts degrees to radians (for use in darwin math)
+    func radToDeg(radians: Float) -> Float {
+        // M_PI is defined in Darwin.C.math
+        return radians/(Float(M_PI)) * 180.0
+    }
     // converts to X given magnitude and angle returns 0 if either value is nil (Note: this may need to change to keep current val)
     func toX(velocity: String, theta: String)->String{
         if (Float(velocity) != nil  && Float(theta) != nil) {
@@ -668,7 +754,7 @@ import Darwin
     }
     func toTheta(x:String, y: String) -> String{
         while (Float(x) != nil  && Float(y) != nil) {
-            return  String(Darwin.atan(Float(y)!/Float(x)!)*100)
+            return  String(radToDeg(Darwin.atan(Float(y)!/Float(x)!)))
         }
         return "0"
     }
