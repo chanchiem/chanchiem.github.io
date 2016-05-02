@@ -23,15 +23,19 @@ class EventOrganizer: NSObject {
     // This function is called by the event. This is what happens
     // when an event condition is actually executed.
     func triggerEvent(event: Event) {
-        if (event != self.event) { return }
-        
         // The event that happened is a collision event!
         if (event.isCollisionEvent()) {
             // Event is collision so it should have both sprites!
             scene.eventTriggered(event)
         };
-        if (event.isTimerEvent()) { scene.eventTriggered(event) }
-        if (event.isPropertyEvent()) { scene.eventTriggered(event) }
+        
+        if (event.isTimerEvent()) {
+            scene.eventTriggered(event)
+        }
+        
+        if (event.isPropertyEvent()) {
+            scene.eventTriggered(event)
+        }
     }
     
     // Checks if the parameter event has been triggered.
@@ -40,11 +44,9 @@ class EventOrganizer: NSObject {
         event.checkParameters();
     }
     
-    // Creates a collision event. If these two objects ever collide, then
-    // the gamescene eventTriggered function will be called.
-    // The game scene handles the rest.
+    
+    
     func createCollisionEvent(sprite1: PWObject, sprite2: PWObject) {
-        if (self.event != nil) { deleteEvent() }
         let event = Event.createCollision(self, sprite1: sprite1, sprite2: sprite2)
         
         if (event == nil) { return };
@@ -54,31 +56,22 @@ class EventOrganizer: NSObject {
         eventContactDelegate.setCollisionEvent(event!);
     }
     
-    // Creates a time event. In the specified time frame AFTER starting the simulation,
-    // the eventTriggered function gets called in game scene.
-    func createTimeEvent(time: CGFloat)
+    func createTimeEvent(sprite: PWObject, time: CGFloat)
     {
-        if (self.event != nil) { deleteEvent() }
         print("Created timer event");
-        event = Event.createTime(self, time: time)
+        event = Event.createTime(self, sprite: sprite, time: time)
         
     }
     
-    
-    // Creates a parameter-driven event. This is a kind of event that 
-    // checks when a specific parameter of a PWObject exceeds a given value.
-    // The available event types are defined in the struct in Event.swift.
     func createParameterEvent(sprite: PWObject, flag: Int, value: CGFloat)
     {
-        if (self.event != nil) { deleteEvent() }
         print("Created parameter event");
         event = Event.createParameter(self, sprite: sprite, parameterFlag: flag, limitValue: value)
-        event.setOriginPoint(sprite.position);
     }
     
     
-    // Deletes the current event.
-    func deleteEvent() -> Event! {
+    // Resets the current event.
+    func resetEvent() -> Event! {
         if (event == nil) { return nil; }
         
         let prev = event;
