@@ -700,6 +700,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 // Pause / Resume the world
                 if (pwPaused) {
                     let end = containerVC.getEndSetter()
+                    executeEndSetterArray(end); // Executes the events and starts them.
                     self.physicsWorld.speed = 1
                     pwPaused = false
                     button.texture = SKTexture(imageNamed: "pause.png")
@@ -718,6 +719,43 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 }
             }
             
+        }
+    }
+    
+    // Creates conditional events based on the input array.
+    func executeEndSetterArray(setterString: [String])
+    {
+        //if Time ["Time", "value"]
+        //if End Parameter ["End-Parameter", "parameter", "value", "object"]
+        //if Event ["Event", "event type", "value", "object1", "object2"]
+        let ID_TIME         = 0; // Time parameters
+        let ID_END_PARAM    = 1; // Refers to any single-type number.
+        let ID_EVENT        = 2; // Event refers to any
+        var flag = -1;
+        
+        let type = setterString[0];
+        
+        if (type == "Time") { flag = ID_TIME }
+        if (type == "End-Parameter") { flag = ID_END_PARAM }
+        if (type == "Event") { flag = ID_EVENT }
+
+        
+        switch flag {
+        case ID_TIME:
+            let timeVal = CGFloat(Double(setterString[1])!)
+            eventorganizer.createTimeEvent(timeVal)
+            
+        case ID_END_PARAM:
+            let param = Int(setterString[1]);
+            let val = CGFloat(Double(setterString[2])!)
+            let sprite = objIdToSprite[Int(setterString[3])!]
+            eventorganizer.createParameterEvent(sprite!, flag: param!, value: val)
+        case ID_EVENT:
+            let sprite1 = objIdToSprite[Int(setterString[3])!]
+            let sprite2 = objIdToSprite[Int(setterString[4])!]
+            eventorganizer.createCollisionEvent(sprite1!, sprite2: sprite2!);
+        default:
+            return;
         }
     }
 

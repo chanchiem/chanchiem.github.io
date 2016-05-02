@@ -255,11 +255,10 @@ class Event: NSObject {
         return event;
     }
     
-    static func createTime(eo:EventOrganizer, sprite: PWObject, time: CGFloat) -> Event? {
-        if (!PWObject.isPWObject(sprite)) { return nil; }
+    static func createTime(eo:EventOrganizer, time: CGFloat) -> Event? {
         let event = Event.init(isCollision: false, isTime: true, isParameter: false, eo: eo)
         
-        event.sprite1 = sprite;
+//        event.sprite1 = sprite;
         event.initTimer(time);
         
         return event;

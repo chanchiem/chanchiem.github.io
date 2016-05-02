@@ -55,10 +55,10 @@ class EventOrganizer: NSObject {
     
     // Creates a time event. In the specified time frame AFTER starting the simulation,
     // the eventTriggered function gets called in game scene.
-    func createTimeEvent(sprite: PWObject, time: CGFloat)
+    func createTimeEvent(time: CGFloat)
     {
         print("Created timer event");
-        event = Event.createTime(self, sprite: sprite, time: time)
+        event = Event.createTime(self, time: time)
         
     }
     
