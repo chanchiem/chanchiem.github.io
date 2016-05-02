@@ -73,6 +73,7 @@ class EventOrganizer: NSObject {
         if (self.event != nil) { deleteEvent() }
         print("Created parameter event");
         event = Event.createParameter(self, sprite: sprite, parameterFlag: flag, limitValue: value)
+        event.setOriginPoint(sprite.position);
     }
     
     
