@@ -105,7 +105,7 @@ class Event: NSObject {
     ////////////////////////////////////////////////////////////
     
     func isTimerEvent() -> Bool { return self.isTime }
-
+    
     // Gets the upper bound of the timer
     func getMaxTime() -> CGFloat? {
         if (!isTime) { return nil; }
@@ -141,8 +141,7 @@ class Event: NSObject {
     
     func initTimer(time: CGFloat) {
         self.setTime(time);
-        let selector_func = Selector(self.triggerTimer())
-        self.timer = NSTimer.scheduledTimerWithTimeInterval(Double(time), target: self, selector: selector_func, userInfo: nil, repeats: true);
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(Double(time), target: self, selector: "triggerTimer", userInfo: nil, repeats: true);
     }
     
     func triggerTimer() {
@@ -176,9 +175,9 @@ class Event: NSObject {
                 }
             }
         })
-
+        
         self.dispatchWorker.addOperation(checkLimit)
-
+        
     }
     
     // Checks if the parameters of these events exceed the limit.
@@ -192,7 +191,7 @@ class Event: NSObject {
             return;
         }
     }
-
+    
     // Returns the value set by the properties that this event
     // is trying to find. Returns -1 if event is improperly
     // initialized.
@@ -200,31 +199,31 @@ class Event: NSObject {
         if (!self.isProperty) { return -1; }
         if (self.parameterFlag == -1) { return -1; }
         let sprite = sprite1;
-
+        
         switch parameterFlag {
-            case event_PropertyType.height:
-                return sprite.getPos().y
-
-            case event_PropertyType.distance:
-                return sprite.distanceToPoint(self.originPoint);
-
-            case event_PropertyType.vel_x:
-                return sprite.getVelocity().dx;
-
-            case event_PropertyType.vel_y:
-                return sprite.getVelocity().dy;
-
-            case event_PropertyType.ang_vel:
-                return sprite.getAngularVelocity();
-
-            case event_PropertyType.acc_x:
-                return sprite.getAcceleration().dx;
-
-            case event_PropertyType.acc_y:
-                return sprite.getAcceleration().dy;
-
-            default:
-                return -1;
+        case event_PropertyType.height:
+            return sprite.getPos().y
+            
+        case event_PropertyType.distance:
+            return sprite.distanceToPoint(self.originPoint);
+            
+        case event_PropertyType.vel_x:
+            return sprite.getVelocity().dx;
+            
+        case event_PropertyType.vel_y:
+            return sprite.getVelocity().dy;
+            
+        case event_PropertyType.ang_vel:
+            return sprite.getAngularVelocity();
+            
+        case event_PropertyType.acc_x:
+            return sprite.getAcceleration().dx;
+            
+        case event_PropertyType.acc_y:
+            return sprite.getAcceleration().dy;
+            
+        default:
+            return -1;
         };
     }
     
@@ -234,7 +233,7 @@ class Event: NSObject {
         return currentVal >= self.parameterLimit;
     }
     
-    // When this function is called, make sure you input 
+    // When this function is called, make sure you input
     // the flags based on the struct defined above!
     // This function doesn't check for invalid flags.
     func setPropertyType(flag: Int) { self.parameterFlag = flag }
@@ -260,7 +259,7 @@ class Event: NSObject {
     static func createCollision(eo:EventOrganizer, sprite1: PWObject, sprite2: PWObject) -> Event? {
         if (!PWObject.isPWObject(sprite1) && !PWObject.isPWObject(sprite2)) { return nil; }
         let event = Event.init(isCollision: true, isTime: false, isParameter: false, eo: eo)
-    
+        
         event.sprite1 = sprite1;
         event.sprite2 = sprite2;
         
@@ -270,7 +269,7 @@ class Event: NSObject {
     static func createTime(eo:EventOrganizer, time: CGFloat) -> Event? {
         let event = Event.init(isCollision: false, isTime: true, isParameter: false, eo: eo)
         
-//        event.sprite1 = sprite;
+        //        event.sprite1 = sprite;
         event.initTimer(time);
         event.gameTimePassed = 0;
         
@@ -288,6 +287,6 @@ class Event: NSObject {
         
         return event;
     }
-
+    
     
 }

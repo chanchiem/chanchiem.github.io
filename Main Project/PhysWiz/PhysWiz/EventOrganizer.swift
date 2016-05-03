@@ -79,7 +79,7 @@ class EventOrganizer: NSObject {
     }
     
     
-    // Creates a parameter-driven event. This is a kind of event that 
+    // Creates a parameter-driven event. This is a kind of event that
     // checks when a specific parameter of a PWObject exceeds a given value.
     // The available event types are defined in the struct in Event.swift.
     func createParameterEvent(sprite: PWObject, flag: Int, value: CGFloat)
@@ -114,6 +114,4 @@ class EventOrganizer: NSObject {
         eventContactDelegate = EventOrganizerContactDelegate.init(eo: self);
         gamescene.physicsWorld.contactDelegate = eventContactDelegate;
     }
-    
-    
 }

@@ -731,12 +731,11 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 else            { pauseWorld()  }
 
             }
-            
         }
     }
     
     func resumeWorld() {
-        eventorganizer.resumeEventTimer()
+        //eventorganizer.resumeEventTimer()
         pwPaused = false;
         let end = containerVC.getEndSetter()
         executeEndSetterArray(end); // Executes the events and starts them.
@@ -751,7 +750,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     }
     
     func pauseWorld() {
-        eventorganizer.pauseEventTimer()
+        //eventorganizer.pauseEventTimer()
+        objectProperties = saveAllObjectProperties()
         pwPaused = true;
         self.physicsWorld.speed = 0
         pwPaused = true

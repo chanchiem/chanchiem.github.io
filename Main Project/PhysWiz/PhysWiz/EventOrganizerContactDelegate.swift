@@ -14,21 +14,21 @@ import UIKit
 import SpriteKit
 
 class EventOrganizerContactDelegate: NSObject, SKPhysicsContactDelegate {
-//    var timeEvents      = [Event](); // Anything that handles time
-//    var posEvents       = [Event](); // Anything that handles position, acceleration, velocity
-//    var collisionEvents = [Event](); // Handles Collision Events;
+    //    var timeEvents      = [Event](); // Anything that handles time
+    //    var posEvents       = [Event](); // Anything that handles position, acceleration, velocity
+    //    var collisionEvents = [Event](); // Handles Collision Events;
     var eventOrganizer: EventOrganizer! = nil;
     var event: Event! = nil;
     
-    // This part needs to be set so that the contact delegate part of 
+    // This part needs to be set so that the contact delegate part of
     // this class will call the appropriate function.
     func setCollisionEvent(event: Event) {
         if (!event.isCollisionEvent()) { return }
         self.event = event;
     }
-
+    
     // This function is called by PhysicsWorld of gamescene everytime
-    // objects collide. 
+    // objects collide.
     func didBeginContact(contact: SKPhysicsContact) {
         if (event == nil) { return; }
         let node1 = contact.bodyA.node!;
