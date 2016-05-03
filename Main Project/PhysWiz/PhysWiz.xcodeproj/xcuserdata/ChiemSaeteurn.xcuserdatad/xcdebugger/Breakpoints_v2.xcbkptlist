@@ -15,7 +15,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "438"
             endingLineNumber = "438"
-            landmarkName = "updateNodeLabels()"
+            landmarkName = "createRodBetweenNodes(_:node2:)"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -31,11 +31,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "447"
             endingLineNumber = "447"
-<<<<<<< HEAD
             landmarkName = "createRodBetweenNodes(_:node2:)"
-=======
-            landmarkName = "updateNodeLabels()"
->>>>>>> origin/master
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -294,11 +290,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "518"
             endingLineNumber = "518"
-<<<<<<< HEAD
             landmarkName = "selectSprite(_:)"
-=======
-            landmarkName = "createWall(_:)"
->>>>>>> origin/master
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -314,11 +306,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "515"
             endingLineNumber = "515"
-<<<<<<< HEAD
             landmarkName = "selectSprite(_:)"
-=======
-            landmarkName = "createPlatform(_:)"
->>>>>>> origin/master
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -430,7 +418,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "406"
             endingLineNumber = "406"
-            landmarkName = "updateSprings()"
+            landmarkName = "updateNodeLabels()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -446,11 +434,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "446"
             endingLineNumber = "446"
-<<<<<<< HEAD
             landmarkName = "createRodBetweenNodes(_:node2:)"
-=======
-            landmarkName = "updateNodeLabels()"
->>>>>>> origin/master
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -466,11 +450,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "445"
             endingLineNumber = "445"
-<<<<<<< HEAD
             landmarkName = "createRodBetweenNodes(_:node2:)"
-=======
-            landmarkName = "updateNodeLabels()"
->>>>>>> origin/master
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -486,7 +466,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "235"
             endingLineNumber = "235"
-            landmarkName = "getGadgetParameters(_:)"
+            landmarkName = "saveAllObjectProperties()"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -662,11 +642,7 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "663"
             endingLineNumber = "663"
-<<<<<<< HEAD
             landmarkName = "touchesEnded(_:withEvent:)"
-=======
-            landmarkName = "touchesBegan(_:withEvent:)"
->>>>>>> origin/master
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -725,19 +701,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PhysWiz/Event.swift"
-<<<<<<< HEAD
             timestampString = "483917993.98986"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "148"
             endingLineNumber = "148"
-=======
-            timestampString = "483935881.376923"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "147"
-            endingLineNumber = "147"
->>>>>>> origin/master
             landmarkName = "triggerTimer()"
             landmarkType = "5">
          </BreakpointContent>
@@ -749,19 +717,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PhysWiz/Event.swift"
-<<<<<<< HEAD
             timestampString = "483917993.98986"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "239"
             endingLineNumber = "239"
-=======
-            timestampString = "483935881.376923"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "238"
-            endingLineNumber = "238"
->>>>>>> origin/master
             landmarkName = "Event"
             landmarkType = "3">
          </BreakpointContent>
@@ -773,19 +733,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PhysWiz/Event.swift"
-<<<<<<< HEAD
             timestampString = "483917993.98986"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "203"
             endingLineNumber = "203"
-=======
-            timestampString = "483935881.376923"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "202"
-            endingLineNumber = "202"
->>>>>>> origin/master
             landmarkName = "getCurrentPropertyValue()"
             landmarkType = "5">
          </BreakpointContent>
@@ -797,20 +749,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PhysWiz/GameScene.swift"
-<<<<<<< HEAD
             timestampString = "483915569.851139"
-=======
-            timestampString = "483935716.031373"
->>>>>>> origin/master
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "767"
             endingLineNumber = "767"
-<<<<<<< HEAD
             landmarkName = "executeEndSetterArray(_:)"
-=======
-            landmarkName = "pauseWorld()"
->>>>>>> origin/master
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -821,20 +765,12 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PhysWiz/GameScene.swift"
-<<<<<<< HEAD
             timestampString = "483915569.851139"
-=======
-            timestampString = "483935716.031373"
->>>>>>> origin/master
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "764"
             endingLineNumber = "764"
-<<<<<<< HEAD
             landmarkName = "executeEndSetterArray(_:)"
-=======
-            landmarkName = "pauseWorld()"
->>>>>>> origin/master
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -845,22 +781,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PhysWiz/GameScene.swift"
-<<<<<<< HEAD
             timestampString = "483915569.851139"
-=======
-            timestampString = "483935716.031373"
->>>>>>> origin/master
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "774"
             endingLineNumber = "774"
-<<<<<<< HEAD
             landmarkName = "GameScene"
             landmarkType = "3">
-=======
-            landmarkName = "executeEndSetterArray(_:)"
-            landmarkType = "5">
->>>>>>> origin/master
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -870,11 +797,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PhysWiz/GameScene.swift"
-<<<<<<< HEAD
             timestampString = "483915569.851139"
-=======
-            timestampString = "483935716.031373"
->>>>>>> origin/master
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "772"
@@ -890,11 +813,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PhysWiz/GameScene.swift"
-<<<<<<< HEAD
             timestampString = "483915569.851139"
-=======
-            timestampString = "483935716.031373"
->>>>>>> origin/master
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "771"
@@ -958,19 +877,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PhysWiz/Event.swift"
-<<<<<<< HEAD
             timestampString = "483917993.98986"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "148"
             endingLineNumber = "148"
-=======
-            timestampString = "483935881.376923"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "147"
-            endingLineNumber = "147"
->>>>>>> origin/master
             landmarkName = "triggerTimer()"
             landmarkType = "5">
          </BreakpointContent>
@@ -998,27 +909,7 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PhysWiz/Event.swift"
-<<<<<<< HEAD
             timestampString = "483917993.98986"
-=======
-            timestampString = "483935881.376923"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "147"
-            endingLineNumber = "147"
-            landmarkName = "triggerTimer()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PhysWiz/Event.swift"
-            timestampString = "483935881.376923"
->>>>>>> origin/master
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "148"
@@ -1027,56 +918,5 @@
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
-<<<<<<< HEAD
-=======
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PhysWiz/EventOrganizer.swift"
-            timestampString = "483933746.41696"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "62"
-            endingLineNumber = "62"
-            landmarkName = "createTimeEvent(_:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PhysWiz/GameScene.swift"
-            timestampString = "483935716.031373"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "935"
-            endingLineNumber = "935"
-            landmarkName = "eventTriggered(_:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PhysWiz/Event.swift"
-            timestampString = "483935881.376923"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "143"
-            endingLineNumber = "143"
-            landmarkName = "initTimer(_:)"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
->>>>>>> origin/master
    </Breakpoints>
 </Bucket>

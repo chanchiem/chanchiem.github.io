@@ -37,13 +37,10 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     let cam = SKCameraNode()
     var camPos = CGPoint()
     var PWObjects = [PWObject]()
-<<<<<<< HEAD
     var PWStaticObjects = [PWStaticObject]()
     var ropeConnections = [SKNode]()
     var springConnections = [SKNode]()
     var rodConnections = [SKNode]()
-=======
->>>>>>> origin/master
     
     var toggledSprite = shapeType.CIRCLE;
     var shapeArray = [shapeType]();
@@ -454,12 +451,9 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     
     
     func createRodBetweenNodes(node1: SKNode, node2: SKNode) {
-<<<<<<< HEAD
         rodConnections.append(node1)
         rodConnections.append(node2)
         
-=======
->>>>>>> origin/master
         let n1 = node1.position
         let n2 = node2.position
         let deltax = n1.x - n2.x
@@ -496,7 +490,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         let Ramp = PWStaticObject.init(objectStringName: "Ramp", position: location, isMovable: true, isSelectable: true)
         gadgetProperties[Ramp] = getGadgetParameters(Ramp);        self.addChild(Ramp)
         selectGadget(Ramp)
-
+        PWStaticObjects += [Ramp]
     }
     // creates platform static gadget
     func createPlatform(location:CGPoint){
@@ -504,6 +498,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         gadgetProperties[Platform] = getGadgetParameters(Platform)
         self.addChild(Platform)
         selectGadget(Platform)
+        PWStaticObjects += [Platform]
     }
     // creates wall static gadget
     func createWall(location:CGPoint){
@@ -511,6 +506,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         gadgetProperties[Wall] = getGadgetParameters(Wall)
         self.addChild(Wall)
         selectGadget(Wall)
+        PWStaticObjects += [Wall]
     }
     // creates round static gadget
     func createRound(location:CGPoint){
@@ -518,6 +514,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         gadgetProperties[Round] = getGadgetParameters(Round)
         self.addChild(Round)
         selectGadget(Round)
+        PWStaticObjects += [Round]
     }
     // creates Pulley static gadget
     func createPulley(location:CGPoint){
@@ -525,6 +522,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         gadgetProperties[Pulley] = getGadgetParameters(Pulley)
         self.addChild(Pulley)
         selectGadget(Pulley)
+        PWStaticObjects += [Pulley]
     }
     // ##############################################################
     // Selects a sprite in the game scene.
@@ -688,16 +686,18 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             // Removes the selectedShape if it's over the trash bin
             if trash.containsPoint(cameraNodeLocation){
                 if selectedSprite != nil {
-                objectProperties.removeValueForKey(selectedSprite)
-                selectedSprite.removeFromParent()
-                containerVC.removeObjectFromList(selectedSprite.getID())
-                self.selectSprite(nil);
+                    PWObjects.removeAtIndex(PWObjects.indexOf(selectedSprite)!)
+                    objectProperties.removeValueForKey(selectedSprite)
+                    selectedSprite.removeFromParent()
+                    containerVC.removeObjectFromList(selectedSprite.getID())
+                    self.selectSprite(nil);
                 }
                 else if selectedGadget != nil {
-                // gadgetProperties.removeValueForKey(selectedGadget) need to populate gadget properties
-                selectedGadget.removeFromParent()
-                //containerVC.removeGadgetFromList(selectedGadgetgetID())  implent this
-                self.selectSprite(nil);
+                    PWStaticObjects.removeAtIndex(PWStaticObjects.indexOf(selectedGadget)!)
+                    // gadgetProperties.removeValueForKey(selectedGadget) need to populate gadget properties
+                    selectedGadget.removeFromParent()
+                    //containerVC.removeGadgetFromList(selectedGadgetgetID())  implent this
+                    self.selectSprite(nil);
                 }
             }
             // Removes all non-essential nodes from the gamescene
@@ -709,14 +709,10 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                     pwPaused = true
                     button.texture = SKTexture(imageNamed: "play.png")
                     PWObjects.removeAll()
-<<<<<<< HEAD
                     PWStaticObjects.removeAll()
                     ropeConnections.removeAll()
                     springConnections.removeAll()
                     rodConnections.removeAll()
-=======
-                    //saveSprites()
->>>>>>> origin/master
                 }
                 containerVC.removeAllFromList()
                 let floor = PWObject.createFloor(CGSize.init(width: background.size.width, height: 20))
@@ -740,11 +736,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     }
     
     func resumeWorld() {
-<<<<<<< HEAD
         eventorganizer.resumeEventTimer()
-=======
-//        eventorganizer.resumeEventTimer()
->>>>>>> origin/master
         pwPaused = false;
         let end = containerVC.getEndSetter()
         executeEndSetterArray(end); // Executes the events and starts them.
@@ -759,13 +751,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     }
     
     func pauseWorld() {
-<<<<<<< HEAD
         eventorganizer.pauseEventTimer()
         pwPaused = true;
-=======
-//        eventorganizer.pauseEventTimer()
-        objectProperties = saveAllObjectProperties()
->>>>>>> origin/master
         self.physicsWorld.speed = 0
         pwPaused = true
         button.texture = SKTexture(imageNamed: "play.png")
@@ -893,10 +880,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                     let position = selectedGadget.position
                     if selectedGadget.isMovable() {
                         selectedGadget.position = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
-<<<<<<< HEAD
-=======
-                        //changes values in the input box to the position it is dragged
->>>>>>> origin/master
                         containerVC.setsGadgetInputBox(selectedGadget.name!, input:getGadgetParameters(selectedGadget), state: "editable")
                     }
         }
@@ -945,14 +928,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             print("Property exceeded: " + String(s));
         }
         
-<<<<<<< HEAD
         self.physicsWorld.speed = 0;
         eventorganizer.deleteEvent();
-=======
-        eventorganizer.deleteEvent();
-        self.pauseWorld();
-//        self.physicsWorld.speed = 0;
->>>>>>> origin/master
     }
     
     
@@ -1070,10 +1047,10 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     // Saves the sprites that are currently in the scene
     func saveSprites(saveNumber: Int) {
         var isSuccessfulSave = false
+        var isSuccessfulSaveS = false
         
         if saveNumber == 1 {
             isSuccessfulSave = NSKeyedArchiver.archiveRootObject(PWObjects, toFile: PWObject.ArchiveURL1.path!)
-<<<<<<< HEAD
             isSuccessfulSaveS = NSKeyedArchiver.archiveRootObject(PWStaticObjects, toFile: PWStaticObject.ArchiveURLS1.path!)
             
             // Stores data for ropes
@@ -1124,18 +1101,11 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         NSUserDefaults.standardUserDefaults().synchronize()
         
         // Prints out to the log if saving isn't successful
-=======
-        }
-        if saveNumber == 2 {
-            isSuccessfulSave = NSKeyedArchiver.archiveRootObject(PWObjects, toFile: PWObject.ArchiveURL2.path!)
-        }
-        if saveNumber == 3 {
-            isSuccessfulSave = NSKeyedArchiver.archiveRootObject(PWObjects, toFile: PWObject.ArchiveURL3.path!)
-        }
-        
->>>>>>> origin/master
         if !isSuccessfulSave {
-            print("Failed to save sprites.")
+            print("Failed to save PWObjects.")
+        }
+        if !isSuccessfulSaveS {
+            print("Failed to save PWStaticObjects")
         }
     }
     
@@ -1156,7 +1126,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         return loadArray
     }
     
-<<<<<<< HEAD
     // Loads static sprites from hardware memory
     func loadStaticSprites(loadFileNumber: Int) -> [PWStaticObject]? {
         var loadStaticArray: [PWStaticObject]?
@@ -1175,8 +1144,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     }
     
     // Loads data that the user saves earlier
-=======
->>>>>>> origin/master
     func loadSave(loadFileNumber: Int) {
         // Deletes all objects and sets the scene
         for node in self.children {
@@ -1184,13 +1151,14 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 node.removeFromParent()
             }
         }
+        selectedSprite = nil
         PWObjects.removeAll()
+        PWStaticObjects.removeAll()
         containerVC.removeAllFromList()
         let floor = PWObject.createFloor(CGSize.init(width: background.size.width, height: 20))
         self.addChild(floor)
         self.addChild(self.createBG())
         
-<<<<<<< HEAD
         var connectRopes = [SKNode]()
         var connectSprings = [SKNode]()
         var connectRods = [SKNode]()
@@ -1238,8 +1206,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         }
         
         // Saves PWObjects
-=======
->>>>>>> origin/master
         if let savedSprites = loadSprites(loadFileNumber) {
             for obj in savedSprites {
                 var values = [Float]()
@@ -1253,7 +1219,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 values.append(Float(0.0))
                 values.append(Float(0.0))
                 values.append(Float(0.0))
-<<<<<<< HEAD
                 
                 for var i = 0; i < savedRopeNodes!.count; i++ {
                     if savedRopeNodes![i].position == obj.position {
@@ -1273,14 +1238,11 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                     }
                 }
                 
-=======
->>>>>>> origin/master
                 objectProperties[obj] = values
                 PWObjects += [obj]
                 self.addChild(obj)
             }
         }
-<<<<<<< HEAD
         
         // Saves PWStaticObjects
         if let savedStaticSprites = loadStaticSprites(loadFileNumber) {
@@ -1350,7 +1312,5 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         for var i = 0; i < sortedConnectRods.count; i += 2 {
             createRodBetweenNodes(sortedConnectRods[i], node2: sortedConnectRods[i+1])
         }
-=======
->>>>>>> origin/master
     }
 }
