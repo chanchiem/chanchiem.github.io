@@ -742,7 +742,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     }
     
     func resumeWorld() {
-        eventorganizer.resumeEventTimer()
+//        eventorganizer.resumeEventTimer()
         pwPaused = false;
         let end = containerVC.getEndSetter()
         executeEndSetterArray(end); // Executes the events and starts them.
@@ -757,8 +757,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     }
     
     func pauseWorld() {
-        eventorganizer.pauseEventTimer()
-        pwPaused = true;
+//        eventorganizer.pauseEventTimer()
+        objectProperties = saveAllObjectProperties()
         self.physicsWorld.speed = 0
         pwPaused = true
         button.texture = SKTexture(imageNamed: "play.png")
@@ -945,8 +945,9 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             print("Property exceeded: " + String(s));
         }
         
-        self.physicsWorld.speed = 0;
         eventorganizer.deleteEvent();
+        self.pauseWorld();
+//        self.physicsWorld.speed = 0;
     }
     
     
