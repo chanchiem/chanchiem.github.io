@@ -619,7 +619,7 @@ import Darwin
                  ObjectIndexQueue[1] = indexPath
                  EndObject = EndObject2
                  EndObject2 = selectionTableData[indexPath.row]
-                }/Users/yosvanilopez/Desktop/PhysWiz/physicslogViewController.swift
+                }
                 if EndObject2 != "" {
                 var secondID = objectIDMap[EndObject2]
                 ForObjectLabel.text = "For " + getEndobject() + " & " + String(secondID!)
@@ -632,15 +632,12 @@ import Darwin
         // deals with parameter table selection for endsetter
         if tableView == EndParameterList {
             EndParameter = indexPath.row
-
             if EndType == "End-Parameter" {
              ParameterEqualsTo.text = endSetterParameterNames[EndParameter] + " ="
             }
             else if EndType == "Event" {
                 ParameterEqualsTo.text = endSetterEventNames[EndParameter] + " ="
             }
-
-
         }
 
     }

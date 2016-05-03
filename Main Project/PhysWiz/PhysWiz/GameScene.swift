@@ -798,8 +798,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             let sprite = objIdToSprite[Int(setterString[3])!]
             eventorganizer.createParameterEvent(sprite!, flag: param!, value: CGFloat(val))
         case ID_EVENT:
-            if (setterString[2] == "") { return; }
             if (setterString[3] == "") { return; }
+            if (setterString[4] == "") { return; }
             let sprite1 = objIdToSprite[Int(setterString[3])!]
             let sprite2 = objIdToSprite[Int(setterString[4])!]
             eventorganizer.createCollisionEvent(sprite1!, sprite2: sprite2!);
