@@ -24,7 +24,7 @@ class PWStaticObject: SKShapeNode
     // game scene.
     private var movable: Bool       = true
     private var selectable: Bool    = true
-    private var metricScale         = Float(10)   // Factor to convert pixel units to metric units
+    private var metricScale         = Float(100)   // Factor to convert pixel units to metric units
     private var staticObjectID      = -1    // Unique ID Assigned to each sprite.
     private var selected            = true  // Flag that determines if the object is selected by the scene.
     private var glowNode: SKShapeNode?      // The node representing the glow of this object.
@@ -381,7 +381,7 @@ class PWStaticObject: SKShapeNode
         let value4 = aDecoder.decodeFloatForKey("value4")
         let value5 = aDecoder.decodeFloatForKey("value5")
         let value6 = aDecoder.decodeFloatForKey("value6")
-        self.values = [value0, Float(objectPosition.x), Float(objectPosition.y), value3, value4, value5, value6]
+        self.values = [value0, Float(objectPosition.x)/metricScale, Float(objectPosition.y)/metricScale, value3/metricScale, value4/metricScale, value5, value6]
     }
     
     // ##############################################################

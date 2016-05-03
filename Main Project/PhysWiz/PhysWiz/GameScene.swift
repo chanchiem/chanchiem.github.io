@@ -56,7 +56,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     var updateFrameCounter = 0
     // used to scale all parameters from pixels to other metric system
     // not applied to mass or values not associated with pixels
-    var pixelToMetric = Float(10)
+    var pixelToMetric = Float(100)
     
     // gives each object an unique number ID
     var ObjectIDCounter = 0
@@ -1264,6 +1264,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         if let savedStaticSprites = loadStaticSprites(loadFileNumber) {
             for obj in savedStaticSprites {
                 gadgetProperties[obj] = obj.values
+                applyAllGadgetProperties(gadgetProperties)
                 
                 for var i = 0; i < savedRopeNodes!.count; i++ {
                     if savedRopeNodes![i].position == obj.position {
