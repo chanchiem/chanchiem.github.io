@@ -786,16 +786,20 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         
         switch flag {
         case ID_TIME:
+            if (setterString[1] == "") { return; }
             let timeVal = CGFloat(Double(setterString[1])!)
             eventorganizer.createTimeEvent(timeVal)
         case ID_END_PARAM:
+            if (setterString[1] == "") { return; }
+            if (setterString[2] == "") { return; }
+            if (setterString[3] == "") { return; }
             let param = Int(setterString[1]);
             let val = Float(setterString[2])! * pixelToMetric
-            let objID = setterString[3]
-            print(objID);
             let sprite = objIdToSprite[Int(setterString[3])!]
             eventorganizer.createParameterEvent(sprite!, flag: param!, value: CGFloat(val))
         case ID_EVENT:
+            if (setterString[2] == "") { return; }
+            if (setterString[3] == "") { return; }
             let sprite1 = objIdToSprite[Int(setterString[3])!]
             let sprite2 = objIdToSprite[Int(setterString[4])!]
             eventorganizer.createCollisionEvent(sprite1!, sprite2: sprite2!);
