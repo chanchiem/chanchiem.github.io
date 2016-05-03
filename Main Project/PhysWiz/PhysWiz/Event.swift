@@ -46,8 +46,9 @@ class Event: NSObject {
     ////////////////////////////////////////////////////////////
     //////////////// Time Variables ////////////////////////////
     ////////////////////////////////////////////////////////////
-    private var time: CGFloat!  = nil;
-    private var timer: NSTimer! = nil;
+    private var time: CGFloat!              = nil;
+    private var timer: NSTimer!             = nil;
+    private var gameTimePassed: CGFloat     = 0; // The total in game time passed with timer.
     
     ////////////////////////////////////////////////////////////
     //////////////// Parameter Variables ///////////////////////
@@ -111,37 +112,43 @@ class Event: NSObject {
         return time;
     }
     
+    func getCurrentTime() -> CGFloat? {
+        if (!isTime) { return nil; }
+        return gameTimePassed;
+    }
+    
     func setTime(time: CGFloat) {
         if (!isTime) { return }
         self.time = time;
     }
     
-    func startTimer() {
+    func resumeTimer() {
         if (!isTime) { return }
         if (self.timer == nil) { return }
-        self.timer.fire();
+        if (self.time <= gameTimePassed) { return }
+        let prevTime = self.time
+        initTimer(self.time - gameTimePassed);
+        print("Timer resumed! " + String(self.time-gameTimePassed) + " seconds remaining" );
+        self.setTime(prevTime);
     }
     
     func stopTimer() {
         if (!isTime) { return }
         if (self.timer == nil) { return };
+        print("Timer stopped! " + String(self.timer.timeInterval) + " seconds remaining" );
         self.timer.invalidate();
     }
     
     func initTimer(time: CGFloat) {
         self.setTime(time);
-<<<<<<< HEAD
-        //let selector_func = #selector(self.triggerTimer)
-        //self.timer = NSTimer.scheduledTimerWithTimeInterval(Double(time), target: self, selector: selector_func, userInfo: nil, repeats: false);
-=======
-//        let selector_func = #selector(self.triggerTimer)
-//        self.timer = NSTimer.scheduledTimerWithTimeInterval(Double(time), target: self, selector: selector_func, userInfo: nil, repeats: false);
->>>>>>> origin/master
+        let selector_func = Selector(self.triggerTimer())
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(Double(time), target: self, selector: selector_func, userInfo: nil, repeats: true);
     }
     
     func triggerTimer() {
         NSLog("Timer triggered!");
         self.setHappened();
+        self.stopTimer();
         eventorganizer.triggerEvent(self);
     }
     
@@ -265,6 +272,7 @@ class Event: NSObject {
         
 //        event.sprite1 = sprite;
         event.initTimer(time);
+        event.gameTimePassed = 0;
         
         return event;
     }

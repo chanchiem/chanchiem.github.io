@@ -200,7 +200,9 @@ class containerViewController: UIViewController, UIPopoverPresentationController
     func getEndSetter()->[String] {
     return PhysicsLogVC.getEndSetter()
     }
-    
+    func deselectTextBox() {
+        PhysicsLogVC.deselectTextBox()
+    }
     func setsSelectedType(type: String) {
         PhysicsLogVC.setsSelectedType(type)
     }

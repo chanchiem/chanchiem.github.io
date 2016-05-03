@@ -14,7 +14,8 @@ import Darwin
     var currentTextField: UITextField?
     var objects = ["none", "test"]
     var parameterNames = ["Mass", "Px", "Py","Vx", "Vy", "Av", "Ax", "Ay", "Fx", "Fy"]
-    var endSetterParameterNames = ["Distance", "Height","Velocity x", "Velocity y", "Angular Velocity", "Acceleration x", "Acceleration y" ]
+    let endSetterParameterNames = ["Distance", "Height","Velocity x", "Velocity y", "Angular Velocity", "Acceleration x", "Acceleration y" ]
+    let endSetterEventNames = ["Collision" ]
     var objectIDMap = [String: Int](); // Each object name will have an ID associated with it
     var parentVC = containerViewController()
     var selectedType = ""
@@ -55,12 +56,16 @@ import Darwin
     
     // save the text field that is being edited
     func textFieldDidBeginEditing(textField: UITextField) {
+        currentTextField?.backgroundColor = UIColor.whiteColor()
         currentTextField = textField
         currentTextField?.inputView = nil
         textField.resignFirstResponder()
-
+        textField.backgroundColor = UIColor.init(red: 0.8314, green: 0.8667, blue: 0.9882, alpha: 1.0) //light yellow
             }
- 
+    func deselectTextBox() {
+    currentTextField?.backgroundColor = UIColor.whiteColor()
+     currentTextField = nil
+    }
     
     // The input box contains all the text fields for the user to input information.
     // The type of information being passed is declared below the inputbox declaration.
@@ -514,9 +519,6 @@ import Darwin
         activeLogView = mainLogView
     }
     
-    
-    
-    
     // ##############################################################
     //  Table Settings for mainView and for Endsetter
     // ##############################################################
@@ -555,8 +557,12 @@ import Darwin
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         // return count of parameter names list
-        if (tableView == EndParameterList) {
+        if (tableView == EndParameterList && EndType == "End-Parameter") {
           return endSetterParameterNames.count
+        }
+        // return count of Event names list
+        else if (tableView == EndParameterList && EndType == "Event") {
+            return endSetterEventNames.count
         }
         // return count list of objects in the scene
         return selectionTableData.count
@@ -565,8 +571,13 @@ import Darwin
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = UITableViewCell(style: UITableViewCellStyle.Default, reuseIdentifier: "Cell")
         // populate parameter names table
-        if (tableView == EndParameterList) {
-             cell.textLabel?.text = endSetterParameterNames[indexPath.row] as String
+        if (tableView == EndParameterList && EndType == "End-Parameter") {
+              cell.textLabel?.text = endSetterParameterNames[indexPath.row] as String
+            
+        }
+        // populate Event names table
+        else if (tableView == EndParameterList && EndType == "Event") {
+            cell.textLabel?.text = endSetterEventNames[indexPath.row] as String
         }
         // populate tables with
         else {
@@ -589,17 +600,63 @@ import Darwin
         }
         // deals with object table selection for endsetter
         if tableView == EndObjectList {
-            
+            if EndType == "End-Parameter" {
            EndObject = selectionTableData[indexPath.row]
             ForObjectLabel.text = "For " + getEndobject()
+            }
+            else if EndType == "Event" {
+                if EndObject == "" {
+                EndObject = selectionTableData[indexPath.row]
+                ObjectIndexQueue[0] = indexPath
+                }
+                else if EndObject2 == "" {
+                EndObject2 = selectionTableData[indexPath.row]
+                ObjectIndexQueue[1] = indexPath
+                }
+                else {
+                 EndObjectList.deselectRowAtIndexPath(ObjectIndexQueue[0], animated: false)
+                 ObjectIndexQueue[0] = ObjectIndexQueue[1]
+                 ObjectIndexQueue[1] = indexPath
+                 EndObject = EndObject2
+                 EndObject2 = selectionTableData[indexPath.row]
+                }/Users/yosvanilopez/Desktop/PhysWiz/physicslogViewController.swift
+                if EndObject2 != "" {
+                var secondID = objectIDMap[EndObject2]
+                ForObjectLabel.text = "For " + getEndobject() + " & " + String(secondID!)
+                }
+                else {
+                    ForObjectLabel.text = "For " + getEndobject() + " & "
+                }
+            }
         }
         // deals with parameter table selection for endsetter
         if tableView == EndParameterList {
             EndParameter = indexPath.row
+
+            if EndType == "End-Parameter" {
              ParameterEqualsTo.text = endSetterParameterNames[EndParameter] + " ="
-            
+            }
+            else if EndType == "Event" {
+                ParameterEqualsTo.text = endSetterEventNames[EndParameter] + " ="
+            }
+
+
         }
 
+    }
+    func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
+        if tableView == EndObjectList {
+            if indexPath == ObjectIndexQueue[0] {
+                EndObject = selectionTableData[ObjectIndexQueue[1].row]
+                EndObject2 = ""
+                ObjectIndexQueue[0] = ObjectIndexQueue[1]
+            }
+            if indexPath == ObjectIndexQueue[1] {
+                EndObject2 = ""
+                ObjectIndexQueue[1] = NSIndexPath()
+            }
+            
+        }
     }
     // ##############################################################
     //  Simulation End setter
@@ -612,7 +669,6 @@ import Darwin
     @IBOutlet weak var EndViewTitle: UILabel!
     @IBOutlet weak var EndViewBackButton: UIButton!
     @IBOutlet weak var EndParameterInputBox: UITextField!
-    
     @IBOutlet weak var StopWhenLabel: UILabel!
     @IBOutlet weak var ForObjectLabel: UILabel!
     @IBOutlet weak var EndObjectListBox: UIScrollView!
@@ -620,11 +676,11 @@ import Darwin
     @IBOutlet weak var ParameterEqualsTo: UILabel!
     @IBOutlet weak var EndParameterListBox: UIScrollView!
     @IBOutlet weak var EndParameterList: UITableView!
-    var endSettings: [String] = ["", "", "", "", ""]
     var EndType = ""
     var EndParameter = 0
     var EndObject = ""
     var EndObject2 = ""
+    var ObjectIndexQueue = [NSIndexPath(), NSIndexPath()]
     func changeToEndSetter() {
         activeLogView!.hidden = true
         EndSetter.hidden = false
@@ -645,8 +701,13 @@ import Darwin
     func getEndobject() -> String {
         return EndObject
     }
+    // the object that the end value is associated with
+    func getEndobject2() -> String {
+        return EndObject2
+    }
     //returns the end event that is currently set
     func getEndSetter() -> [String] {
+        var endSettings: [String] = ["", "", "", "", ""]
         if EndType == "Time" {
             endSettings[0] = EndType
             endSettings[1] = EndParameterInputBox.text!
@@ -688,8 +749,12 @@ import Darwin
     }
     
     @IBAction func EndParameterSet(sender: AnyObject) {
+        EndObjectList.allowsMultipleSelection = false
+        EndObject = ""
+        EndObject2 = ""
         EndViewTitle.text = "End-Parameter"
         EndType = "End-Parameter"
+        EndParameterList.reloadData()
         ForObjectLabel.hidden = false
         StopWhenLabel.hidden = false
         ForObjectLabel.hidden = false
@@ -701,11 +766,15 @@ import Darwin
     }
   
     @IBAction func eventSet(sender: AnyObject) {
+        EndObjectList.allowsMultipleSelection = true
+        EndObject = ""
+        EndObject2 = ""
         EndViewTitle.text = "Event"
         EndType = "Event"
         ForObjectLabel.hidden = false
         StopWhenLabel.hidden = false
         ForObjectLabel.hidden = false
+        EndParameterList.reloadData()
         EndParameterListBox.hidden = false
         EndObjectListBox.hidden = false
         ChosenEndView.hidden = false

@@ -22,7 +22,7 @@ class PWStaticObject: SKShapeNode
     
     // Flag that will determine if this object can be moved by the
     // game scene.
-    private var metricScale         = 100   // Factor to convert pixel units to metric units
+    private var metricScale         = Float(100)   // Factor to convert pixel units to metric units
     private var staticObjectID      = -1    // Unique ID Assigned to each sprite.
     private var selected            = true  // Flag that determines if the object is selected by the scene.
     private var glowNode: SKShapeNode?      // The node representing the glow of this object.
@@ -118,7 +118,7 @@ class PWStaticObject: SKShapeNode
         if (pwObj == nil) { return false}
         return (pwObj!.isSprite());
     }
-
+    
     // ##############################################################
     //  These Functions modify the parameters of each of the gadgets
     // ##############################################################
@@ -126,14 +126,14 @@ class PWStaticObject: SKShapeNode
     func editRamp(scale: CGFloat, location: CGPoint, height: CGFloat, base: CGFloat, angle: CGFloat, friction: CGFloat) {
         // save new values
         self.values = [Float(scale), Float(position.x), Float(position.y), Float(height), Float(base), Float(angle), Float(friction)]
-        // degrees to radians 
+        // degrees to radians
         let angleInDegrees = degToRad(Float(angle))
         let polygonPath = CGPathCreateMutable()
         
         CGPathMoveToPoint(polygonPath, nil, -scale*base/2, -scale*base*CGFloat(Darwin.tan(Float(angleInDegrees)))/2)
         CGPathAddLineToPoint(polygonPath, nil,scale*(base/2), -scale*base*CGFloat(Darwin.tan(Float(angleInDegrees)))/2)
         CGPathAddLineToPoint(polygonPath, nil, -scale*base/2, scale*base*CGFloat(Darwin.tan(Float(angleInDegrees)))/2)
-        CGPathAddLineToPoint(polygonPath, nil, -scale*base/2, -scale*base*CGFloat(Darwin.tan(Float(angleInDegrees)))/2)
+        CGPathAddLineToPoint(polygonPath, nil, -scale*base/2 , -scale*base*CGFloat(Darwin.tan(Float(angleInDegrees)))/2)
         self.path = polygonPath
         self.strokeColor = UIColor.blackColor()
         self.fillColor = UIColor.blackColor()
@@ -214,7 +214,7 @@ class PWStaticObject: SKShapeNode
         self.physicsBody?.friction = friction
         self.position = location
     }
-
+    
     func getProperties(gadgetType: String) -> [Float] {
         self.values[1] = Float(self.position.x)
         self.values[2] = Float(self.position.y)
@@ -243,17 +243,17 @@ class PWStaticObject: SKShapeNode
         return distance;
     }
     
-//    // Returns the angle from this object to sprite relative to
-//    // the horizontal x axis.
-//    func angleTo(sprite: PWObject) -> CGFloat {
-//        let n1 = self.getPos();
-//        let n2 = sprite.getPos();
-//        let deltax = n1.x - n2.x
-//        let deltay = n1.y - n2.y
-//        
-//        let angle = atan2f(Float(deltay), Float(deltax))
-//        return CGFloat(angle);
-//    }
+    //    // Returns the angle from this object to sprite relative to
+    //    // the horizontal x axis.
+    //    func angleTo(sprite: PWObject) -> CGFloat {
+    //        let n1 = self.getPos();
+    //        let n2 = sprite.getPos();
+    //        let deltax = n1.x - n2.x
+    //        let deltay = n1.y - n2.y
+    //
+    //        let angle = atan2f(Float(deltay), Float(deltax))
+    //        return CGFloat(angle);
+    //    }
     
     // Highlights the node. Currently used when being selected.
     func highlight(color: UIColor) {
@@ -274,14 +274,14 @@ class PWStaticObject: SKShapeNode
         glowNode!.removeFromParent()
     }
     
-  
+    
     // ##############################################################
     
     // Initializes the sprite object. This is what we will use to create
     // PWObjects set at specific coordinates.
     convenience init(objectStringName: String, position: CGPoint, isMovable: Bool, isSelectable: Bool) {
         self.init()
-
+        
         // Create path for drawing a triangle
         let polygonPath = CGPathCreateMutable()
         CGPathMoveToPoint(polygonPath, nil, 0, 0)
@@ -307,7 +307,7 @@ class PWStaticObject: SKShapeNode
             self.strokeColor = UIColor.blackColor()
             self.fillColor = UIColor.blackColor()
             self.physicsBody = SKPhysicsBody(polygonFromPath: polygonPath)
-             self.values = [1, Float(position.x), Float(position.y), 100, 5, 0, 0] // default values
+            self.values = [1, Float(position.x), Float(position.y), 100, 5, 0, 0] // default values
         }
         if (objectStringName == "Wall") {
             CGPathMoveToPoint(polygonPath, nil, -50, -250)
@@ -322,13 +322,13 @@ class PWStaticObject: SKShapeNode
             self.values = [1, Float(position.x), Float(position.y), 500, 100, 0, 0] // default values
         }
         if (objectStringName == "Round") {
-                CGPathMoveToPoint(polygonPath, nil, 0, -100)
-                CGPathAddArc(polygonPath, nil, CGFloat(0), CGFloat(0), CGFloat(100),CGFloat(-M_PI_2), CGFloat(M_PI_2*3), false);
-                self.init(path: polygonPath)
-                self.strokeColor = UIColor.blackColor()
-                self.physicsBody = SKPhysicsBody(edgeLoopFromPath: polygonPath)
-                self.values = [1, Float(position.x), Float(position.y), 100, 0, 0, 0] // default values
-            }
+            CGPathMoveToPoint(polygonPath, nil, 0, -100)
+            CGPathAddArc(polygonPath, nil, CGFloat(0), CGFloat(0), CGFloat(100),CGFloat(-M_PI_2), CGFloat(M_PI_2*3), false);
+            self.init(path: polygonPath)
+            self.strokeColor = UIColor.blackColor()
+            self.physicsBody = SKPhysicsBody(edgeLoopFromPath: polygonPath)
+            self.values = [1, Float(position.x), Float(position.y), 100, 0, 0, 0] // default values
+        }
         if (objectStringName == "Pulley") {
             CGPathMoveToPoint(polygonPath, nil, 0, -20)
             CGPathAddArc(polygonPath, nil, CGFloat(0), CGFloat(0), CGFloat(20), CGFloat(-M_PI_2), CGFloat(M_PI_2*3), false);
@@ -336,14 +336,14 @@ class PWStaticObject: SKShapeNode
             self.strokeColor = UIColor.blackColor()
             self.fillColor = UIColor.grayColor()
             self.physicsBody = SKPhysicsBody(polygonFromPath: polygonPath)
-              self.values = [1, Float(position.x), Float(position.y), 20, 0, 0, 0] // default values
+            self.values = [1, Float(position.x), Float(position.y), 20, 0, 0, 0] // default values
         }
-       
+        
         self.objectStringName = objectStringName
         self.objectPosition = position
         self.movable = isMovable
         self.selectable = isSelectable
-       
+        
         self.movable = isMovable
         self.selectable = isSelectable
         self.position = position
@@ -354,7 +354,7 @@ class PWStaticObject: SKShapeNode
         self.physicsBody?.dynamic = false
         self.physicsBody?.contactTestBitMask = PhysicsCategory.All;
     }
-
+    
     override func encodeWithCoder(aCoder: NSCoder) {
         aCoder.encodeObject(objectStringName, forKey: "objectStringName")
         aCoder.encodeCGPoint(objectPosition, forKey: "objectPosition")
