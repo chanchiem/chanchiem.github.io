@@ -141,8 +141,7 @@ class Event: NSObject {
     
     func initTimer(time: CGFloat) {
         self.setTime(time);
-        let selector_func = #selector(self.triggerTimer)
-        self.timer = NSTimer.scheduledTimerWithTimeInterval(Double(time), target: self, selector: selector_func, userInfo: nil, repeats: true);
+        self.timer = NSTimer.scheduledTimerWithTimeInterval(Double(time), target: self, selector: "triggerTimer", userInfo: nil, repeats: true);
     }
     
     func triggerTimer() {
