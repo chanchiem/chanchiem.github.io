@@ -22,13 +22,9 @@ class PWStaticObject: SKShapeNode
     
     // Flag that will determine if this object can be moved by the
     // game scene.
-<<<<<<< HEAD
     private var movable: Bool       = true
     private var selectable: Bool    = true
     private var metricScale         = Float(10)   // Factor to convert pixel units to metric units
-=======
-    private var metricScale         = Float(100)   // Factor to convert pixel units to metric units
->>>>>>> origin/master
     private var staticObjectID      = -1    // Unique ID Assigned to each sprite.
     private var selected            = true  // Flag that determines if the object is selected by the scene.
     private var glowNode: SKShapeNode?      // The node representing the glow of this object.
@@ -36,8 +32,6 @@ class PWStaticObject: SKShapeNode
     var values: [Float] = []
     var objectStringName: String = ""
     var objectPosition: CGPoint = CGPointZero
-    var movable: Bool       = true
-    var selectable: Bool    = true
     
     static let DocumentsDirectoryS1 = NSFileManager().URLsForDirectory(.DocumentDirectory, inDomains: .UserDomainMask).first!
     static let ArchiveURLS1 = DocumentsDirectoryS1.URLByAppendingPathComponent("saveS1")

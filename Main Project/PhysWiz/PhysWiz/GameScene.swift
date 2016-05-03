@@ -37,16 +37,13 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     let cam = SKCameraNode()
     var camPos = CGPoint()
     var PWObjects = [PWObject]()
-<<<<<<< HEAD
     var TimeCounter = 0.0
     var Timer: NSTimer! = nil;
-=======
     var PWStaticObjects = [PWStaticObject]()
     var ropeConnections = [SKNode]()
     var springConnections = [SKNode]()
     var rodConnections = [SKNode]()
     
->>>>>>> origin/master
     var toggledSprite = shapeType.CIRCLE;
     var shapeArray = [shapeType]();
     var containerVC: containerViewController!
@@ -747,12 +744,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     }
     
     func resumeWorld() {
-<<<<<<< HEAD
         self.Timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: "timeCounter", userInfo: nil, repeats: true);
-        eventorganizer.resumeEventTimer()
-=======
         //eventorganizer.resumeEventTimer()
->>>>>>> origin/master
         pwPaused = false;
         let end = containerVC.getEndSetter()
         executeEndSetterArray(end); // Executes the events and starts them.
@@ -766,14 +759,10 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         }
     }
     func pauseWorld() {
-<<<<<<< HEAD
         self.Timer.invalidate()
         self.physicsWorld.speed = 0
-        eventorganizer.pauseEventTimer()
-=======
         //eventorganizer.pauseEventTimer()
         objectProperties = saveAllObjectProperties()
->>>>>>> origin/master
         pwPaused = true;
         button.texture = SKTexture(imageNamed: "play.png")
         if selectedSprite != nil {
