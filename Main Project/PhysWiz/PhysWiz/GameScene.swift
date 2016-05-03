@@ -24,7 +24,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     var springglobal = [SKSpriteNode: [SKNode]]() // Spring that maps to two other nodes. PWOBJECT
     var initialHeight = [SKSpriteNode: CGFloat](); // PWOBJECT
     var labelMap = [PWObject: SKLabelNode](); // Each sk spritenode will have a label associated with it. PWOBJECT
-    
+   
     // Maps each object's ID to the object itself.
     var objIdToSprite = [Int: PWObject]();
     
@@ -37,7 +37,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     let cam = SKCameraNode()
     var camPos = CGPoint()
     var PWObjects = [PWObject]()
-    
+    var TimeCounter = 0.0
+    var Timer: NSTimer! = nil;
     var toggledSprite = shapeType.CIRCLE;
     var shapeArray = [shapeType]();
     var containerVC: containerViewController!
@@ -50,7 +51,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     var updateFrameCounter = 0
     // used to scale all parameters from pixels to other metric system
     // not applied to mass or values not associated with pixels
-    var pixelToMetric = Float(100)
+    var pixelToMetric = Float(10)
     
     // gives each object an unique number ID
     var ObjectIDCounter = 0
@@ -440,7 +441,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             let label = labelMap[sprite];
             label?.hidden = false;
             let dist = String(selectedSprite.distanceTo(sprite) / CGFloat(pixelToMetric))
-            label?.text = truncateString(dist, decLen: 3)
+            label?.text = truncateString(dist, decLen: 4)
             let pos = sprite.getPos();
             label?.position = CGPoint.init(x: pos.x, y: pos.y + sprite.size.height/2)
         }
@@ -711,6 +712,13 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             }
             // Removes all non-essential nodes from the gamescene
             if stop.containsPoint(cameraNodeLocation) {
+                // resets the time counter
+                Timer.invalidate()
+                TimeCounter = 0.0
+                containerVC.setsElapsedTime(Float(TimeCounter))
+                //unselect objects
+                deselectGadget()
+                selectSprite(nil)
                 for node in self.children {
                     if (node != cam) {
                         node.removeFromParent()
@@ -742,6 +750,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     }
     
     func resumeWorld() {
+        self.Timer = NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: "timeCounter", userInfo: nil, repeats: true);
         eventorganizer.resumeEventTimer()
         pwPaused = false;
         let end = containerVC.getEndSetter()
@@ -755,18 +764,22 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             containerVC.setsInputBox(defaultObjectProperties, state: "static")
         }
     }
-    
     func pauseWorld() {
+        self.Timer.invalidate()
+        self.physicsWorld.speed = 0
         eventorganizer.pauseEventTimer()
         pwPaused = true;
-        self.physicsWorld.speed = 0
-        pwPaused = true
         button.texture = SKTexture(imageNamed: "play.png")
         if selectedSprite != nil {
             containerVC.setsInputBox(objectProperties[selectedSprite]!, state: "editable")
         }
     }
-    
+    // counts the
+    func timeCounter() {
+        TimeCounter += 0.1
+        containerVC.setsElapsedTime(Float(TimeCounter))
+        
+    }
     // Creates conditional events based on the input array.
     func executeEndSetterArray(setterString: [String])
     {
@@ -932,6 +945,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     
     // This function is called if an event has been triggered
     func eventTriggered(event: Event) {
+        self.physicsWorld.speed = 0;
+        Timer.invalidate()
         if (event.isCollisionEvent()) {
             let sprites = event.getSprites();
             print(String(sprites![0].getID()) + " has collided with " + String(sprites![1].getID));
@@ -944,8 +959,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             let s = event.getCurrentPropertyValue();
             print("Property exceeded: " + String(s));
         }
-        
-        self.physicsWorld.speed = 0;
         eventorganizer.deleteEvent();
     }
     

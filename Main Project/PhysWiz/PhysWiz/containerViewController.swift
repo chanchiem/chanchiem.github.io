@@ -151,7 +151,6 @@ class containerViewController: UIViewController, UIPopoverPresentationController
     func getInput() -> [String] {
         return PhysicsLogVC.getInput()
     }
-    
     // Resets the input fields in the input box
     func setsInputBox(input: [Float], state: String) {
         PhysicsLogVC.setsInputBox(input, state: state)
@@ -173,8 +172,8 @@ class containerViewController: UIViewController, UIPopoverPresentationController
     func changeSelectedObject(ID: Int) {
        GameVC.changeSelectedObject(ID)
     }
-    func getTime() -> String {
-            return GameVC.getTime()
+    func setsElapsedTime(Time: Float) {
+        return GameVC.setsElapsedTime(Time)
         }
     func changeToEndSetter() {
         PhysicsLogVC.changeToEndSetter()

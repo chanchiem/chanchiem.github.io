@@ -63,11 +63,11 @@ class GameViewController: UIViewController {
         self.parentVC.changeToEndSetter()
     }
     
-    
-    @IBOutlet weak var Time: UITextField!
-    func getTime() -> String {
-        return self.Time.text!
+    @IBOutlet weak var ElapsedTime: UILabel!
+    func setsElapsedTime(Time: Float){
+        ElapsedTime.text = "Elapsed Time: " + String(Time)
     }
 
+    
    
 }

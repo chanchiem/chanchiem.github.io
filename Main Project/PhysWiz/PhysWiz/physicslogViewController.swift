@@ -280,16 +280,16 @@ import Darwin
         else if state == "editable" {
         makeInputBoxEditable()
         }
-        Mass.text = truncateString(String(input[0]), decLen: 2)
-        Px.text = truncateString(String(input[1]), decLen: 2)
-        Py.text = truncateString(String(input[2]), decLen: 2)
-        Vx.text = truncateString(String(input[3]), decLen: 2)
-        Vy.text = truncateString(String(input[4]), decLen: 2)
-        Av.text = truncateString(String(input[5]), decLen: 2)
-        Ax.text = truncateString(String(input[6]), decLen: 2)
-        Ay.text = truncateString(String(input[7]), decLen: 2)
-        Fx.text = truncateString(String(input[8]), decLen: 2)
-        Fy.text = truncateString(String(input[9]), decLen: 2)
+        Mass.text = truncateString(String(input[0]), decLen: 4)
+        Px.text = truncateString(String(input[1]), decLen: 4)
+        Py.text = truncateString(String(input[2]), decLen: 4)
+        Vx.text = truncateString(String(input[3]), decLen: 4)
+        Vy.text = truncateString(String(input[4]), decLen: 4)
+        Av.text = truncateString(String(input[5]), decLen: 4)
+        Ax.text = truncateString(String(input[6]), decLen: 4)
+        Ay.text = truncateString(String(input[7]), decLen: 4)
+        Fx.text = truncateString(String(input[8]), decLen: 4)
+        Fy.text = truncateString(String(input[9]), decLen: 4)
     }
     
     // changes inputbox to static state
@@ -419,13 +419,13 @@ import Darwin
         else if state == "editable" {
             makeInputBoxEditable()
         }
-        Mass.text = truncateString(String(input[0]), decLen: 2)
-        Px.text = truncateString(String(input[1]), decLen: 2)
-        Py.text = truncateString(String(input[2]), decLen: 2)
-        Vx.text = truncateString(String(input[3]), decLen: 2)
-        Vy.text = truncateString(String(input[4]), decLen: 2)
-        Ax.text = truncateString(String(input[5]), decLen: 2)
-        Ay.text = truncateString(String(input[6]), decLen: 2)
+        Mass.text = truncateString(String(input[0]), decLen: 4)
+        Px.text = truncateString(String(input[1]), decLen: 4)
+        Py.text = truncateString(String(input[2]), decLen: 4)
+        Vx.text = truncateString(String(input[3]), decLen: 4)
+        Vy.text = truncateString(String(input[4]), decLen: 4)
+        Ax.text = truncateString(String(input[5]), decLen: 4)
+        Ay.text = truncateString(String(input[6]), decLen: 4)
     }
     func changeToObjectInputBox() {
         TopLabel.text = "Mass"
@@ -714,19 +714,22 @@ import Darwin
             
         }
         if EndType == "End-Parameter" {
+            if EndObject != "" {
             endSettings[0] = EndType
             endSettings[1] = String(EndParameter)
             endSettings[2] = EndParameterInputBox.text!
             endSettings[3] = String(objectIDMap[EndObject]!)
             endSettings[4] = ""
-            
+            }
         }
         if EndType == "Event" {
+            if EndObject != "" && EndObject2 != "" {
             endSettings[0] = EndType
             endSettings[1] = String(EndParameter)
             endSettings[2] = EndParameterInputBox.text!
             endSettings[3] = String(objectIDMap[EndObject]!)
             endSettings[4] = String(objectIDMap[EndObject2]!)
+            }
         }
 
         return endSettings

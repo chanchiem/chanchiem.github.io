@@ -29,9 +29,9 @@ class EventOrganizer: NSObject {
         if (event.isCollisionEvent()) {
             // Event is collision so it should have both sprites!
             scene.eventTriggered(event)
-        };
-        if (event.isTimerEvent()) { scene.eventTriggered(event) }
-        if (event.isPropertyEvent()) { scene.eventTriggered(event) }
+        }
+        else if (event.isTimerEvent()) { scene.eventTriggered(event) }
+        else if (event.isPropertyEvent()) { scene.eventTriggered(event) }
     }
     
     // Checks if the parameter event has been triggered.

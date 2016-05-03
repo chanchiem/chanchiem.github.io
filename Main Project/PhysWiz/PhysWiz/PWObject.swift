@@ -53,8 +53,8 @@ class PWObject: SKSpriteNode
     private static var standardHighlightColor = UIColor.blueColor()
     
     // Flag that will determine if this object can be moved by the
-    // game scene.
-    private var metricScale         = 100   // Factor to convert pixel units to metric units
+    // game scene
+    private var metricScale         = 10   // Factor to convert pixel units to metric units
     private var objectID            = -1    // Unique ID Assigned to each sprite.
     private var selected            = true  // Flag that determines if the object is selected by the scene.
     private var glowNode: SKShapeNode?      // The node representing the glow of this object.
