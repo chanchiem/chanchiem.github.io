@@ -704,8 +704,10 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             }
             // Removes all non-essential nodes from the gamescene
             if stop.containsPoint(cameraNodeLocation) {
+                if Timer != nil {
                 // resets the time counter
                 Timer.invalidate()
+                }
                 TimeCounter = 0.0
                 containerVC.setsElapsedTime(Float(TimeCounter))
                 //unselect objects
