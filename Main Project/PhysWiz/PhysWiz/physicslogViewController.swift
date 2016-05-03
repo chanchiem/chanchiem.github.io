@@ -636,7 +636,7 @@ import Darwin
              ParameterEqualsTo.text = endSetterParameterNames[EndParameter] + " ="
             }
             else if EndType == "Event" {
-                ParameterEqualsTo.text = endSetterEventNames[EndParameter] + " ="
+                ParameterEqualsTo.text = endSetterEventNames[EndParameter]
             }
         }
 
@@ -757,6 +757,8 @@ import Darwin
         EndParameterList.reloadData()
         ForObjectLabel.hidden = false
         StopWhenLabel.hidden = false
+        ParameterEqualsTo.text = ""
+        EndParameterInputBox.hidden = false
         ForObjectLabel.hidden = false
         EndParameterListBox.hidden = false
         EndObjectListBox.hidden = false
@@ -773,6 +775,8 @@ import Darwin
         EndType = "Event"
         ForObjectLabel.hidden = false
         StopWhenLabel.hidden = false
+        ParameterEqualsTo.text = ""
+        EndParameterInputBox.hidden = true
         ForObjectLabel.hidden = false
         EndParameterList.reloadData()
         EndParameterListBox.hidden = false
