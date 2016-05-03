@@ -632,7 +632,17 @@ import Darwin
         // deals with parameter table selection for endsetter
         if tableView == EndParameterList {
             EndParameter = indexPath.row
+<<<<<<< HEAD
              ParameterEqualsTo.text = endSetterParameterNames[EndParameter] + " ="
+=======
+            if EndType == "End-Parameter" {
+             ParameterEqualsTo.text = endSetterParameterNames[EndParameter] + " ="
+            }
+            else if EndType == "Event" {
+                ParameterEqualsTo.text = endSetterEventNames[EndParameter] + " ="
+            }
+
+>>>>>>> origin/master
         }
 
     }
