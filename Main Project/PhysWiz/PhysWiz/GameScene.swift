@@ -618,8 +618,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                     self.addChild(newObj)
                     self.selectSprite(newObj)
                     PWObjects += [newObj]
-                    //print(PWObjects)
-                    //saveSprites()
                 }
                 continue;
             }
@@ -1253,6 +1251,11 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                         connectRods.append(obj)
                     }
                 }
+                
+                self.ObjectIDCounter += 1
+                obj.setID(self.ObjectIDCounter);
+                containerVC.addObjectToList(obj.getID())
+                objIdToSprite[obj.getID()] = obj;
                 
                 objectProperties[obj] = values
                 PWObjects += [obj]

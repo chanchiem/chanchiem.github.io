@@ -362,6 +362,8 @@ class PWStaticObject: SKShapeNode
         aCoder.encodeBool(selectable, forKey: "selectable")
         
         aCoder.encodeFloat(self.values[0], forKey: "value0")
+        aCoder.encodeFloat(self.values[1], forKey: "value1") /**************************/
+        aCoder.encodeFloat(self.values[2], forKey: "value2") /**************************/
         aCoder.encodeFloat(self.values[3], forKey: "value3")
         aCoder.encodeFloat(self.values[4], forKey: "value4")
         aCoder.encodeFloat(self.values[5], forKey: "value5")
@@ -377,11 +379,14 @@ class PWStaticObject: SKShapeNode
         self.init(objectStringName: objectStringName, position: objectPosition, isMovable: movable, isSelectable: selectable)
         
         let value0 = aDecoder.decodeFloatForKey("value0")
+        let value1 = aDecoder.decodeFloatForKey("value1") /*************************/
+        let value2 = aDecoder.decodeFloatForKey("value2") /*************************/
         let value3 = aDecoder.decodeFloatForKey("value3")
         let value4 = aDecoder.decodeFloatForKey("value4")
         let value5 = aDecoder.decodeFloatForKey("value5")
         let value6 = aDecoder.decodeFloatForKey("value6")
-        self.values = [value0, Float(objectPosition.x)/metricScale, Float(objectPosition.y)/metricScale, value3/metricScale, value4/metricScale, value5, value6]
+        self.values = [value0, value1/metricScale, value2/metricScale, value3/metricScale, value4/metricScale, value5, value6]
+        //self.values = [value0, Float(objectPosition.x)/metricScale, Float(objectPosition.y)/metricScale, value3/metricScale, value4/metricScale, value5, value6]
     }
     
     // ##############################################################
