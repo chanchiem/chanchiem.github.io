@@ -1234,24 +1234,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 values.append(Float(0.0))
                 values.append(Float(0.0))
                 
-                for var i = 0; i < savedRopeNodes!.count; i++ {
-                    if savedRopeNodes![i].position == obj.position {
-                        connectRopes.append(obj)
-                    }
-                }
-                
-                for var i = 0; i < savedSpringNodes!.count; i++ {
-                    if savedSpringNodes![i].position == obj.position {
-                        connectSprings.append(obj)
-                    }
-                }
-                
-                for var i = 0; i < savedRodNodes!.count; i++ {
-                    if savedRodNodes![i].position == obj.position {
-                        connectRods.append(obj)
-                    }
-                }
-                
                 self.ObjectIDCounter += 1
                 obj.setID(self.ObjectIDCounter);
                 containerVC.addObjectToList(obj.getID())
@@ -1260,6 +1242,24 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 objectProperties[obj] = values
                 PWObjects += [obj]
                 self.addChild(obj)
+                
+                for var i = 0; i < savedRopeNodes!.count; i++ {
+                    if savedRopeNodes![i].isEqualToNode(obj) {
+                        savedRopeNodes![i] = obj
+                    }
+                }
+                
+                for var i = 0; i < savedSpringNodes!.count; i++ {
+                    if savedSpringNodes![i].isEqualToNode(obj) {
+                        savedSpringNodes![i] = obj
+                    }
+                }
+                
+                for var i = 0; i < savedRodNodes!.count; i++ {
+                    if savedRodNodes![i].isEqualToNode(obj) {
+                        savedRodNodes![i] = obj
+                    }
+                }
             }
         }
         
@@ -1269,68 +1269,40 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 gadgetProperties[obj] = obj.values
                 applyAllGadgetProperties(gadgetProperties)
                 
+                PWStaticObjects += [obj]
+                self.addChild(obj)
+                
                 for var i = 0; i < savedRopeNodes!.count; i++ {
-                    if savedRopeNodes![i].position == obj.position {
-                        connectRopes.append(obj)
+                    if savedRopeNodes![i].isEqualToNode(obj) {
+                        savedRopeNodes![i] = obj
                     }
                 }
                 
                 for var i = 0; i < savedSpringNodes!.count; i++ {
-                    if savedSpringNodes![i].position == obj.position {
-                        connectSprings.append(obj)
+                    if savedSpringNodes![i].isEqualToNode(obj) {
+                        savedSpringNodes![i] = obj
                     }
                 }
                 
                 for var i = 0; i < savedRodNodes!.count; i++ {
-                    if savedRodNodes![i].position == obj.position {
-                        connectRods.append(obj)
+                    if savedRodNodes![i].isEqualToNode(obj) {
+                        savedRodNodes![i] = obj
                     }
                 }
-                
-                PWStaticObjects += [obj]
-                self.addChild(obj)
             }
         }
-        
-        // Sorts connect arrays so that the right nodes get attached to each other
-        var sortedConnectRopes = [SKNode]()
-        for var i = 0; i < savedRopeNodes!.count; i++ {
-            for var j = 0; j < connectRopes.count; j++ {
-                if savedRopeNodes![i].position == connectRopes[j].position {
-                    sortedConnectRopes.append(connectRopes[j])
-                }
-            }
-        }
-        
-        var sortedConnectSprings = [SKNode]()
-        for var i = 0; i < savedSpringNodes!.count; i++ {
-            for var j = 0; j < connectSprings.count; j++ {
-                if savedSpringNodes![i].position == connectSprings[j].position {
-                    sortedConnectSprings.append(connectSprings[j])
-                }
-            }
-        }
-        
-        var sortedConnectRods = [SKNode]()
-        for var i = 0; i < savedRodNodes!.count; i++ {
-            for var j = 0; j < connectRods.count; j++ {
-                if savedRodNodes![i].position == connectRods[j].position {
-                    sortedConnectRods.append(connectRods[j])
-                }
-            }
-        }
-        
+
         // Creates the rope, spring, and rod connections between nodes that were saved with those connections
-        for var i = 0; i < sortedConnectRopes.count; i += 2 {
-            createRopeBetweenNodes(sortedConnectRopes[i], node2: sortedConnectRopes[i+1])
+        for var i = 0; i < savedRopeNodes!.count; i += 2 {
+            createRopeBetweenNodes(savedRopeNodes![i], node2: savedRopeNodes![i+1])
         }
         
-        for var i = 0; i < sortedConnectSprings.count; i += 2 {
-            createSpringBetweenNodes(sortedConnectSprings[i], node2: sortedConnectSprings[i+1])
+        for var i = 0; i < savedSpringNodes!.count; i += 2 {
+            createSpringBetweenNodes(savedSpringNodes![i], node2: savedSpringNodes![i+1])
         }
         
-        for var i = 0; i < sortedConnectRods.count; i += 2 {
-            createRodBetweenNodes(sortedConnectRods[i], node2: sortedConnectRods[i+1])
+        for var i = 0; i < savedRodNodes!.count; i += 2 {
+            createRodBetweenNodes(savedRodNodes![i], node2: savedRodNodes![i+1])
         }
     }
 }
