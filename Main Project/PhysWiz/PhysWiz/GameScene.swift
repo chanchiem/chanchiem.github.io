@@ -490,7 +490,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     // create ramp static gadget
     func createRamp(location:CGPoint){
         let Ramp = PWStaticObject.init(objectStringName: "Ramp", position: location, isMovable: true, isSelectable: true)
-        gadgetProperties[Ramp] = getGadgetParameters(Ramp);        self.addChild(Ramp)
+        gadgetProperties[Ramp] = getGadgetParameters(Ramp);
+        self.addChild(Ramp)
         selectGadget(Ramp)
         PWStaticObjects += [Ramp]
     }
@@ -556,7 +557,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         }
         selectSprite(nil)
         selectedGadget = sprite;
-        var values = getGadgetParameters(selectedGadget)
+        let values = getGadgetParameters(selectedGadget)
     containerVC.setsGadgetInputBox(selectedGadget.name!, input: values, state: "editable")
         selectedGadget.setSelected();
         
@@ -1173,10 +1174,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         self.addChild(floor)
         self.addChild(self.createBG())
         
-        var connectRopes = [SKNode]()
-        var connectSprings = [SKNode]()
-        var connectRods = [SKNode]()
-        
         // Retrieves saved arrays of nodes that are connected by ropes, springs, or rods
         var savedRopeData = NSUserDefaults.standardUserDefaults().valueForKey("ropeConnections1") as! NSData
         var savedRopeNodes = NSKeyedUnarchiver.unarchiveObjectWithData(savedRopeData) as? [SKNode]
@@ -1267,10 +1264,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         if let savedStaticSprites = loadStaticSprites(loadFileNumber) {
             for obj in savedStaticSprites {
                 gadgetProperties[obj] = obj.values
-                applyAllGadgetProperties(gadgetProperties)
-                
-                PWStaticObjects += [obj]
-                self.addChild(obj)
                 
                 for var i = 0; i < savedRopeNodes!.count; i++ {
                     if savedRopeNodes![i].isEqualToNode(obj) {
@@ -1289,6 +1282,10 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                         savedRodNodes![i] = obj
                     }
                 }
+            
+                applyAllGadgetProperties(gadgetProperties)
+                PWStaticObjects += [obj]
+                self.addChild(obj)
             }
         }
 
