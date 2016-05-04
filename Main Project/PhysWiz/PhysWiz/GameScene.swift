@@ -1226,10 +1226,10 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 values.append(Float(obj.getVelocity().dx)/pixelToMetric)
                 values.append(Float(obj.getVelocity().dy)/pixelToMetric)
                 values.append(Float(obj.getAngularVelocity()))
-                values.append(Float(0.0))
-                values.append(Float(0.0))
-                values.append(Float(0.0))
-                values.append(Float(0.0))
+                values.append(Float(obj.getAcceleration().dx))
+                values.append(Float(obj.getAcceleration().dy))
+                values.append(Float(obj.getForce().dx))
+                values.append(Float(obj.getForce().dy))
                 
                 self.ObjectIDCounter += 1
                 obj.setID(self.ObjectIDCounter);

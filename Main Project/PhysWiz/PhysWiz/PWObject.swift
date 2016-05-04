@@ -235,7 +235,11 @@ class PWObject: SKSpriteNode
     // Returns the current acceleration of the object.
     func getAcceleration() -> CGVector {
         // Implement later using change of velocity
-        return CGVector.init(dx: 1.0, dy: 1.0)
+        return CGVector.init(dx: 0.0, dy: 0.0)
+    }
+    
+    func getForce() -> CGVector {
+        return CGVector.init(dx: 0.0, dy: 0.0)
     }
     
     // Returns the current angular acceleration of the object.
@@ -470,6 +474,8 @@ class PWObject: SKSpriteNode
         aCoder.encodeCGVector(self.getVelocity(), forKey: "velocity")
         aCoder.encodeObject(self.getMass(), forKey: "objMass")
         aCoder.encodeObject(self.getAngularVelocity(), forKey: "angularVelocity")
+        aCoder.encodeCGVector(self.getAcceleration(), forKey: "acceleration")
+        aCoder.encodeCGVector(self.getForce(), forKey: "force")
     }
     
     // Obtains saved data from hardware
@@ -479,13 +485,17 @@ class PWObject: SKSpriteNode
         let movable = aDecoder.decodeBoolForKey("movable")
         let selectable = aDecoder.decodeBoolForKey("selectable")
         let velocity = aDecoder.decodeCGVectorForKey("velocity")
-        
         let objMass = aDecoder.decodeObjectForKey("objMass") as! CGFloat
         let angularVelocity = aDecoder.decodeObjectForKey("angularVelocity") as! CGFloat
+        let acceleration = aDecoder.decodeCGVectorForKey("acceleration")
+        let force = aDecoder.decodeCGVectorForKey("force")
+        
         self.init(objectStringName: objectStringName, position: objectPosition, isMovable: movable, isSelectable: selectable)
         self.setVelocity(velocity);
         self.setMass(objMass)
         self.setAngularVelocity(angularVelocity)
+        self.applyAcceleration(acceleration.dx, y: acceleration.dy)
+        self.applyForce(force.dx, y: force.dy)
     }
     
 }
