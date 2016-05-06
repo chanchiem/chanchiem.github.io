@@ -31,6 +31,4 @@ class LoadingViewController: UIViewController {
     @IBAction func loadThree(sender: AnyObject) {
         GameVC.currentGame.loadSave(3)
     }
-    
-    
 }

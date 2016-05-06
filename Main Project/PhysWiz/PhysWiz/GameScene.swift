@@ -1175,45 +1175,49 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         self.addChild(self.createBG())
         
         // Retrieves saved arrays of nodes that are connected by ropes, springs, or rods
-        var savedRopeData = NSUserDefaults.standardUserDefaults().valueForKey("ropeConnections1") as! NSData
-        var savedRopeNodes = NSKeyedUnarchiver.unarchiveObjectWithData(savedRopeData) as? [SKNode]
-        
-        var savedSpringData = NSUserDefaults.standardUserDefaults().valueForKey("springConnections1") as! NSData
-        var savedSpringNodes = NSKeyedUnarchiver.unarchiveObjectWithData(savedSpringData) as? [SKNode]
-        
-        var savedRodData = NSUserDefaults.standardUserDefaults().valueForKey("rodConnections1") as! NSData
-        var savedRodNodes = NSKeyedUnarchiver.unarchiveObjectWithData(savedRodData) as? [SKNode]
+        var savedRopeNodes = [SKNode]?()
+        var savedSpringNodes = [SKNode]?()
+        var savedRodNodes = [SKNode]?()
         
         // Loads ropes, springs, and rods into the scene.
         if loadFileNumber == 1 {
-            savedRopeData = NSUserDefaults.standardUserDefaults().valueForKey("ropeConnections1") as! NSData
-            savedRopeNodes = NSKeyedUnarchiver.unarchiveObjectWithData(savedRopeData) as? [SKNode]
+            if let savedRopeData = NSUserDefaults.standardUserDefaults().valueForKey("ropeConnections1") as? NSData {
+                savedRopeNodes = NSKeyedUnarchiver.unarchiveObjectWithData(savedRopeData) as? [SKNode]
+            }
             
-            savedSpringData = NSUserDefaults.standardUserDefaults().valueForKey("springConnections1") as! NSData
-            savedSpringNodes = NSKeyedUnarchiver.unarchiveObjectWithData(savedSpringData) as? [SKNode]
+            if let savedSpringData = NSUserDefaults.standardUserDefaults().valueForKey("springConnections1") as? NSData {
+                savedSpringNodes = NSKeyedUnarchiver.unarchiveObjectWithData(savedSpringData) as? [SKNode]
+            }
             
-            savedRodData = NSUserDefaults.standardUserDefaults().valueForKey("rodConnections1") as! NSData
-            savedRodNodes = NSKeyedUnarchiver.unarchiveObjectWithData(savedRodData) as? [SKNode]
+            if let savedRodData = NSUserDefaults.standardUserDefaults().valueForKey("rodConnections1") as? NSData {
+                savedRodNodes = NSKeyedUnarchiver.unarchiveObjectWithData(savedRodData) as? [SKNode]
+            }
         }
         if loadFileNumber == 2 {
-            savedRopeData = NSUserDefaults.standardUserDefaults().valueForKey("ropeConnections2") as! NSData
-            savedRopeNodes = NSKeyedUnarchiver.unarchiveObjectWithData(savedRopeData) as? [SKNode]
+            if let savedRopeData = NSUserDefaults.standardUserDefaults().valueForKey("ropeConnections2") as? NSData {
+                savedRopeNodes = NSKeyedUnarchiver.unarchiveObjectWithData(savedRopeData) as? [SKNode]
+            }
             
-            savedSpringData = NSUserDefaults.standardUserDefaults().valueForKey("springConnections2") as! NSData
-            savedSpringNodes = NSKeyedUnarchiver.unarchiveObjectWithData(savedSpringData) as? [SKNode]
+            if let savedSpringData = NSUserDefaults.standardUserDefaults().valueForKey("springConnections2") as? NSData {
+                savedSpringNodes = NSKeyedUnarchiver.unarchiveObjectWithData(savedSpringData) as? [SKNode]
+            }
             
-            savedRodData = NSUserDefaults.standardUserDefaults().valueForKey("rodConnections2") as! NSData
-            savedRodNodes = NSKeyedUnarchiver.unarchiveObjectWithData(savedRodData) as? [SKNode]
+            if let savedRodData = NSUserDefaults.standardUserDefaults().valueForKey("rodConnections2") as? NSData {
+                savedRodNodes = NSKeyedUnarchiver.unarchiveObjectWithData(savedRodData) as? [SKNode]
+            }
         }
         if loadFileNumber == 3 {
-            savedRopeData = NSUserDefaults.standardUserDefaults().valueForKey("ropeConnections3") as! NSData
-            savedRopeNodes = NSKeyedUnarchiver.unarchiveObjectWithData(savedRopeData) as? [SKNode]
+            if let savedRopeData = NSUserDefaults.standardUserDefaults().valueForKey("ropeConnections3") as? NSData {
+                savedRopeNodes = NSKeyedUnarchiver.unarchiveObjectWithData(savedRopeData) as? [SKNode]
+            }
             
-            savedSpringData = NSUserDefaults.standardUserDefaults().valueForKey("springConnections3") as! NSData
-            savedSpringNodes = NSKeyedUnarchiver.unarchiveObjectWithData(savedSpringData) as? [SKNode]
+            if let savedSpringData = NSUserDefaults.standardUserDefaults().valueForKey("springConnections3") as? NSData {
+                savedSpringNodes = NSKeyedUnarchiver.unarchiveObjectWithData(savedSpringData) as? [SKNode]
+            }
             
-            savedRodData = NSUserDefaults.standardUserDefaults().valueForKey("rodConnections3") as! NSData
-            savedRodNodes = NSKeyedUnarchiver.unarchiveObjectWithData(savedRodData) as? [SKNode]
+            if let savedRodData = NSUserDefaults.standardUserDefaults().valueForKey("rodConnections3") as? NSData {
+                savedRodNodes = NSKeyedUnarchiver.unarchiveObjectWithData(savedRodData) as? [SKNode]
+            }
         }
         
         // Saves PWObjects
@@ -1240,6 +1244,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 PWObjects += [obj]
                 self.addChild(obj)
                 
+                print(savedRopeNodes!.count)
                 for var i = 0; i < savedRopeNodes!.count; i++ {
                     if savedRopeNodes![i].isEqualToNode(obj) {
                         savedRopeNodes![i] = obj
@@ -1290,16 +1295,22 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         }
 
         // Creates the rope, spring, and rod connections between nodes that were saved with those connections
-        for var i = 0; i < savedRopeNodes!.count; i += 2 {
-            createRopeBetweenNodes(savedRopeNodes![i], node2: savedRopeNodes![i+1])
+        if savedRopeNodes != nil {
+            for var i = 0; i < savedRopeNodes!.count; i += 2 {
+                createRopeBetweenNodes(savedRopeNodes![i], node2: savedRopeNodes![i+1])
+            }
         }
         
-        for var i = 0; i < savedSpringNodes!.count; i += 2 {
-            createSpringBetweenNodes(savedSpringNodes![i], node2: savedSpringNodes![i+1])
+        if savedSpringNodes != nil {
+            for var i = 0; i < savedSpringNodes!.count; i += 2 {
+                createSpringBetweenNodes(savedSpringNodes![i], node2: savedSpringNodes![i+1])
+            }
         }
         
-        for var i = 0; i < savedRodNodes!.count; i += 2 {
-            createRodBetweenNodes(savedRodNodes![i], node2: savedRodNodes![i+1])
+        if savedRodNodes != nil {
+            for var i = 0; i < savedRodNodes!.count; i += 2 {
+                createRodBetweenNodes(savedRodNodes![i], node2: savedRodNodes![i+1])
+            }
         }
     }
 }
