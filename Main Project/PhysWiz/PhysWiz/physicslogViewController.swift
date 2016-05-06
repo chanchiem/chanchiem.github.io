@@ -93,6 +93,17 @@ import Darwin
     @IBOutlet weak var SettingsBox: UIView!
     @IBOutlet weak var WorldSettingBox: UIView!
     @IBOutlet weak var WorldResistance: UITextField!
+    @IBOutlet weak var gravitySwitcher: UISwitch!
+    
+    @IBAction func gravitySwitch(sender: AnyObject) {
+        if gravitySwitcher.on == true {
+        parentVC.GameVC.currentGame.setGravity(false)
+        }
+        else {
+        parentVC.GameVC.currentGame.setGravity(true)
+        }
+    }
+    
     
     @IBAction func SettingsButton(sender: AnyObject) {
         if selectedType == "object" {
