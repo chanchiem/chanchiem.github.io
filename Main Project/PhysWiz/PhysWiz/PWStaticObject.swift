@@ -18,7 +18,7 @@ class PWStaticObject: SKShapeNode
     var skObj: SKShapeNode?
     
     // Color of the highlights around selected nodes.
-    private static var standardHighlightColor = UIColor.blueColor()
+    private static var standardHighlightColor = UIColor.redColor()
     
     // Flag that will determine if this object can be moved by the
     // game scene.
