@@ -110,9 +110,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         gadgetProperties = [PWStaticObject : [Float]]()
         physicsBody = SKPhysicsBody(edgeLoopFromRect: CGRect(x: 0, y: 0, width: background.size.width, height: background.size.height))
         
-        //
-        //createSaveWindow()
-        
         // INIT Shape arrays to call later in flag function
         shapeArray.append(shapeType.CIRCLE)
         shapeArray.append(shapeType.SQUARE)
@@ -732,16 +729,17 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 springConnections.removeAll()
                 rodConnections.removeAll()
                 containerVC.removeAllFromList()
+                self.camera?.position = camPos
                 let floor = PWObject.createFloor(CGSize.init(width: background.size.width, height: 20))
                 self.addChild(floor)
                 self.addChild(self.createBG())
             }
             // Gives the pause play button the ability to pause and play a scene
             if button.containsPoint(cameraNodeLocation) {
-                if (!pwPaused) { objectProperties = saveAllObjectProperties() } /**********************************************/
+                if (!pwPaused) { objectProperties = saveAllObjectProperties() }
                 
                 // Applies changes made by the user to sprite parameters
-                restoreAllobjectProperties(objectProperties) /**********************************************/
+                restoreAllobjectProperties(objectProperties)
                 
                 // Pause / Resume the world
                 if (pwPaused)   { resumeWorld() }
@@ -767,7 +765,9 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         }
     }
     func pauseWorld() {
-        self.Timer.invalidate()
+        if Timer != nil {
+            self.Timer.invalidate()
+        }
         self.physicsWorld.speed = 0
         //eventorganizer.pauseEventTimer()
         objectProperties = saveAllObjectProperties()
