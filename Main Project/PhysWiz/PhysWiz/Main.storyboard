@@ -681,6 +681,13 @@
                                         <subviews>
                                             <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cZG-vn-MtK">
                                                 <rect key="frame" x="107" y="11" width="51" height="31"/>
+<<<<<<< HEAD
+=======
+                                                <animations/>
+                                                <connections>
+                                                    <action selector="gravitySwitch:" destination="fPQ-S9-gZ9" eventType="valueChanged" id="n3V-Ta-D28"/>
+                                                </connections>
+>>>>>>> origin/master
                                             </switch>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Gravity" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XCV-el-c5E">
                                                 <rect key="frame" x="17" y="14" width="60" height="26"/>
@@ -837,6 +844,7 @@
                         <outlet property="WorldSettingBox" destination="s4u-Hb-Kyf" id="2ag-9e-Zq9"/>
                         <outlet property="accelerationType" destination="Co5-0K-9xW" id="9aN-hv-reA"/>
                         <outlet property="forceType" destination="AjY-gf-SuK" id="nPM-Fh-Ssn"/>
+                        <outlet property="gravitySwitcher" destination="cZG-vn-MtK" id="l2Z-bl-aLc"/>
                         <outlet property="mainLogView" destination="RJz-o1-puM" id="RHP-ci-KxL"/>
                         <outlet property="objectSelector" destination="0zh-nK-MYZ" id="bEA-4t-X3E"/>
                         <outlet property="physicsLog" destination="GWf-sF-3lX" id="TGd-Tv-WZD"/>

@@ -153,6 +153,16 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         button.name = "button"
         return button
     }
+    // turn gravity on and off
+    func setGravity(isOn: Bool) {
+        if (isOn) {
+        self.physicsWorld.gravity = CGVectorMake(0.0, -6.54);
+        }
+        else {
+        self.physicsWorld.gravity = CGVectorMake(0.0, 0.0);
+        }
+        
+    }
     
     // Creates a trash bin on the lower right hand side of the screen
     func createTrash() -> SKSpriteNode {
