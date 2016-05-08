@@ -375,8 +375,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         let yOffset = deltay / 2
         springobj.position = CGPoint.init(x: n1.x - xOffset, y: n1.y - yOffset)
         springobj.zPosition = -1
-        //        springobj.physicsBody = SKPhysicsBody.init(rectangleOfSize: springobj.size)
-        //        springobj.physicsBody?.dynamic = false;
         self.addChild(springobj);
     }
     
@@ -716,14 +714,13 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                     if (node != cam) {
                         node.removeFromParent()
                     }
-                    pwPaused = true
-                    button.texture = SKTexture(imageNamed: "play.png")
-                    PWObjects.removeAll()
-                    PWStaticObjects.removeAll()
-                    ropeConnections.removeAll()
-                    springConnections.removeAll()
-                    rodConnections.removeAll()
                 }
+                pauseWorld()
+                PWObjects.removeAll()
+                PWStaticObjects.removeAll()
+                ropeConnections.removeAll()
+                springConnections.removeAll()
+                rodConnections.removeAll()
                 containerVC.removeAllFromList()
                 let floor = PWObject.createFloor(CGSize.init(width: background.size.width, height: 20))
                 self.addChild(floor)
@@ -868,18 +865,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             if node.position.y < 0 { node.removeFromParent() }
         })
     }
-    
-    // Bounds how far the user can pan the gamescene according to the size of the background.
-    func boundLayerPos(aNewPosition: CGPoint) -> CGPoint {
-        let winSize = self.size
-        var retval = aNewPosition
-        retval.x = CGFloat(min(retval.x, 0))
-        retval.x = CGFloat(max(retval.x, -(background.size.width) + winSize.width))
-        retval.y = CGFloat(min(retval.y, 0))
-        retval.y = CGFloat(max(retval.y, -(background.size.height) + winSize.height))
-        
-        return retval
-    }
 
     // Allows users to drag and drop selectedShapes and the background
     func panForTranslation(translation: CGPoint) {
@@ -947,30 +932,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         eventorganizer.deleteEvent();
     }
     
-    
-    // Moves the objects that are on the screen by the amount that the background is being moved
-    func moveObjects(translation: CGPoint) {
-        let movableObjects = ["movable", "floor"]
-        for node in self.children {
-            if node.name == nil || movableObjects.contains(node.name!) {
-                let position = node.position
-                let aNewPosition = CGPoint(x: position.x + translation.x, y: position.y + translation.y)
-                let boundedPosition = self.boundLayerPos(aNewPosition)
-                print(background.position.y)
-                if node.name == "floor" {
-                    node.position = boundedPosition
-                } else {
-                    if background.position.x != 0.0 && background.position.x != -2*self.size.width {
-                        node.position.x = aNewPosition.x
-                    }
-                    if background.position.y != 0.0 && background.position.y != -self.size.height {
-                        node.position.y = aNewPosition.y
-                    }
-                }
-            }
-        }
-    }
-    
     // Makes sure the user can only drag objects when the simulation is paused and sets up for panForTranslation
     override func touchesMoved(touches: Set<UITouch>, withEvent event: UIEvent?) {
         let touch = touches.first
@@ -979,32 +940,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         let translation = CGPoint(x: positionInScene!.x - previousPosition!.x, y: positionInScene!.y - previousPosition!.y)
         if pwPaused {
             panForTranslation(translation)
-        }
-    }
-    
-    // Returns an array of all nodes within a certain distance away from the queryNode.
-    func nearestNodes(queryNode: SKSpriteNode) -> [SKNode] {
-        let joinDist: CGFloat = 30.0
-        var array = [SKNode]()
-        for object in self.children {
-            let dx = queryNode.position.x - object.position.x
-            let dy = queryNode.position.y - object.position.y
-            
-            let distance = sqrt(dx*dx + dy*dy)
-            if (distance <= joinDist) {
-                array.append(object)
-            }
-        }
-        return array
-    }
-    
-    // Connects the selectedNode with all nodes in its vicinity.
-    func connectNodes(selectedNode: SKSpriteNode) {
-        let nearest = nearestNodes(selectedSprite)
-        for node in nearest {
-            let midPoint = CGPoint(x: (selectedNode.position.x + node.position.x)/2, y: (selectedNode.position.y + node.position.y)/2)
-            let joinNodes = SKPhysicsJointFixed.jointWithBodyA(selectedSprite.physicsBody!, bodyB: node.physicsBody!, anchor: midPoint)
-            self.physicsWorld.addJoint(joinNodes)
         }
     }
     
@@ -1244,7 +1179,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 PWObjects += [obj]
                 self.addChild(obj)
                 
-                print(savedRopeNodes!.count)
                 for var i = 0; i < savedRopeNodes!.count; i++ {
                     if savedRopeNodes![i].isEqualToNode(obj) {
                         savedRopeNodes![i] = obj
