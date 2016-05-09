@@ -79,8 +79,13 @@ class PWStaticObject: SKShapeNode
     
     // Checks if the PWObject is a sprite (i.e. any shape that will
     // contain physical properties).
-    func isSprite() -> Bool {
-        return self.movable;
+    func isShape() -> Bool {
+        if (self.isMovable() && (self as? SKShapeNode) != nil){
+            return true
+        }
+        else {
+         return false
+        }
     }
     
     // Returns the unique object ID
@@ -116,7 +121,7 @@ class PWStaticObject: SKShapeNode
         let pwObj = node as? PWStaticObject
         
         if (pwObj == nil) { return false}
-        return (pwObj!.isSprite());
+        return (pwObj!.isShape());
     }
     
     // ##############################################################

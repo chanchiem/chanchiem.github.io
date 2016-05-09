@@ -19,14 +19,15 @@ class containerViewController: UIViewController, UIPopoverPresentationController
     @IBOutlet weak var physicsLogButton: UIBarButtonItem!
     var GameVC: GameViewController!
     var PhysicsLogVC: physicslogViewController!
+    var TableVC: TableViewController!
     var objectflag = 0
     var gadgetflag = 0
-    
+    let nullflag = 9
     override func viewDidLoad() {
         super.viewDidLoad()
         // handles animation of object and gadget menus
         if self.revealViewController() != nil {
-            gadgetMenu.target = self.revealViewController()
+            gadgetMenu.target = revealViewController()
             gadgetMenu.action = "revealToggle:"
             objectMenu.target = revealViewController()
             objectMenu.action = "rightRevealToggle:"
@@ -110,6 +111,7 @@ class containerViewController: UIViewController, UIPopoverPresentationController
             
             loadVC.preferredContentSize = CGSizeMake(300, 300)
         }
+      
     }
     
     func adaptivePresentationStyleForPresentationController(controller: UIPresentationController) -> UIModalPresentationStyle {
@@ -118,34 +120,55 @@ class containerViewController: UIViewController, UIPopoverPresentationController
     
     // return from selecting table object
     @IBAction func unwindSegue(segue: UIStoryboardSegue) {
-        // do stuff
     }
+    // tees whether the tables are open or not
+    func tableAreOpen() -> Bool {
+        if TableVC != nil {
+            if (TableVC.isViewLoaded() && (TableVC.view.window != nil)) {
+                    return true
+                }
+        }
+        return false
+    }
+
+
     // Finds the index on the table that the user selected
     func setObjectFlag(index: Int) {
         //set other flag to null
         if index != 9 {
-            gadgetflag = 0
+            gadgetflag = nullflag
         }
         changeToObjectInputBox()
         objectflag = index
-        NSLog("Test")
+        NSLog(String(index))
     }
+    
     func setGadgetFlag(index: Int) {
         // set other flag to null
         if index != 0 {
-            objectflag = 9
+            objectflag = nullflag
         }
-        if index > 3 {
-            changeToGadgetInputBox(staticObjects[index - 4]) // four is array offset 
+        if index > 2 && index < 7  {
+            changeToGadgetInputBox(staticObjects[index - 3]) // four is array offset
         }
         gadgetflag = index
         NSLog("Test")
     }
     func getObjectFlag()->Int{
+        if tableAreOpen() {
         return objectflag
+        }
+        else {
+            return nullflag
+        }
     }
     func getGadgetFlag()->Int{
+        if tableAreOpen() {
         return gadgetflag
+        }
+        else {
+            return nullflag
+        }
     }
     // Gets the input from all the TextFields inside the inputBox.
     func getInput() -> [String] {

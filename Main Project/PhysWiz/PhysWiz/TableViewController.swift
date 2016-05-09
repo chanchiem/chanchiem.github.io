@@ -11,9 +11,9 @@ import UIKit
 class TableViewController: UITableViewController {
     @IBOutlet var objectMenu: UITableView!
     @IBOutlet var gadgetMenu: UITableView!
-    
-    var shapes = ["circle.png", "square.png", "triangle.png", "crate.png", "baseball.png", "brickwall.png", "airplane.png", "bike.png", "car.png", "black.png"]
-    var gadgets = ["black.png", "rope.png", "spring.png", "rod.png", "ramp.png", "platform.png", "vertical_line.png", "circle_gadget.png", "pulley.png"]
+    var currentlySelected = NSIndexPath()
+    var shapes = ["circle.png", "square.png", "triangle.png", "crate.png", "baseball.png", "brickwall.png", "airplane.png", "bike.png", "car.png"]
+    var gadgets = ["rope.png", "spring.png", "rod.png", "ramp.png", "platform.png", "vertical_line.png", "circle_gadget.png", "pulley.png"]
     struct gadgetIndex {
         let blank = 0
         let rope = 1
@@ -25,7 +25,6 @@ class TableViewController: UITableViewController {
         let round = 7
         let pulley = 8
     }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         if (objectMenu != nil) {
@@ -79,8 +78,15 @@ class TableViewController: UITableViewController {
         return cell!
     }
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        if indexPath == currentlySelected {
+            currentlySelected = NSIndexPath()
+            tableView.deselectRowAtIndexPath(indexPath, animated: false)
+                self.performSegueWithIdentifier("toHomeView", sender: self)
+        }
+        else {
+        currentlySelected = indexPath
         self.performSegueWithIdentifier("toHomeView", sender: self)
-        
+        }
     }
     
    
@@ -90,11 +96,22 @@ class TableViewController: UITableViewController {
             // This will later be used to unify the game scene.
             let destinationViewController = segue.destinationViewController as! containerViewController;
             if (objectMenu != nil) {
+                if objectMenu.indexPathForSelectedRow != nil {
         destinationViewController.setObjectFlag((objectMenu.indexPathForSelectedRow?.row)!)
             }
+                else {
+                    destinationViewController.setObjectFlag(9)
+                }
+            }
             if (gadgetMenu != nil) {
+              if gadgetMenu.indexPathForSelectedRow != nil {
         destinationViewController.setGadgetFlag((gadgetMenu.indexPathForSelectedRow?.row)!)
             }
+              else{
+                destinationViewController.setGadgetFlag(9)
+                }
+            }
+            destinationViewController.TableVC = self
             // setup the destination controller
         }
     }

@@ -88,7 +88,7 @@ import Darwin
     
     
     // ##############################################################
-    //  Settings View
+    //  World Settings View
     // ##############################################################
     @IBOutlet weak var SettingsBox: UIView!
     @IBOutlet weak var WorldSettingBox: UIView!
@@ -96,14 +96,16 @@ import Darwin
     @IBOutlet weak var gravitySwitcher: UISwitch!
     
     @IBAction func gravitySwitch(sender: AnyObject) {
-        if gravitySwitcher.on == true {
+        if gravitySwitcher.on == false {
         parentVC.GameVC.currentGame.setGravity(false)
         }
         else {
         parentVC.GameVC.currentGame.setGravity(true)
         }
     }
-    
+    // ##############################################################
+    //  Settings View
+    // ##############################################################
     
     @IBAction func SettingsButton(sender: AnyObject) {
         if selectedType == "object" {
@@ -126,16 +128,16 @@ import Darwin
             let vy = Vy.text
             ThirdLabel.text = "V"
             FourthLabel.text = "θ"
-            Vx.text = truncateString(String(toMagnitude(vx!, y: vy!)), decLen: 2)
-            Vy.text = truncateString(String(toTheta(vx!, y: vy!)), decLen: 2)
+            Vx.text = truncateString(String(toMagnitude(vx!, y: vy!)), decLen: 4)
+            Vy.text = truncateString(String(toTheta(vx!, y: vy!)), decLen: 4)
             }
         if !velocityType.on {
             let v = Vx.text
             let theta = Vy.text
             ThirdLabel.text = "Vx"
             FourthLabel.text = "Vy"
-            Vx.text = truncateString(String(toX(v!, theta: theta!)), decLen: 2)
-            Vy.text = truncateString(String(toY(v!, theta: theta!)), decLen: 2)
+            Vx.text = truncateString(String(toX(v!, theta: theta!)), decLen: 4)
+            Vy.text = truncateString(String(toY(v!, theta: theta!)), decLen: 4)
         }
     }
     // changes acceleration types tells whether acceleration input is cartesian (off) or polar/vectorial (on)
@@ -146,16 +148,16 @@ import Darwin
             let ay = Ay.text
             FifthLabel.text = "A"
             SixthLabel.text = "θ"
-            Ax.text = truncateString(String(toMagnitude(ax!, y: ay!)), decLen: 2)
-            Ay.text = truncateString(String(toTheta(ax!, y: ay!)), decLen: 2)
+            Ax.text = truncateString(String(toMagnitude(ax!, y: ay!)), decLen: 4)
+            Ay.text = truncateString(String(toTheta(ax!, y: ay!)), decLen: 4)
         }
         if !accelerationType.on {
             let a = Ax.text
             let theta = Ay.text
             FifthLabel.text = "Ax"
             SixthLabel.text = "Ay"
-            Ax.text = truncateString(String(toX(a!, theta: theta!)), decLen: 2)
-            Ay.text = truncateString(String(toY(a!, theta: theta!)), decLen: 2)
+            Ax.text = truncateString(String(toX(a!, theta: theta!)), decLen: 4)
+            Ay.text = truncateString(String(toY(a!, theta: theta!)), decLen: 4)
         }
     }
     // changes force types tells whether force input is cartesian (off) or polar/vectorial (on)
@@ -166,16 +168,16 @@ import Darwin
             let fy = Fy.text
             SeventhLabel.text = "F"
             EighthLabel.text = "θ"
-            Fx.text = truncateString(String(toMagnitude(fx!, y: fy!)), decLen: 2)
-            Fy.text = truncateString(String(toTheta(fx!, y: fy!)), decLen: 2)
+            Fx.text = truncateString(String(toMagnitude(fx!, y: fy!)), decLen: 4)
+            Fy.text = truncateString(String(toTheta(fx!, y: fy!)), decLen: 4)
         }
         if !forceType.on {
             let f = Fx.text
             let theta = Fy.text
             SeventhLabel.text = "Fx"
             EighthLabel.text = "Fy"
-            Fx.text = truncateString(String(toX(f!, theta: theta!)), decLen: 2)
-            Fy.text = truncateString(String(toY(f!, theta: theta!)), decLen: 2)
+            Fx.text = truncateString(String(toX(f!, theta: theta!)), decLen: 4)
+            Fy.text = truncateString(String(toY(f!, theta: theta!)), decLen: 4)
         }
     }
     // ##############################################################
@@ -421,6 +423,9 @@ import Darwin
     // sets up log box for appropriate selection
     func setsSelectedType(type: String) {
      selectedType = type
+     if (activeLogView == WorldSettingBox || activeLogView == SettingsBox) {
+        SettingsButton(true)
+        }
     }
     // Resets the input fields in the input box state variable is either static or editable
     func setsGadgetInputBox(gadgetType: String, input: [Float], state: String ) {
@@ -632,7 +637,7 @@ import Darwin
                  EndObject2 = selectionTableData[indexPath.row]
                 }
                 if EndObject2 != "" {
-                var secondID = objectIDMap[EndObject2]
+                let secondID = objectIDMap[EndObject2]
                 ForObjectLabel.text = "For " + getEndobject() + " & " + String(secondID!)
                 }
                 else {

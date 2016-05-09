@@ -189,7 +189,11 @@
                     <navigationItem key="navigationItem" id="hNh-OJ-fjD">
                         <nil key="title"/>
                         <leftBarButtonItems>
-                            <barButtonItem title="Gadgets" id="Wcz-Pc-vvH"/>
+                            <barButtonItem title="Gadgets" id="Wcz-Pc-vvH">
+                                <connections>
+                                    <action selector="toggleGadgetMenu:" destination="Ddb-st-tCg" id="SPe-xr-LZH"/>
+                                </connections>
+                            </barButtonItem>
                             <barButtonItem title="Load" id="TCG-gb-EeG">
                                 <connections>
                                     <segue destination="Cjl-6p-vkv" kind="popoverPresentation" identifier="popoverLoadView" popoverAnchorBarButtonItem="TCG-gb-EeG" id="S7x-sp-UEx">
@@ -204,7 +208,11 @@
                             </barButtonItem>
                         </leftBarButtonItems>
                         <rightBarButtonItems>
-                            <barButtonItem title="Objects" id="RQ4-oC-FJg"/>
+                            <barButtonItem title="Objects" id="RQ4-oC-FJg">
+                                <connections>
+                                    <action selector="toggleObjectMenu:" destination="Ddb-st-tCg" id="Ear-0N-9CH"/>
+                                </connections>
+                            </barButtonItem>
                             <barButtonItem title="Save" id="pwt-vW-lnP">
                                 <connections>
                                     <segue destination="idT-4U-YjO" kind="popoverPresentation" identifier="popoverSaveView" popoverAnchorBarButtonItem="pwt-vW-lnP" id="HPT-uF-qsO">
@@ -534,7 +542,7 @@
                                 <color key="backgroundColor" red="0.83733822599999996" green="0.83733822599999996" blue="0.83733822599999996" alpha="1" colorSpace="calibratedRGB"/>
                             </view>
                             <view contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="Uf8-o9-JrE" userLabel="Output">
-                                <rect key="frame" x="273" y="8" width="194" height="189"/>
+                                <rect key="frame" x="273" y="8" width="194" height="184"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rdU-iT-2ll">
                                         <rect key="frame" x="24" y="58" width="30" height="30"/>
@@ -679,13 +687,6 @@
                                     <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="aBf-vq-X94">
                                         <rect key="frame" x="8" y="32" width="437" height="324"/>
                                         <subviews>
-                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cZG-vn-MtK">
-                                                <rect key="frame" x="107" y="11" width="51" height="31"/>
-                                                <animations/>
-                                                <connections>
-                                                    <action selector="gravitySwitch:" destination="fPQ-S9-gZ9" eventType="valueChanged" id="n3V-Ta-D28"/>
-                                                </connections>
-                                            </switch>
                                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Gravity" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XCV-el-c5E">
                                                 <rect key="frame" x="17" y="14" width="60" height="26"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -704,6 +705,13 @@
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
+                                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" translatesAutoresizingMaskIntoConstraints="NO" id="cZG-vn-MtK">
+                                                <rect key="frame" x="109" y="11" width="51" height="31"/>
+                                                <animations/>
+                                                <connections>
+                                                    <action selector="gravitySwitch:" destination="fPQ-S9-gZ9" eventType="valueChanged" id="n3V-Ta-D28"/>
+                                                </connections>
+                                            </switch>
                                         </subviews>
                                     </scrollView>
                                 </subviews>

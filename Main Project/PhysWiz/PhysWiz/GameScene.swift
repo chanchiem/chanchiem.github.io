@@ -120,7 +120,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         shapeArray.append(shapeType.AIRPLANE)
         shapeArray.append(shapeType.BIKE)
         shapeArray.append(shapeType.CAR)
-        shapeArray.append(shapeType.BLACK)
         
         PWObject.initStaticVariables();
         
@@ -536,7 +535,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     // Selects a sprite in the game scene.
     // ##############################################################
     func selectSprite(sprite: PWObject?) {
-        containerVC.setsSelectedType("object")
         let prevSprite = selectedSprite;
         if (prevSprite != nil) { prevSprite.setUnselected() }
         // Passed in sprite is nil so nothing is selected now.
@@ -548,10 +546,10 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         selectedSprite = sprite
         containerVC.setsInputBox(objectProperties[selectedSprite]!, state: "editable")
         selectedSprite.setSelected();
+        containerVC.setsSelectedType("object")
         
     }
     func selectGadget(sprite: PWStaticObject?) {
-        containerVC.setsSelectedType("gadget")
         let prevGadget = selectedGadget
         if (prevGadget != nil) { prevGadget!.setUnselected() }
         // Passed in sprite is nil so nothing is selected now.
@@ -565,6 +563,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         let values = getGadgetParameters(selectedGadget)
     containerVC.setsGadgetInputBox(selectedGadget.name!, input: values, state: "editable")
         selectedGadget.setSelected();
+        containerVC.setsSelectedType("gadget")
         
     }
     
@@ -592,28 +591,29 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                     selectGadget(touchedNode as? PWStaticObject)
                     containerVC.changeToGadgetInputBox(selectedGadget.name!)
                 }
-                else if (containerVC.getGadgetFlag() == 0) {
+                else if (containerVC.getGadgetFlag() == 9) {
                     deselectGadget()
                 }
-                else if (containerVC.getGadgetFlag() == 4) {
+                else if (containerVC.getGadgetFlag() == 3) {
                     createRamp(location)
                 }
-                else if (containerVC.getGadgetFlag() == 5) {
+                else if (containerVC.getGadgetFlag() == 4) {
                     createPlatform(location)
                 }
-                else if (containerVC.getGadgetFlag() == 6) {
+                else if (containerVC.getGadgetFlag() == 5) {
                     createWall(location)
                 }
-                else if (containerVC.getGadgetFlag() == 7) {
+                else if (containerVC.getGadgetFlag() == 6) {
                     createRound(location)
                 }
-                else if (containerVC.getGadgetFlag() == 8) {
+                else if (containerVC.getGadgetFlag() == 7) {
                     createPulley(location)
                 }
-                let objectType = shapeArray[containerVC.getObjectFlag()]
-                if (objectType == shapeType.BLACK) {
+          
+                if (containerVC.getObjectFlag() > 8) {
                     self.selectSprite(nil);
                 } else {
+                    let objectType = shapeArray[containerVC.getObjectFlag()]
                     let spriteName = String(objectType).lowercaseString
                     let newObj = PWObject.init(objectStringName: spriteName, position: location, isMovable: true, isSelectable: true)
                     objectProperties[newObj] = getParameters(newObj) /**********************************************/
@@ -642,7 +642,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 }
                 else { continue }
 
-                if (containerVC.getGadgetFlag() != 0) { // Rope
+                if (containerVC.getGadgetFlag() < 3) { // Rope
                     if (gadgetNode1 == nil) {
                         gadgetNode1 = sprite
                         if (PWObject.isPWObject(gadgetNode1)) { let n1 = gadgetNode1 as! PWObject;
@@ -652,9 +652,9 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                         if (PWObject.isPWObject(gadgetNode2)) { let n1 = gadgetNode2 as! PWObject;
                             n1.highlight(UIColor.redColor()) }
                         if (gadgetNode1 != gadgetNode2) {
-                            if (containerVC.getGadgetFlag() == 1) { createRopeBetweenNodes(gadgetNode1, node2: gadgetNode2) }
-                            if (containerVC.getGadgetFlag() == 2) { createSpringBetweenNodes(gadgetNode1, node2: gadgetNode2) }
-                            if (containerVC.getGadgetFlag() == 3) { createRodBetweenNodes(gadgetNode1, node2: gadgetNode2) }
+                            if (containerVC.getGadgetFlag() == 0) { createRopeBetweenNodes(gadgetNode1, node2: gadgetNode2) }
+                            if (containerVC.getGadgetFlag() == 1) { createSpringBetweenNodes(gadgetNode1, node2: gadgetNode2) }
+                            if (containerVC.getGadgetFlag() == 2) { createRodBetweenNodes(gadgetNode1, node2: gadgetNode2) }
                         }
                         if (PWObject.isPWObject(gadgetNode2)) { let n1 = gadgetNode2 as! PWObject; n1.unhighlight() }
                         if (PWObject.isPWObject(gadgetNode1)) { let n1 = gadgetNode1 as! PWObject; n1.unhighlight() }
@@ -672,7 +672,6 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                     containerVC.changeToGadgetInputBox(sprite.name!)
                     containerVC.setsGadgetInputBox(selectedGadget.name!, input: gadgetProperties[selectedGadget]!, state: "editable")
                     }
-
                 }
             }
         }

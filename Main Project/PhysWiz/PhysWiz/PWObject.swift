@@ -30,7 +30,6 @@ enum shapeType: String {
     case CAR        = "car"
     case BUTTON     = "button"
     case FLOOR      = "floor"
-    case BLACK      = "black.png"
 }
 
 
