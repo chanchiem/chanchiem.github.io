@@ -262,6 +262,7 @@ class PWStaticObject: SKShapeNode
     
     // Highlights the node. Currently used when being selected.
     func highlight(color: UIColor) {
+        self.unhighlight();
         let size = CGSize(width: 40, height: 40)
         let glow = SKShapeNode.init(rectOfSize: size)
         glow.position = CGPoint(x: 0, y: 0)

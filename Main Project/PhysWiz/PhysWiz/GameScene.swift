@@ -104,7 +104,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         cam.addChild(self.createStop())
         cam.addChild(self.createTrash())
         self.addChild(self.createBG())
-        self.addChild(PWObject.createFloor(CGSize.init(width: background.size.width, height: 20))) // Floor
+        self.addChild(PWObject.createFloor(CGSize.init(width: background.size.width, height: 0.01))) // Floor
         self.physicsWorld.speed = 0
         objectProperties = [PWObject: [Float]]()
         gadgetProperties = [PWStaticObject : [Float]]()
@@ -459,6 +459,12 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         rodConnections.append(node1)
         rodConnections.append(node2)
         
+        if !(node1 is PWObject) { return; }
+        if !(node2 is PWObject) { return; }
+        
+        let node1 = node1 as! PWObject
+        let node2 = node2 as! PWObject
+        
         let n1 = node1.position
         let n2 = node2.position
         let deltax = n1.x - n2.x
@@ -655,7 +661,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                             if (containerVC.getGadgetFlag() == 1) { createSpringBetweenNodes(gadgetNode1, node2: gadgetNode2) }
                             if (containerVC.getGadgetFlag() == 2) { createRodBetweenNodes(gadgetNode1, node2: gadgetNode2) }
                         }
-                        if (PWObject.isPWObject(gadgetNode2)) { let n1 = gadgetNode2 as! PWObject; n1.unhighlight() }
+                        if (PWObject.isPWObject(gadgetNode2)) { let n2 = gadgetNode2 as! PWObject; n2.unhighlight() }
                         if (PWObject.isPWObject(gadgetNode1)) { let n1 = gadgetNode1 as! PWObject; n1.unhighlight() }
                         gadgetNode2 = nil;
                         gadgetNode1 = nil;
@@ -729,7 +735,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 containerVC.removeAllFromList()
                 self.camera?.setScale(1)
                 self.camera?.position = camPos
-                let floor = PWObject.createFloor(CGSize.init(width: background.size.width, height: 20))
+                let floor = PWObject.createFloor(CGSize.init(width: background.size.width, height: 0.01))
                 self.addChild(floor)
                 self.addChild(self.createBG())
             }
@@ -1096,7 +1102,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         PWObjects.removeAll()
         PWStaticObjects.removeAll()
         containerVC.removeAllFromList()
-        let floor = PWObject.createFloor(CGSize.init(width: background.size.width, height: 20))
+        let floor = PWObject.createFloor(CGSize.init(width: background.size.width, height: 0.01))
         self.addChild(floor)
         self.addChild(self.createBG())
         
