@@ -928,7 +928,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     
     // This function is called if an event has been triggered
     func eventTriggered(event: Event) {
-        self.physicsWorld.speed = 0;
+        pauseWorld()
         Timer.invalidate()
         if (event.isCollisionEvent()) {
             let sprites = event.getSprites();

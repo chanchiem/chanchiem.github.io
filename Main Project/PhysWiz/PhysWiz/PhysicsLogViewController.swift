@@ -660,11 +660,13 @@ import Darwin
     func tableView(tableView: UITableView, didDeselectRowAtIndexPath indexPath: NSIndexPath) {
         if tableView == EndObjectList {
             if indexPath == ObjectIndexQueue[0] {
+                if EndObject2 != "" {
                 EndObject = selectionTableData[ObjectIndexQueue[1].row]
+                }
                 EndObject2 = ""
                 ObjectIndexQueue[0] = ObjectIndexQueue[1]
             }
-            if indexPath == ObjectIndexQueue[1] {
+            else if indexPath == ObjectIndexQueue[1] {
                 EndObject2 = ""
                 ObjectIndexQueue[1] = NSIndexPath()
             }
@@ -718,6 +720,13 @@ import Darwin
     func getEndobject2() -> String {
         return EndObject2
     }
+    func resetEndSetter() {
+        changeToMainView()
+        EndType = ""
+        objectSelector.reloadData()
+        EndParameterList.reloadData()
+    
+    }
     //returns the end event that is currently set
     func getEndSetter() -> [String] {
         var endSettings: [String] = ["", "", "", "", ""]
@@ -747,7 +756,7 @@ import Darwin
             endSettings[4] = String(objectIDMap[EndObject2]!)
             }
         }
-
+        resetEndSetter()
         return endSettings
     }
     // Set up endssetter View for Entering Time

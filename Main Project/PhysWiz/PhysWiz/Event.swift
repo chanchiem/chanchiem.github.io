@@ -42,6 +42,7 @@ class Event: NSObject {
     ////////////////////////////////////////////////////////////
     private var sprite1: PWObject! = nil; // Also used for time and Properties
     private var sprite2: PWObject! = nil;
+    private var initialPropertyValue = CGFloat(0);
     
     ////////////////////////////////////////////////////////////
     //////////////// Time Variables ////////////////////////////
@@ -230,7 +231,15 @@ class Event: NSObject {
     // Does the current property value exceed its limit
     func checkGreaterThanLimit() -> Bool {
         let currentVal = getCurrentPropertyValue();
-        return currentVal >= self.parameterLimit;
+        if self.initialPropertyValue < self.parameterLimit {
+        return currentVal >= self.parameterLimit
+        }
+        else if self.initialPropertyValue > self.parameterLimit {
+        return currentVal <= self.parameterLimit
+        }
+        else {
+         return true
+        }
     }
     
     // When this function is called, make sure you input
@@ -284,9 +293,7 @@ class Event: NSObject {
         event.sprite1 = sprite;
         event.setPropertyType(parameterFlag);
         event.setPropertyLimit(limitValue);
-        
+        event.initialPropertyValue = event.getCurrentPropertyValue()
         return event;
     }
-    
-    
 }

@@ -61,6 +61,10 @@ class GameViewController: UIViewController {
     
     @IBAction func callSetterBox(sender: AnyObject) {
         self.parentVC.changeToEndSetter()
+        // if the log view is not present make it pop up
+        if parentVC.Logpresented == false {
+                parentVC.showPhysicsLog(0)
+        }
     }
     
     @IBOutlet weak var ElapsedTime: UILabel!
