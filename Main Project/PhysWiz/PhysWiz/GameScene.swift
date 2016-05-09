@@ -729,6 +729,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 springConnections.removeAll()
                 rodConnections.removeAll()
                 containerVC.removeAllFromList()
+                self.camera?.setScale(1)
                 self.camera?.position = camPos
                 let floor = PWObject.createFloor(CGSize.init(width: background.size.width, height: 20))
                 self.addChild(floor)
@@ -953,54 +954,32 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         }
     }
     
+    // Allows the user to zoom in and out of the scene.
+    var cameraScale: CGFloat = 1.0
     func handlePinch(recognizer: UIPinchGestureRecognizer) {
         if recognizer.state == .Changed {
-            let xdim = CGFloat(self.size.width * (self.camera?.xScale)!);
-            let ydim = CGFloat(self.size.height * (self.camera?.yScale)!);
+            // Location of the corner points of the background.
+            let lower_bg_x = background.position.x
+            let upper_bg_x = background.position.x + background.size.width
+            let lower_bg_y = background.position.y
+            let upper_bg_y = background.position.y + background.size.height
             
+            // Location of the corner points of the camera.
+            let lower_cam_x = (self.camera?.position.x)! - (self.size.width * cameraScale / recognizer.scale)/2
+            let upper_cam_x = (self.camera?.position.x)! + (self.size.width * cameraScale / recognizer.scale)/2
+            let lower_cam_y = (self.camera?.position.y)! - (self.size.height * cameraScale / recognizer.scale)/2
+            let upper_cam_y = (self.camera?.position.y)! + (self.size.height * cameraScale / recognizer.scale)/2
             
-            var hasChanged = false;
-            if (xdim < background.size.width && ydim < background.size.height) {
-                let lower_bg_x = background.position.x
-                let upper_bg_x = background.position.x + background.size.width
-                let lower_bg_y = background.position.y
-                let upper_bg_y = background.position.y + background.size.height
-                
-                let lower_cam_x = (self.camera?.position.x)! - (self.size.width * (self.camera?.xScale)!)/2
-                let upper_cam_x = (self.camera?.position.x)! + (self.size.width * (self.camera?.xScale)!)/2
-                let lower_cam_y = (self.camera?.position.y)! - (self.size.height * (self.camera?.yScale)!)/2
-                let upper_cam_y = (self.camera?.position.y)! + (self.size.height * (self.camera?.yScale)!)/2
-                
-                if (lower_cam_x <= lower_bg_x && recognizer.scale >= 1) { return }
-                if (upper_cam_x >= upper_bg_x && recognizer.scale >= 1) { return }
-                if (lower_cam_y <= lower_bg_y && recognizer.scale >= 1) { return }
-                if (upper_cam_y >= upper_bg_y && recognizer.scale >= 1) { return }
-                
-                let next_lower_cam_x = (self.camera?.position.x)! - (self.size.width * (self.camera!.xScale + recognizer.scale)/2)/2
-                let next_upper_cam_x = (self.camera?.position.x)! + (self.size.width * self.camera!.xScale * recognizer.scale)/2
-                let next_lower_cam_y = (self.camera?.position.y)! - (self.size.height * (self.camera!.yScale + recognizer.scale)/2)/2
-                let next_upper_cam_y = (self.camera?.position.y)! + (self.size.height * self.camera!.yScale * recognizer.scale)/2
-                
-                if (next_lower_cam_x < lower_bg_x) {
-                    self.camera?.position.x = lower_bg_x + (self.size.width * (self.camera?.xScale)!)/2
-                    hasChanged = true;
-                }
-                if (next_lower_cam_y < lower_bg_y) {
-                    self.camera?.position.y = lower_bg_y + (self.size.height * (self.camera?.yScale)!)/2
-                    hasChanged = true;
-                }
-                if (next_upper_cam_x > upper_bg_x) {
-                    self.camera?.position.x = upper_bg_x - (self.size.width * (self.camera?.xScale)!)/2
-                    hasChanged = true;
-                }
-                if (next_upper_cam_y > upper_bg_y) {
-                    self.camera?.position.y = upper_bg_y - (self.size.height * (self.camera?.yScale)!)/2
-                    hasChanged = true;
-                }
-                
-                if (!hasChanged) { self.camera?.setScale(recognizer.scale) }
-                self.camera?.position = boundedCamMovement(self.camera!.position)
-            }
+            // Bound zoom to background size.
+            if (lower_cam_x < lower_bg_x) { return }
+            if (upper_cam_x > upper_bg_x) { return }
+            if (lower_cam_y < lower_bg_y) { return }
+            if (upper_cam_y > upper_bg_y) { return }
+            
+            // Handle scaling functions.
+            cameraScale /= recognizer.scale
+            self.camera?.setScale(cameraScale);
+            recognizer.scale = 1.0;
         }
     }
     

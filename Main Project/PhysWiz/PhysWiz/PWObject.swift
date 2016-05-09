@@ -449,7 +449,7 @@ class PWObject: SKSpriteNode
     static func createFloor(size: CGSize) -> PWObject {
         PWObject.initStaticVariables(); // Mandatory call to populate static variables.
         
-        let floor = self.init(objName: "floor", position: CGPointZero, color: UIColor.blackColor(), size: size, isMovable: false, isSelectable: false);
+        let floor = self.init(objName: "floor", position: CGPoint(x: size.width/2, y: 0), color: UIColor.blackColor(), size: size, isMovable: false, isSelectable: false);
         // We don't want the floor to announe when something hits it.
         floor.physicsBody?.contactTestBitMask = PhysicsCategory.None;
         
