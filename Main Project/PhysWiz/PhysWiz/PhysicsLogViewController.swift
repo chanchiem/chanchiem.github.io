@@ -1,5 +1,5 @@
  //
-//  physicslogViewController.swift
+//  PhysicsLogViewController.swift
 //  PhysWiz
 //
 //  Created by Yosvani Lopez on 4/16/16.
@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 import Darwin
- class physicslogViewController: UIViewController, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate  {
+ class PhysicsLogViewController: UIViewController, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate  {
     var activeLogView: UIView?
     var currentTextField: UITextField?
     var objects = ["none", "test"]
@@ -17,7 +17,7 @@ import Darwin
     let endSetterParameterNames = ["Distance", "Height","Velocity x", "Velocity y", "Angular Velocity", "Acceleration x", "Acceleration y" ]
     let endSetterEventNames = ["Collision" ]
     var objectIDMap = [String: Int](); // Each object name will have an ID associated with it
-    var parentVC = containerViewController()
+    var parentVC = ContainerViewController()
     var selectedType = ""
     @IBOutlet var physicsLog: UIView!
     override func viewDidLoad() {

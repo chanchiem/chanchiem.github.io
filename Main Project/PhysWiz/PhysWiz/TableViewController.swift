@@ -41,6 +41,7 @@ class TableViewController: UITableViewController {
         // Size of the shapes table
          if (objectMenu != nil) {
         if tableView == self.objectMenu {
+            
             count = self.shapes.count
         }
         }
@@ -94,7 +95,7 @@ class TableViewController: UITableViewController {
         if segue.identifier == "toHomeView" {
             // Set the GameViewController as a global variable.
             // This will later be used to unify the game scene.
-            let destinationViewController = segue.destinationViewController as! containerViewController;
+            let destinationViewController = segue.destinationViewController as!ContainerViewController;
             if (objectMenu != nil) {
                 if objectMenu.indexPathForSelectedRow != nil {
         destinationViewController.setObjectFlag((objectMenu.indexPathForSelectedRow?.row)!)

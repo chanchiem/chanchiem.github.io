@@ -14,7 +14,7 @@ class GameViewController: UIViewController {
     // is the link of communication between the interface
     // and the scene.
     var currentGame: GameScene!
-    var parentVC: containerViewController!
+    var parentVC: ContainerViewController!
     override func viewDidLoad() {
         super.viewDidLoad()
         currentGame = GameScene(fileNamed: "GameScene")

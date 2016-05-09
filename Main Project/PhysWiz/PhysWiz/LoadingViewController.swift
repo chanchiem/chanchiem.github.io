@@ -11,7 +11,7 @@ import Foundation
 class LoadingViewController: UIViewController {
     
     var GameVC: GameViewController!
-    var parentVC: containerViewController!
+    var parentVC: ContainerViewController!
     
     override func viewDidLoad() {
         super.viewDidLoad()

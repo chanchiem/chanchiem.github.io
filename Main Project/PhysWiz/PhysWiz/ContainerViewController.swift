@@ -1,5 +1,5 @@
 //
-//  physicslogViewController.swift
+//  ContainerViewController.swift
 //  PhysWiz
 //
 //  Created by Yosvani Lopez on 4/16/16.
@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class containerViewController: UIViewController, UIPopoverPresentationControllerDelegate {
+class ContainerViewController: UIViewController, UIPopoverPresentationControllerDelegate {
     let staticObjects = ["Ramp", "Platform", "Wall", "Round", "Pulley"]
     @IBOutlet weak var gameView: UIView!
     @IBOutlet weak var physicsLog: UIView!
@@ -18,7 +18,7 @@ class containerViewController: UIViewController, UIPopoverPresentationController
     @IBOutlet weak var NavigationBar: UINavigationItem!
     @IBOutlet weak var physicsLogButton: UIBarButtonItem!
     var GameVC: GameViewController!
-    var PhysicsLogVC: physicslogViewController!
+    var PhysicsLogVC: PhysicsLogViewController!
     var TableVC: TableViewController!
     var objectflag = 0
     var gadgetflag = 0
@@ -84,7 +84,7 @@ class containerViewController: UIViewController, UIPopoverPresentationController
         }
         
         if (segue.identifier == "toPhysicsLog") {
-            PhysicsLogVC = segue.destinationViewController as! physicslogViewController
+            PhysicsLogVC = segue.destinationViewController as! PhysicsLogViewController
             PhysicsLogVC.parentVC = self
         }
         
@@ -121,7 +121,7 @@ class containerViewController: UIViewController, UIPopoverPresentationController
     // return from selecting table object
     @IBAction func unwindSegue(segue: UIStoryboardSegue) {
     }
-    // tees whether the tables are open or not
+    // tells whether the tables are open or not
     func tableAreOpen() -> Bool {
         if TableVC != nil {
             if (TableVC.isViewLoaded() && (TableVC.view.window != nil)) {

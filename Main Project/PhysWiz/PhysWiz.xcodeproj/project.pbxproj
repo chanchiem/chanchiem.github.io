@@ -18,8 +18,8 @@
 		2809DB541CD0390F00957A37 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2809DB531CD0390F00957A37 /* Assets.xcassets */; };
 		286CA27D1CD718A80069C3C8 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286CA27C1CD718A80069C3C8 /* GameScene.swift */; };
 		286CA27F1CD81A8A0069C3C8 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 286CA27E1CD81A8A0069C3C8 /* Main.storyboard */; };
-		286CA2811CD833260069C3C8 /* physicslogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286CA2801CD833260069C3C8 /* physicslogViewController.swift */; };
-		28A64D2D1CC411F300694D32 /* containerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A64D2C1CC411F300694D32 /* containerViewController.swift */; };
+		286CA2811CD833260069C3C8 /* PhysicsLogViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 286CA2801CD833260069C3C8 /* PhysicsLogViewController.swift */; };
+		28A64D2D1CC411F300694D32 /* ContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28A64D2C1CC411F300694D32 /* ContainerViewController.swift */; };
 		28BD20851CBCB6B100D54416 /* TableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BD20841CBCB6B100D54416 /* TableViewController.swift */; };
 		28EF64001CBC4D9C00AF5765 /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28EF63FF1CBC4D9C00AF5765 /* SWRevealViewController.m */; };
 		9F4F9ACF1CCFC1C300B011FB /* EventOrganizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F4F9ACE1CCFC1C300B011FB /* EventOrganizer.swift */; };
@@ -42,8 +42,8 @@
 		2809DB531CD0390F00957A37 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		286CA27C1CD718A80069C3C8 /* GameScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		286CA27E1CD81A8A0069C3C8 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		286CA2801CD833260069C3C8 /* physicslogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = physicslogViewController.swift; sourceTree = "<group>"; };
-		28A64D2C1CC411F300694D32 /* containerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = containerViewController.swift; sourceTree = "<group>"; };
+		286CA2801CD833260069C3C8 /* PhysicsLogViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PhysicsLogViewController.swift; sourceTree = "<group>"; };
+		28A64D2C1CC411F300694D32 /* ContainerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContainerViewController.swift; sourceTree = "<group>"; };
 		28BD20841CBCB6B100D54416 /* TableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableViewController.swift; sourceTree = "<group>"; };
 		28EF63FD1CBC4D8E00AF5765 /* SWRevealViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
 		28EF63FE1CBC4D9B00AF5765 /* PhysWiz-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "PhysWiz-Bridging-Header.h"; sourceTree = "<group>"; };
@@ -90,10 +90,10 @@
 				286CA27C1CD718A80069C3C8 /* GameScene.swift */,
 				1A938E7B1CBC9D7B00690BA3 /* PWObject.swift */,
 				2809DB511CD01AA400957A37 /* PWStaticObject.swift */,
-				286CA2801CD833260069C3C8 /* physicslogViewController.swift */,
+				286CA2801CD833260069C3C8 /* PhysicsLogViewController.swift */,
 				1A99C2741CA098950021F14B /* GameViewController.swift */,
 				28BD20841CBCB6B100D54416 /* TableViewController.swift */,
-				28A64D2C1CC411F300694D32 /* containerViewController.swift */,
+				28A64D2C1CC411F300694D32 /* ContainerViewController.swift */,
 				1A3A1AF61CD31FA1002CE53D /* SavingViewController.swift */,
 				1A3A1AF81CD3243D002CE53D /* LoadingViewController.swift */,
 				286CA27E1CD81A8A0069C3C8 /* Main.storyboard */,
@@ -204,8 +204,8 @@
 				1A938E7C1CBC9D7B00690BA3 /* PWObject.swift in Sources */,
 				9FBFD4821CBF5D5B0024505D /* Rope.swift in Sources */,
 				28BD20851CBCB6B100D54416 /* TableViewController.swift in Sources */,
-				286CA2811CD833260069C3C8 /* physicslogViewController.swift in Sources */,
-				28A64D2D1CC411F300694D32 /* containerViewController.swift in Sources */,
+				286CA2811CD833260069C3C8 /* PhysicsLogViewController.swift in Sources */,
+				28A64D2D1CC411F300694D32 /* ContainerViewController.swift in Sources */,
 				28EF64001CBC4D9C00AF5765 /* SWRevealViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

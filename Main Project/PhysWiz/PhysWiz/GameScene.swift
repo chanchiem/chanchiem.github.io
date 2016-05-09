@@ -46,7 +46,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
     
     var toggledSprite = shapeType.CIRCLE;
     var shapeArray = [shapeType]();
-    var containerVC: containerViewController!
+    var containerVC: ContainerViewController!
     // The selected object for parameters
     var selectedSprite: PWObject! = nil
     var selectedGadget: PWStaticObject! = nil
@@ -291,9 +291,8 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         
         for (gadget, properties) in inputDictionary {
             let location = CGPoint(x: CGFloat(pixelToMetric*properties[1]), y: CGFloat(pixelToMetric*properties[2]))
-            if (PWStaticObject.isPWStaticObject(gadget)) {
+            if (PWStaticObject.isPWStaticObject(gadget) && gadget == selectedGadget) {
                 if gadget.name == "Ramp" {
-                    
                     gadget.editRamp(CGFloat(properties[0]), location: location, height: CGFloat(pixelToMetric*properties[3]), base: CGFloat(pixelToMetric*properties[4]), angle: CGFloat(properties[5]), friction: CGFloat(properties[6]))
                     
                 }
@@ -835,7 +834,11 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 containerVC.setsInputBox(getParameters(selectedSprite), state: "static")
             }
         }
-
+        if !containerVC.tableAreOpen() {
+            if containerVC.TableVC != nil {
+         containerVC.TableVC.currentlySelected = NSIndexPath()
+            }
+        }
             // updates selected shapes values with input box values when pwPaused
         if (selectedSprite != nil && pwPaused) {
                 var values = objectProperties[selectedSprite]!
