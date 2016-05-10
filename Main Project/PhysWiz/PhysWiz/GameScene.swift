@@ -882,6 +882,10 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             let xComponent = CGFloat(objectProperties[sprite]![shapePropertyIndex.AX.rawValue]*pixelToMetric);
             let yComponent = CGFloat(objectProperties[sprite]![shapePropertyIndex.AY.rawValue]*pixelToMetric);
             sprite.applyAcceleration(xComponent, y: yComponent)
+            
+            let xComponentForce = CGFloat(objectProperties[sprite]![shapePropertyIndex.FX.rawValue]*pixelToMetric);
+            let yComponentForce = CGFloat(objectProperties[sprite]![shapePropertyIndex.FY.rawValue]*pixelToMetric);
+            sprite.applyForce(xComponentForce, y: yComponentForce)
         }
         updateSprings();
         if selectedSprite != nil && !pwPaused {
