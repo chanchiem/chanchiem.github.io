@@ -35,7 +35,6 @@ import Darwin
         Fx.delegate = self;
         Fy.delegate = self;
         Av.delegate = self;
-        WorldResistance.delegate = self;
     EndParameterInputBox.delegate = self;
         // Move all the option boxes to the same spot in so that toggling is simply done with hide and unhide 
         self.activeLogView = self.mainLogView
@@ -92,7 +91,6 @@ import Darwin
     // ##############################################################
     @IBOutlet weak var SettingsBox: UIView!
     @IBOutlet weak var WorldSettingBox: UIView!
-    @IBOutlet weak var WorldResistance: UITextField!
     @IBOutlet weak var gravitySwitcher: UISwitch!
     
     @IBAction func gravitySwitch(sender: AnyObject) {
@@ -103,6 +101,7 @@ import Darwin
         parentVC.GameVC.currentGame.setGravity(true)
         }
     }
+
     // ##############################################################
     //  Settings View
     // ##############################################################
@@ -688,13 +687,18 @@ import Darwin
             if indexPath == ObjectIndexQueue[0] {
                 if EndObject2 != "" {
                 EndObject = selectionTableData[ObjectIndexQueue[1].row]
+                    EndObject2 = ""
                 }
-                EndObject2 = ""
+                else {
+                    EndObject = "" 
+                }
+                ForObjectLabel.text = "For " + getEndobject() + " & "
                 ObjectIndexQueue[0] = ObjectIndexQueue[1]
             }
             else if indexPath == ObjectIndexQueue[1] {
                 EndObject2 = ""
                 ObjectIndexQueue[1] = NSIndexPath()
+                ForObjectLabel.text = "For " + getEndobject() + " & "
             }
             
         }
@@ -903,4 +907,5 @@ import Darwin
         return "0"
         
     }
+    
 }

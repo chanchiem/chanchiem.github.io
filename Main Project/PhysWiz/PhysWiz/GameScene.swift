@@ -778,6 +778,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             containerVC.changeToObjectInputBox()
             containerVC.setsInputBox(defaultObjectProperties, state: "static")
         }
+        
     }
     func pauseWorld() {
         if Timer != nil {
@@ -844,12 +845,12 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         // Checks if there are any parameter events that need checking
         // and checks them.
         eventorganizer.checkParameterEventTriggered();
-        updateFrameCounter += 1
-        if (updateFrameCounter % 5 == 0) {
+       // updateFrameCounter += 1
+       // if (updateFrameCounter % 5 == 0) {
             if selectedSprite != nil && !pwPaused  {
                 containerVC.setsInputBox(getParameters(selectedSprite), state: "static")
-            }
-        }
+              }
+       //      }
         if !containerVC.tableAreOpen() {
             if containerVC.TableVC != nil {
          containerVC.TableVC.currentlySelected = NSIndexPath()
