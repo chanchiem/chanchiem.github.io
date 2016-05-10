@@ -495,7 +495,7 @@ class PWObject: SKSpriteNode
         self.init(objectStringName: objectStringName, position: objectPosition, isMovable: movable, isSelectable: selectable)
         self.setVelocity(velocity);
         self.setMass(objMass)
-        self.setAngularVelocity(angularVelocity/CGFloat(metricScale))
+        self.setAngularVelocity(angularVelocity)
         self.applyAcceleration(acceleration.dx/CGFloat(metricScale), y: acceleration.dy/CGFloat(metricScale))
         self.applyForce(force.dx/CGFloat(metricScale), y: force.dy/CGFloat(metricScale))
     }
