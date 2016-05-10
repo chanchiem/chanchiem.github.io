@@ -128,9 +128,9 @@ class PWStaticObject: SKShapeNode
     //  These Functions modify the parameters of each of the gadgets
     // ##############################################################
     
-    func editRamp(scale: CGFloat, location: CGPoint, height: CGFloat, base: CGFloat, angle: CGFloat, friction: CGFloat) {
+    func editRamp(scale: CGFloat, location: CGPoint, angle: CGFloat, base: CGFloat, rotation: CGFloat, friction: CGFloat) {
         // save new values
-        self.values = [Float(scale), Float(position.x), Float(position.y), Float(height), Float(base), Float(angle), Float(friction)]
+        self.values = [Float(scale), Float(position.x), Float(position.y), Float(angle), Float(base), Float(rotation), Float(friction)]
         // degrees to radians
         let angleInDegrees = degToRad(Float(angle))
         let polygonPath = CGPathCreateMutable()
@@ -142,7 +142,7 @@ class PWStaticObject: SKShapeNode
         self.path = polygonPath
         self.strokeColor = UIColor.blackColor()
         self.fillColor = UIColor.blackColor()
-        
+        self.zRotation = CGFloat(degToRad(Float(rotation)))
         self.physicsBody = SKPhysicsBody(polygonFromPath: polygonPath)
         self.physicsBody?.dynamic = false
         self.physicsBody?.restitution = 0
@@ -160,6 +160,7 @@ class PWStaticObject: SKShapeNode
         CGPathAddLineToPoint(polygonPath, nil, -scale*length/2, scale*width/2)
         CGPathAddLineToPoint(polygonPath, nil, -scale*length/2 , -scale*width/2)
         self.path = polygonPath
+        self.zRotation = CGFloat(degToRad(Float(rotation)))
         self.strokeColor = UIColor.blackColor()
         self.fillColor = UIColor.blackColor()
         
@@ -182,23 +183,27 @@ class PWStaticObject: SKShapeNode
         self.path = polygonPath
         self.strokeColor = UIColor.blackColor()
         self.fillColor = UIColor.blackColor()
-        
+        self.zRotation = CGFloat(degToRad(Float(rotation)))
         self.physicsBody = SKPhysicsBody(polygonFromPath: polygonPath)
         self.physicsBody?.dynamic = false
         self.physicsBody?.restitution = 0
         self.physicsBody?.friction = friction
         self.position = location
     }
-    func editRound(scale: CGFloat, location: CGPoint, radius: CGFloat, other: CGFloat,  other2: CGFloat, friction: CGFloat) {
+    func editRound(scale: CGFloat, location: CGPoint, radius: CGFloat,  var whratio: CGFloat,  rotation: CGFloat, friction: CGFloat) {
         // save new values
-        self.values = [Float(scale), Float(position.x), Float(position.y), Float(radius), Float(other), Float(other2), Float(friction)]
+        if whratio > 20 {
+            whratio = CGFloat(values[4])
+        }
+        self.values = [Float(scale), Float(position.x), Float(position.y), Float(radius), Float(whratio), Float(rotation), Float(friction)]
         let polygonPath = CGPathCreateMutable()
         CGPathMoveToPoint(polygonPath, nil, 0, -radius)
-        CGPathAddArc(polygonPath, nil, CGFloat(0), CGFloat(0), CGFloat(radius),CGFloat(-M_PI_2), CGFloat(M_PI_2*3), false);
+        var t = CGAffineTransformMakeScale(whratio, 1.0)
+        CGPathAddArc(polygonPath, &t, CGFloat(0), CGFloat(0), CGFloat(radius),CGFloat(-M_PI_2), CGFloat(M_PI_2*3), false);
         self.path = polygonPath
         self.strokeColor = UIColor.blackColor()
+        self.zRotation = CGFloat(degToRad(Float(rotation)))
         self.physicsBody = SKPhysicsBody(edgeLoopFromPath: polygonPath)
-        
         self.physicsBody?.dynamic = false
         self.physicsBody?.restitution = 0
         self.physicsBody?.friction = friction
@@ -300,7 +305,7 @@ class PWStaticObject: SKShapeNode
             self.strokeColor = UIColor.blackColor()
             self.fillColor = UIColor.blackColor()
             self.physicsBody = SKPhysicsBody(polygonFromPath: polygonPath)
-            self.values = [1, Float(position.x), Float(position.y), 100, 100, 45,0] // default values
+            self.values = [1, Float(position.x), Float(position.y), 45, 100, 0,0] // default values
         }
         // create rectangle path flatform
         if (objectStringName == "Platform") {
@@ -333,7 +338,7 @@ class PWStaticObject: SKShapeNode
             self.init(path: polygonPath)
             self.strokeColor = UIColor.blackColor()
             self.physicsBody = SKPhysicsBody(edgeLoopFromPath: polygonPath)
-            self.values = [1, Float(position.x), Float(position.y), 100, 0, 0, 0] // default values
+            self.values = [1, Float(position.x), Float(position.y), 100, 1, 0, 0] // default values
         }
         if (objectStringName == "Pulley") {
             CGPathMoveToPoint(polygonPath, nil, 0, -20)

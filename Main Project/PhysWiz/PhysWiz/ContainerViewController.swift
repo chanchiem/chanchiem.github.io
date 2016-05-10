@@ -148,7 +148,7 @@ class ContainerViewController: UIViewController, UIPopoverPresentationController
         if index != 0 {
             objectflag = nullflag
         }
-        if index > 2 && index < 7  {
+        if index > 2 && index < 8  {
             changeToGadgetInputBox(staticObjects[index - 3]) // four is array offset
         }
         gadgetflag = index
@@ -159,6 +159,7 @@ class ContainerViewController: UIViewController, UIPopoverPresentationController
         return objectflag
         }
         else {
+            objectflag = nullflag
             return nullflag
         }
     }
@@ -167,6 +168,7 @@ class ContainerViewController: UIViewController, UIPopoverPresentationController
         return gadgetflag
         }
         else {
+            gadgetflag = nullflag
             return nullflag
         }
     }

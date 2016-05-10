@@ -207,16 +207,16 @@
                                     <action selector="toggleGadgetMenu:" destination="Ddb-st-tCg" id="SPe-xr-LZH"/>
                                 </connections>
                             </barButtonItem>
+                            <barButtonItem title="Log" id="UuB-WA-CK0">
+                                <connections>
+                                    <action selector="showPhysicsLog:" destination="Ddb-st-tCg" id="l3S-BB-t97"/>
+                                </connections>
+                            </barButtonItem>
                             <barButtonItem title="Load" id="TCG-gb-EeG">
                                 <connections>
                                     <segue destination="Cjl-6p-vkv" kind="popoverPresentation" identifier="popoverLoadView" popoverAnchorBarButtonItem="TCG-gb-EeG" id="S7x-sp-UEx">
                                         <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
                                     </segue>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem title="Log" id="UuB-WA-CK0">
-                                <connections>
-                                    <action selector="showPhysicsLog:" destination="Ddb-st-tCg" id="l3S-BB-t97"/>
                                 </connections>
                             </barButtonItem>
                         </leftBarButtonItems>
@@ -247,7 +247,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Kqt-yg-lDd" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1667" y="-593"/>
+            <point key="canvasLocation" x="1713" y="-593"/>
         </scene>
         <!--Physics Log View Controller-->
         <scene sceneID="Cfs-h6-hgK">

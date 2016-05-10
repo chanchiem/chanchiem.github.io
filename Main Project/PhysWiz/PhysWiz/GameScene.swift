@@ -210,7 +210,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         if object.name! == "Ramp" {
             values[1] =  values[1]/pixelToMetric
             values[2] =  values[2]/pixelToMetric
-            values[3] =  values[3]/pixelToMetric
+            values[3] =  values[3]
             values[4] =  values[4]/pixelToMetric
         }
         //platform
@@ -285,15 +285,21 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
         }
     }
     // restores gadget properties
-    func applyAllGadgetProperties(inputDictionary: [PWStaticObject: [Float]])
+    func applyAllGadgetProperties(inputDictionary: [PWStaticObject: [Float]], forallobjects: Bool)
     {
         if (inputDictionary.count == 0) { return } // input contains nothing
         
         for (gadget, properties) in inputDictionary {
             let location = CGPoint(x: CGFloat(pixelToMetric*properties[1]), y: CGFloat(pixelToMetric*properties[2]))
-            if (PWStaticObject.isPWStaticObject(gadget) && gadget == selectedGadget) {
+            
+            if (PWStaticObject.isPWStaticObject(gadget)) {
+                if selectedGadget != nil {
+                    if forallobjects == false && gadget != selectedGadget {
+                        continue
+                    }
+                }
                 if gadget.name == "Ramp" {
-                    gadget.editRamp(CGFloat(properties[0]), location: location, height: CGFloat(pixelToMetric*properties[3]), base: CGFloat(pixelToMetric*properties[4]), angle: CGFloat(properties[5]), friction: CGFloat(properties[6]))
+                    gadget.editRamp(CGFloat(properties[0]), location: location, angle: CGFloat(properties[3]), base: CGFloat(pixelToMetric*properties[4]), rotation: CGFloat(properties[5]), friction: CGFloat(properties[6]))
                     
                 }
                 else if gadget.name == "Platform" {
@@ -305,7 +311,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                     
                 }
                 else if gadget.name == "Round" {
-               gadget.editRound(CGFloat(properties[0]), location: location, radius: CGFloat(pixelToMetric*properties[3]), other: CGFloat(properties[4]), other2: CGFloat(properties[5]), friction: CGFloat(properties[6]))
+               gadget.editRound(CGFloat(properties[0]), location: location, radius: CGFloat(pixelToMetric*properties[3]), whratio: CGFloat(properties[4]), rotation: CGFloat(properties[5]), friction: CGFloat(properties[6]))
                     
                 }
                 else if gadget.name == "Pulley" {
@@ -863,7 +869,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 if (Float(input[i]) != nil) { values[i] = Float(input[i])! }
             }
             gadgetProperties[selectedGadget] = values
-            applyAllGadgetProperties(gadgetProperties)
+            applyAllGadgetProperties(gadgetProperties, forallobjects: false)
         }
         // apply accelerations to objects (constant force)
         for object in self.children {
@@ -1219,7 +1225,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                     }
                 }
             
-                applyAllGadgetProperties(gadgetProperties)
+                applyAllGadgetProperties(gadgetProperties, forallobjects: true)
                 PWStaticObjects += [obj]
                 self.addChild(obj)
             }

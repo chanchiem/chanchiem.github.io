@@ -92,7 +92,6 @@ class PWObject: SKSpriteNode
         objectTextureMap["car"]         = "car.png"
         objectTextureMap["button"]      = "button.png"
         objectTextureMap["floor"]       = "floor.png"
-        objectTextureMap["ramp"]        = "ramp.png"
     }
     
     // Returns the string name of the image texture that represents
