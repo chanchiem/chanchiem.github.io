@@ -140,7 +140,6 @@ class ContainerViewController: UIViewController, UIPopoverPresentationController
         }
         changeToObjectInputBox()
         objectflag = index
-        NSLog(String(index))
     }
     
     func setGadgetFlag(index: Int) {
@@ -152,7 +151,6 @@ class ContainerViewController: UIViewController, UIPopoverPresentationController
             changeToGadgetInputBox(staticObjects[index - 3]) // four is array offset
         }
         gadgetflag = index
-        NSLog("Test")
     }
     func getObjectFlag()->Int{
         if tableAreOpen() {

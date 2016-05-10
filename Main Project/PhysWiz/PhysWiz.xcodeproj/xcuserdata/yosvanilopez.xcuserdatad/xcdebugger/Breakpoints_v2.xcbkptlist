@@ -138,11 +138,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PhysWiz/containerViewController.swift"
-            timestampString = "484537161.550039"
+            timestampString = "484601260.226803"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "231"
-            endingLineNumber = "231"
+            startingLineNumber = "229"
+            endingLineNumber = "229"
             landmarkName = "setsSelectedType(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -154,11 +154,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PhysWiz/containerViewController.swift"
-            timestampString = "484537161.550039"
+            timestampString = "484601260.226803"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "230"
-            endingLineNumber = "230"
+            startingLineNumber = "228"
+            endingLineNumber = "228"
             landmarkName = "setsSelectedType(_:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -490,11 +490,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PhysWiz/containerViewController.swift"
-            timestampString = "484537161.550039"
+            timestampString = "484601260.226803"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "170"
-            endingLineNumber = "170"
+            startingLineNumber = "168"
+            endingLineNumber = "168"
             landmarkName = "getGadgetFlag()"
             landmarkType = "5">
          </BreakpointContent>
@@ -506,11 +506,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PhysWiz/containerViewController.swift"
-            timestampString = "484458068.894386"
+            timestampString = "484601260.226803"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "160"
-            endingLineNumber = "160"
+            startingLineNumber = "158"
+            endingLineNumber = "158"
             landmarkName = "getObjectFlag()"
             landmarkType = "5">
          </BreakpointContent>
@@ -1544,43 +1544,43 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PhysWiz/PhysicsLogViewController.swift"
-            timestampString = "484542368.427718"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "757"
-            endingLineNumber = "757"
-            landmarkName = "resetEndSetter()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PhysWiz/PhysicsLogViewController.swift"
-            timestampString = "484542368.427718"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "752"
-            endingLineNumber = "752"
-            landmarkName = "resetEndSetter()"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "PhysWiz/PhysicsLogViewController.swift"
-            timestampString = "484542368.427718"
+            timestampString = "484601501.587925"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "758"
             endingLineNumber = "758"
+            landmarkName = "resetEndSetter()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PhysWiz/PhysicsLogViewController.swift"
+            timestampString = "484601501.587925"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "753"
+            endingLineNumber = "753"
+            landmarkName = "resetEndSetter()"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "PhysWiz/PhysicsLogViewController.swift"
+            timestampString = "484601501.587925"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "759"
+            endingLineNumber = "759"
             landmarkName = "resetEndSetter()"
             landmarkType = "5">
          </BreakpointContent>
@@ -1608,11 +1608,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PhysWiz/PhysicsLogViewController.swift"
-            timestampString = "484542368.427718"
+            timestampString = "484601501.587925"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "689"
-            endingLineNumber = "689"
+            startingLineNumber = "690"
+            endingLineNumber = "690"
             landmarkName = "tableView(_:didDeselectRowAtIndexPath:)"
             landmarkType = "5">
          </BreakpointContent>
@@ -1624,11 +1624,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "PhysWiz/PhysicsLogViewController.swift"
-            timestampString = "484542368.427718"
+            timestampString = "484601501.587925"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "686"
-            endingLineNumber = "686"
+            startingLineNumber = "687"
+            endingLineNumber = "687"
             landmarkName = "tableView(_:didDeselectRowAtIndexPath:)"
             landmarkType = "5">
          </BreakpointContent>

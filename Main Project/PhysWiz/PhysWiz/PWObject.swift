@@ -272,7 +272,6 @@ class PWObject: SKSpriteNode
         let accelerationVector = CGVector.init(dx: x * mass, dy: y * mass)
         self.physicsBody?.applyForce(accelerationVector);
         self.acceleration = accelerationVector
-        print(acceleration)
     }
     func applyAcceleration(magnitude: CGFloat, direction: CGFloat) // Polar form
     {
@@ -282,7 +281,6 @@ class PWObject: SKSpriteNode
         let accelerationVector = CGVector.init(dx: x * mass, dy: y * mass)
         self.physicsBody?.applyForce(accelerationVector)
         self.acceleration = accelerationVector
-        print(acceleration)
     }
     
     // Applys an instaneous force to the object.

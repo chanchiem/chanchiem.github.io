@@ -631,6 +631,7 @@ import Darwin
         if tableView == objectSelector {
             for object in objectIDMap.keys {
                 if object == selectionTableData[indexPath.row] {
+                    changeToObjectInputBox()
                     parentVC.changeSelectedObject(objectIDMap[object]!)
                 }
      
