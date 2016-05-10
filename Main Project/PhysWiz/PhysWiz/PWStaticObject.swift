@@ -396,7 +396,15 @@ class PWStaticObject: SKShapeNode
         let value4 = aDecoder.decodeFloatForKey("value4")
         let value5 = aDecoder.decodeFloatForKey("value5")
         let value6 = aDecoder.decodeFloatForKey("value6")
-        self.values = [value0, value1/metricScale, value2/metricScale, value3/metricScale, value4/metricScale, value5, value6]
+        if self.name == "Ramp" {
+        self.values = [value0, value1/metricScale, value2/metricScale, value3, value4/metricScale, value5, value6]
+        }
+        else if self.name == "Round" {
+         self.values = [value0, value1/metricScale, value2/metricScale, value3/metricScale, value4, value5, value6]
+        }
+        else {
+            self.values = [value0, value1/metricScale, value2/metricScale, value3/metricScale, value4/metricScale, value5, value6]
+        }
         //self.values = [value0, Float(objectPosition.x)/metricScale, Float(objectPosition.y)/metricScale, value3/metricScale, value4/metricScale, value5, value6]
     }
     
