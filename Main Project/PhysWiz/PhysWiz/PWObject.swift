@@ -57,6 +57,8 @@ class PWObject: SKSpriteNode
     private var objectID            = -1    // Unique ID Assigned to each sprite.
     private var selected            = true  // Flag that determines if the object is selected by the scene.
     private var glowNode: SKShapeNode?      // The node representing the glow of this object.
+    private var acceleration: CGVector
+    private var force: CGVector
     
     var objectStringName: String
     var objectPosition: CGPoint
@@ -236,11 +238,11 @@ class PWObject: SKSpriteNode
     // Returns the current acceleration of the object.
     func getAcceleration() -> CGVector {
         // Implement later using change of velocity
-        return CGVector.init(dx: 0.0, dy: 0.0)
+        return acceleration
     }
     
     func getForce() -> CGVector {
-        return CGVector.init(dx: 0.0, dy: 0.0)
+        return force
     }
     
     // Returns the current angular acceleration of the object.
@@ -275,6 +277,8 @@ class PWObject: SKSpriteNode
         let mass = (self.physicsBody?.mass)!
         let accelerationVector = CGVector.init(dx: x * mass, dy: y * mass)
         self.physicsBody?.applyForce(accelerationVector);
+        self.acceleration = accelerationVector
+        print(acceleration)
     }
     func applyAcceleration(magnitude: CGFloat, direction: CGFloat) // Polar form
     {
@@ -283,13 +287,15 @@ class PWObject: SKSpriteNode
         let y = magnitude * sin(direction) * mass
         let accelerationVector = CGVector.init(dx: x * mass, dy: y * mass)
         self.physicsBody?.applyForce(accelerationVector)
-        
+        self.acceleration = accelerationVector
+        print(acceleration)
     }
     
     // Applys an instaneous force to the object.
     func applyForce(x: CGFloat, y: CGFloat) // Cartesian Form
     {
         self.physicsBody?.applyForce(CGVector.init(dx: x, dy: y))
+        self.force = CGVector.init(dx: x, dy: y)
     }
     
     func applyForce(magnitude: CGFloat, direction: CGFloat) // Polar form
@@ -298,6 +304,7 @@ class PWObject: SKSpriteNode
         let y = magnitude * sin(direction)
         let vec = CGVector(dx: x, dy: y)
         self.physicsBody?.applyForce(vec)
+        self.force = vec
     }
     
     
@@ -406,6 +413,8 @@ class PWObject: SKSpriteNode
         let objectTexture = SKTexture.init(imageNamed: objTextureName!)
         let textureSize = objectTexture.size()
         let white = UIColor.init(white: 1.0, alpha: 1.0);
+        self.acceleration = CGVector.init(dx: 0.0, dy: 0.0)
+        self.force = CGVector.init(dx: 0.0, dy: 0.0)
         super.init(texture: objectTexture, color: white, size: textureSize)
         
         let size = CGSize(width: 40, height: 40)
@@ -495,8 +504,7 @@ class PWObject: SKSpriteNode
         self.setVelocity(velocity);
         self.setMass(objMass)
         self.setAngularVelocity(angularVelocity)
-        self.applyAcceleration(acceleration.dx, y: acceleration.dy)
-        self.applyForce(force.dx, y: force.dy)
+        self.applyAcceleration(acceleration.dx/CGFloat(metricScale), y: acceleration.dy/CGFloat(metricScale))
+        self.applyForce(force.dx/CGFloat(metricScale), y: force.dy/CGFloat(metricScale))
     }
-    
 }
