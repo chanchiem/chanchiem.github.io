@@ -1112,6 +1112,9 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
                 node.removeFromParent()
             }
         }
+        // reset time counter
+        TimeCounter = 0
+        containerVC.setsElapsedTime(Float(TimeCounter))
         selectedSprite = nil
         PWObjects.removeAll()
         PWStaticObjects.removeAll()
