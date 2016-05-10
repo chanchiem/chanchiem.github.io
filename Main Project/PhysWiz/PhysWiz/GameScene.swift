@@ -432,8 +432,12 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             
             let label = labelMap[sprite];
             label?.hidden = false;
-            let dist = String(selectedSprite.distanceTo(sprite) / CGFloat(pixelToMetric))
-            label?.text = truncateString(dist, decLen: 4)
+            
+            let xPos = sprite.getPos().x - selectedSprite.getPos().x
+            let yPos = sprite.getPos().y - selectedSprite.getPos().y
+            
+            let dist = "(" + truncateString(String(xPos / CGFloat(pixelToMetric)), decLen: 2) + ", " + truncateString(String(yPos / CGFloat(pixelToMetric)), decLen: 2) + ")"
+            label?.text = dist
             let pos = sprite.getPos();
             label?.position = CGPoint.init(x: pos.x, y: pos.y + sprite.size.height/2)
         }
