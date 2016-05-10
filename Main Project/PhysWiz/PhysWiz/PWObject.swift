@@ -210,7 +210,10 @@ class PWObject: SKSpriteNode
     
     func getPos() -> CGPoint { return self.position; }
     
-    func setMass(mass: CGFloat) { self.physicsBody?.mass = mass }
+    func setMass(mass: CGFloat) {
+        if (mass < 0.10) { self.physicsBody?.mass = 0.10 } // This is the abs min of mass
+        else { self.physicsBody?.mass = mass }
+    }
     func getMass() -> CGFloat
     {
         if self.physicsBody?.mass == nil {

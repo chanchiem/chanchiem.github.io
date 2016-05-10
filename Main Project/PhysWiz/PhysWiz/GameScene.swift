@@ -881,7 +881,7 @@ class GameScene: SKScene , SKPhysicsContactDelegate{
             let sprite = object as! PWObject
             let xComponent = CGFloat(objectProperties[sprite]![shapePropertyIndex.AX.rawValue]*pixelToMetric);
             let yComponent = CGFloat(objectProperties[sprite]![shapePropertyIndex.AY.rawValue]*pixelToMetric);
-            sprite.applyForce(xComponent, y: yComponent)
+            sprite.applyAcceleration(xComponent, y: yComponent)
         }
         updateSprings();
         if selectedSprite != nil && !pwPaused {
